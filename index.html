@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SiteFree — Fix & Own Your Website</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#34d399;--gb:#064e3b;--gbr:#10b981;--bl:#60a5fa;--bb:#0d2137;--bbr:#1a3a5c;--bg0:#07090d;--bg1:#0b0f15;--bg2:#0c1018;--bg3:#0f1923;--b1:#151d25;--b2:#1e2d3d;--b3:#1a3a5c;--tx:#d4d8e2;--mu:#4a5a6a;--dm:#2a3a4a;--warn:#f59e0b;--danger:#f87171}
+html,body{height:100%;background:var(--bg0);color:var(--tx);font-family:'Inter','Segoe UI',sans-serif}
+body{overflow:hidden}
+
+/* ── GATE ─────────────────────────────────── */
+#gate{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:0;overflow-y:auto}
+.gate-logo{font-size:36px;font-weight:900;color:#fff;letter-spacing:-.5px;margin-bottom:8px}
+.gate-logo span{color:var(--g)}
+.gate-sub{font-size:14px;color:var(--mu);margin-bottom:32px;text-align:center}
+
+.steps-row{display:flex;gap:12px;margin-bottom:32px;flex-wrap:wrap;justify-content:center}
+.how-step{background:var(--bg2);border:1px solid var(--b1);border-radius:12px;padding:16px 18px;width:160px;text-align:center}
+.how-step .num{width:28px;height:28px;border-radius:50%;background:var(--gb);border:1px solid var(--gbr);color:var(--g);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.how-step .icon{font-size:24px;margin-bottom:8px}
+.how-step .title{font-size:13px;font-weight:600;color:#fff;margin-bottom:4px}
+.how-step .desc{font-size:11.5px;color:var(--mu);line-height:1.5}
+.arrow-step{color:var(--b2);font-size:20px;display:flex;align-items:center;margin-top:-8px}
+
+.key-card{width:100%;max-width:480px;background:var(--bg2);border:2px solid var(--b3);border-radius:16px;padding:28px}
+.key-card-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.key-card-sub{font-size:13px;color:var(--mu);margin-bottom:20px;line-height:1.5}
+.key-steps{margin-bottom:20px}
+.key-step{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.key-step-num{width:22px;height:22px;border-radius:50%;background:var(--bbg);border:1px solid var(--bbr);color:var(--bl);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.key-step-text{font-size:13px;color:var(--mu);line-height:1.5}
+.key-step-text a{color:var(--bl);text-decoration:none}
+.key-step-text a:hover{text-decoration:underline}
+#ki{width:100%;padding:14px 16px;background:var(--bg0);border:2px solid var(--b3);border-radius:10px;color:var(--tx);font-size:14px;outline:none;font-family:monospace;margin-bottom:10px}
+#ki:focus{border-color:var(--gbr);box-shadow:0 0 0 3px #10b98122}
+#ki::placeholder{color:var(--dm)}
+#kerr{font-size:12.5px;color:var(--danger);margin-bottom:10px;display:none;padding:8px 12px;background:#f871711a;border:1px solid #f8717133;border-radius:8px}
+#kb{width:100%;padding:14px;background:var(--gb);border:2px solid var(--gbr);border-radius:10px;color:var(--g);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s}
+#kb:hover{opacity:.85}
+.key-note{font-size:11.5px;color:var(--dm);text-align:center;margin-top:14px;line-height:1.7}
+.key-note a{color:var(--bl)}
+.free-badge{display:inline-flex;align-items:center;gap:6px;background:#34d39912;border:1px solid #34d39933;border-radius:20px;padding:4px 12px;font-size:11.5px;color:var(--g);margin-bottom:20px}
+
+/* ── APP SHELL ─────────────────────────────── */
+#app{height:100vh;display:none;flex-direction:column}
+
+/* topbar */
+#topbar{height:52px;background:var(--bg1);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 16px;gap:4px;flex-shrink:0}
+.tlogo{font-size:16px;font-weight:900;color:#fff;margin-right:10px;flex-shrink:0}.tlogo span{color:var(--g)}
+.tab{padding:6px 13px;border-radius:8px;border:1px solid transparent;color:var(--mu);font-size:13px;cursor:pointer;background:transparent;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px}
+.tab .tab-icon{font-size:14px}
+.tab.on{background:var(--bg3);border-color:var(--b3);color:#93c5fd}
+.tab:hover:not(.on){background:var(--bg2)}
+#tr{margin-left:auto;display:flex;gap:8px;align-items:center}
+#ab{padding:6px 16px;background:var(--gb);border:1px solid var(--gbr);border-radius:8px;color:var(--g);font-size:12.5px;cursor:pointer;font-weight:600;display:none;animation:pulse 2s infinite;font-family:inherit}
+.live-pill{font-size:10.5px;color:var(--g);background:#34d39918;border:1px solid #34d39933;border-radius:10px;padding:3px 10px}
+
+/* content */
+#content{flex:1;overflow:hidden;display:flex;flex-direction:column}
+
+/* ── CHAT PANE ────────────────────────────── */
+#chat-pane{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* guide banner */
+.guide-banner{background:var(--bg2);border-bottom:1px solid var(--b1);padding:12px 16px;display:flex;align-items:flex-start;gap:12px;flex-shrink:0}
+.guide-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.guide-text{flex:1}
+.guide-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:3px}
+.guide-desc{font-size:12px;color:var(--mu);line-height:1.5}
+.guide-close{background:none;border:none;color:var(--dm);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0}
+
+#msgs{flex:1;overflow-y:auto;padding:14px 16px 4px}
+.msg{display:flex;gap:8px;margin-bottom:14px;align-items:flex-start}
+.msg.u{flex-direction:row-reverse}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.av.ai{background:var(--bb);border:1px solid var(--bbr);color:var(--bl)}
+.av.u{background:var(--bg2);border:1px solid var(--b2);color:#aaa}
+.bub{max-width:84%;background:var(--bg3);border:1px solid var(--b1);border-radius:3px 12px 12px 12px;padding:10px 14px;font-size:13px;line-height:1.7;color:#c0c8d8;white-space:pre-wrap;word-break:break-word}
+.msg.u .bub{background:var(--bg2);border-color:var(--b2);border-radius:12px 3px 12px 12px}
+.cb{background:#050d14;border:1px solid var(--b3);border-radius:10px;padding:12px 14px;font-size:11.5px;color:#7dd3fc;font-family:monospace;line-height:1.6;overflow-x:auto;max-height:220px;overflow-y:auto;position:relative;white-space:pre-wrap;word-break:break-word;max-width:84%}
+.cpb{position:absolute;top:8px;right:8px;background:var(--bb);border:1px solid var(--bbr);border-radius:5px;padding:3px 10px;font-size:10.5px;color:var(--bl);cursor:pointer;font-family:inherit}
+#thinking{display:none;padding:0 16px 10px}
+
+/* quick prompts */
+.qp-section{padding:8px 16px 4px;flex-shrink:0}
+.qp-label{font-size:10px;color:var(--dm);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.qp-row{display:flex;gap:6px;flex-wrap:wrap}
+.qp{padding:5px 12px;border-radius:20px;font-size:12px;background:var(--bg2);border:1px solid var(--b2);color:var(--bl);cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px}
+.qp:hover{background:var(--bg3);border-color:var(--b3)}
+.qp-icon{font-size:13px}
+
+/* input area */
+#ir{padding:10px 16px 14px;display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
+.input-wrap{flex:1;position:relative}
+#mi{width:100%;background:var(--bg1);border:1.5px solid var(--b2);border-radius:12px;padding:11px 14px;color:var(--tx);font-size:13.5px;resize:none;outline:none;font-family:inherit;line-height:1.55;display:block}
+#mi:focus{border-color:var(--gbr)}
+#mi::placeholder{color:var(--dm)}
+.input-hint{font-size:10.5px;color:var(--dm);margin-top:5px;padding-left:2px}
+#sb{padding:11px 18px;background:var(--gb);border:1.5px solid var(--gbr);border-radius:12px;color:var(--g);font-size:13px;cursor:pointer;font-weight:600;height:46px;font-family:inherit;white-space:nowrap;flex-shrink:0}
+#sb:disabled{background:var(--bg3);border-color:var(--b1);color:var(--mu);cursor:not-allowed}
+
+/* ── EDITOR PANE ──────────────────────────── */
+#editor-pane{flex:1;display:none;flex-direction:column;overflow:hidden}
+.pane-header{background:var(--bg2);border-bottom:1px solid var(--b1);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.pane-title{font-size:13px;font-weight:600;color:#fff}
+.pane-subtitle{font-size:12px;color:var(--mu)}
+.pane-actions{display:flex;gap:8px}
+.pane-btn{padding:5px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit;border:1px solid var(--b2);background:transparent;color:var(--mu)}
+.pane-btn:hover{background:var(--bg3);color:var(--tx)}
+.pane-btn.primary{background:var(--gb);border-color:var(--gbr);color:var(--g)}
+#ca{flex:1;width:100%;background:#060a0e;color:#7dd3fc;border:none;outline:none;padding:20px 24px;font-size:12.5px;font-family:'Fira Code','Cascadia Code',monospace;line-height:1.75;resize:none}
+
+/* ── PREVIEW PANE ─────────────────────────── */
+#preview-pane{flex:1;display:none;flex-direction:column;overflow:hidden}
+.preview-toolbar{background:var(--bg2);border-bottom:1px solid var(--b1);padding:8px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.browser-dots{display:flex;gap:5px}
+.bdot{width:10px;height:10px;border-radius:50%}
+.url-bar{flex:1;background:var(--bg0);border:1px solid var(--b1);border-radius:6px;padding:4px 12px;font-size:12px;color:var(--mu);font-family:monospace}
+.preview-hint{font-size:11px;color:var(--dm)}
+#pf{flex:1;border:none;background:#fff}
+
+/* ── EXTRACT PANE ─────────────────────────── */
+#extract-pane{flex:1;display:none;overflow-y:auto}
+.extract-inner{padding:24px;max-width:760px;margin:0 auto}
+.section-header{margin-bottom:22px}
+.section-tag{font-size:10px;color:var(--g);letter-spacing:2px;font-weight:600;margin-bottom:6px;text-transform:uppercase}
+.section-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px}
+.section-desc{font-size:13px;color:var(--mu);line-height:1.6}
+
+/* platform chips */
+.platform-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.pchip{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid}
+
+/* dropzone */
+#dz{border:2px dashed var(--b3);border-radius:16px;padding:52px 24px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px;background:var(--bg0)}
+#dz:hover{border-color:var(--g);background:#34d39905}
+#dz input{display:none}
+.dz-icon{font-size:44px;margin-bottom:14px}
+.dz-title{font-size:16px;color:#d4d8e2;font-weight:600;margin-bottom:6px}
+.dz-sub{font-size:13px;color:var(--mu);margin-bottom:20px}
+.dz-btn{display:inline-block;padding:10px 22px;background:var(--gb);border:1px solid var(--gbr);border-radius:9px;color:var(--g);font-size:13.5px;font-weight:600}
+
+/* what we do explainer */
+.explainer{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+.explainer-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.exp-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.exp-icon{font-size:16px;width:24px;text-align:center;flex-shrink:0;margin-top:1px}
+.exp-text{font-size:12.5px;color:var(--mu);line-height:1.5}
+.exp-text strong{color:var(--tx)}
+#er{display:none}
+
+/* result card */
+.result-card{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+.result-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.result-filename{font-size:15px;font-weight:700;color:#fff}
+.result-platform{font-size:12px;border-radius:8px;padding:4px 12px;font-weight:500}
+.result-notes{font-size:12.5px;color:var(--mu);line-height:1.7;border-top:1px solid var(--b1);padding-top:12px}
+.code-preview{background:#050d14;border:1px solid var(--b3);border-radius:10px;padding:14px;font-size:11.5px;color:#7dd3fc;font-family:monospace;line-height:1.6;overflow-x:auto;max-height:170px;overflow-y:auto;margin-bottom:14px;white-space:pre-wrap;word-break:break-word}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap}
+.ra-btn{padding:10px 20px;border-radius:9px;font-size:13px;cursor:pointer;font-weight:500;font-family:inherit;border:1px solid}
+
+/* ── GUIDE PANE ───────────────────────────── */
+#guide-pane{flex:1;display:none;overflow-y:auto}
+.guide-inner{padding:24px;max-width:720px;margin:0 auto}
+.guide-section{background:var(--bg2);border:1px solid var(--b1);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+.guide-section-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.guide-section-icon{font-size:20px}
+.guide-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--b0)}
+.guide-item:last-child{border-bottom:none;padding-bottom:0}
+.gi-icon{font-size:18px;width:28px;text-align:center;flex-shrink:0;margin-top:2px}
+.gi-body{}
+.gi-title{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:3px}
+.gi-desc{font-size:12.5px;color:var(--mu);line-height:1.55}
+.gi-tag{display:inline-block;font-size:10.5px;color:var(--g);background:#34d39912;border:1px solid #34d39933;border-radius:6px;padding:1px 8px;margin-top:5px}
+
+/* shared */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:#1a2d40;border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ GATE ═══════════════ -->
+<div id="gate">
+  <div class="gate-logo">Site<span>Free</span></div>
+  <p class="gate-sub">Fix, clean, and own your website — no platform lock-in ever again</p>
+
+  <div class="steps-row">
+    <div class="how-step">
+      <div class="num">1</div>
+      <div class="icon">🔑</div>
+      <div class="title">Add your key</div>
+      <div class="desc">Paste your free Anthropic API key below</div>
+    </div>
+    <div class="arrow-step">→</div>
+    <div class="how-step">
+      <div class="num">2</div>
+      <div class="icon">⬆</div>
+      <div class="title">Upload your site</div>
+      <div class="desc">Drop any HTML export from Wix, Framer, Lovable etc.</div>
+    </div>
+    <div class="arrow-step">→</div>
+    <div class="how-step">
+      <div class="num">3</div>
+      <div class="icon">⚡</div>
+      <div class="title">AI fixes it</div>
+      <div class="desc">Platform junk stripped, code cleaned instantly</div>
+    </div>
+    <div class="arrow-step">→</div>
+    <div class="how-step">
+      <div class="num">4</div>
+      <div class="icon">🔓</div>
+      <div class="title">Own it forever</div>
+      <div class="desc">Download clean HTML. Deploy anywhere. No subscription.</div>
+    </div>
+  </div>
+
+  <div class="key-card">
+    <div class="free-badge">✓ Free to start — ~$5 free credits included</div>
+    <div class="key-card-title">Enter your Anthropic API Key</div>
+    <div class="key-card-sub">This unlocks the AI engine. Your key stays in your browser only — never stored on any server.</div>
+
+    <div class="key-steps">
+      <div class="key-step">
+        <div class="key-step-num">1</div>
+        <div class="key-step-text">Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> and sign in or create a free account</div>
+      </div>
+      <div class="key-step">
+        <div class="key-step-num">2</div>
+        <div class="key-step-text">Click <strong style="color:var(--tx)">Settings → API Keys → Create Key</strong></div>
+      </div>
+      <div class="key-step">
+        <div class="key-step-num">3</div>
+        <div class="key-step-text">Copy your key (starts with <code style="color:var(--g);font-size:12px;background:var(--bg0);padding:1px 5px;border-radius:4px">sk-ant-</code>) and paste it below</div>
+      </div>
+    </div>
+
+    <input id="ki" type="password" placeholder="Paste your key here → sk-ant-api03-..." autocomplete="off" spellcheck="false"/>
+    <div id="kerr">⚠ That doesn't look right. Your key must start with sk-ant- — check and try again.</div>
+    <button id="kb">🚀 Launch SiteFree →</button>
+    <p class="key-note">Your key is only used to call the Anthropic AI directly from your browser.<br/>It is never sent to or stored on SiteFree servers.</p>
+  </div>
+</div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div id="app">
+  <div id="topbar">
+    <div class="tlogo">Site<span>Free</span></div>
+    <button class="tab on" id="t-chat" onclick="show('chat')"><span class="tab-icon">⌂</span>AI Repair</button>
+    <button class="tab" id="t-editor" onclick="show('editor')"><span class="tab-icon">✎</span>Editor</button>
+    <button class="tab" id="t-preview" onclick="show('preview')"><span class="tab-icon">⊡</span>Preview</button>
+    <button class="tab" id="t-extract" onclick="show('extract')"><span class="tab-icon">⬆</span>Extractor</button>
+    <button class="tab" id="t-guide" onclick="show('guide')"><span class="tab-icon">📖</span>Guide</button>
+    <div id="tr">
+      <button id="ab" onclick="applyFix()">✦ Apply AI Fix</button>
+      <span class="live-pill">● AI live</span>
+    </div>
+  </div>
+
+  <div id="content">
+
+    <!-- CHAT -->
+    <div id="chat-pane">
+      <div class="guide-banner" id="chat-banner">
+        <div class="guide-icon">💡</div>
+        <div class="guide-text">
+          <div class="guide-title">How to use AI Repair</div>
+          <div class="guide-desc">Paste any broken website code into the box below and hit <strong style="color:var(--g)">Fix →</strong>. The AI will diagnose the problem, clean it up, and return working code. Then click <strong style="color:var(--g)">Apply AI Fix</strong> to send it to the Editor and Preview.</div>
+        </div>
+        <button class="guide-close" onclick="document.getElementById('chat-banner').style.display='none'">✕</button>
+      </div>
+      <div id="msgs"></div>
+      <div id="thinking">
+        <div style="display:flex;gap:8px;align-items:flex-start;padding:2px 0 4px">
+          <div class="av ai">AI</div>
+          <div class="bub" style="color:var(--mu)">Analyzing your code — this takes a few seconds...</div>
+        </div>
+      </div>
+      <div class="qp-section">
+        <div class="qp-label">Quick actions — click any to run instantly</div>
+        <div class="qp-row">
+          <button class="qp" onclick="qs('Fix all the layout bugs and broken styles in this code')"><span class="qp-icon">🔧</span>Fix layout bugs</button>
+          <button class="qp" onclick="qs('Remove all platform lock-in scripts and make this 100% portable HTML')"><span class="qp-icon">🔓</span>Remove lock-in</button>
+          <button class="qp" onclick="qs('What platform is this from? What is broken and why?')"><span class="qp-icon">🔍</span>Diagnose platform</button>
+          <button class="qp" onclick="qs('Make this site fully self-hosted with no external CDN or platform dependencies')"><span class="qp-icon">🌐</span>Make self-hosted</button>
+          <button class="qp" onclick="qs('Add a contact form with name, email and message fields')"><span class="qp-icon">📬</span>Add contact form</button>
+          <button class="qp" onclick="qs('Make this website mobile responsive')"><span class="qp-icon">📱</span>Make mobile-friendly</button>
+        </div>
+      </div>
+      <div id="ir">
+        <div class="input-wrap">
+          <textarea id="mi" rows="2" placeholder="Paste broken website code here, or describe what you want to fix or build..."></textarea>
+          <div class="input-hint">Press Enter to send · Shift+Enter for new line · Or click a quick action above</div>
+        </div>
+        <button id="sb" onclick="send()">Fix →</button>
+      </div>
+    </div>
+
+    <!-- EDITOR -->
+    <div id="editor-pane">
+      <div class="pane-header">
+        <div>
+          <div class="pane-title">✎ Code Editor</div>
+          <div class="pane-subtitle">Edit your HTML, CSS and JavaScript directly here</div>
+        </div>
+        <div class="pane-actions">
+          <button class="pane-btn" onclick="copyCode()">⎘ Copy all</button>
+          <button class="pane-btn" onclick="downloadCode()">↓ Download HTML</button>
+          <button class="pane-btn primary" onclick="show('preview')">⊡ Preview →</button>
+        </div>
+      </div>
+      <textarea id="ca" spellcheck="false"></textarea>
+    </div>
+
+    <!-- PREVIEW -->
+    <div id="preview-pane">
+      <div class="preview-toolbar">
+        <div class="browser-dots">
+          <div class="bdot" style="background:#ff5f57"></div>
+          <div class="bdot" style="background:#ffbd2e"></div>
+          <div class="bdot" style="background:#28c840"></div>
+        </div>
+        <div class="url-bar">your-site.html — live preview</div>
+        <div class="preview-hint">This is exactly how your site looks in a browser</div>
+        <button class="pane-btn" onclick="show('editor')" style="padding:4px 12px;font-size:12px;border-radius:6px;border:1px solid var(--b2);background:transparent;color:var(--mu);cursor:pointer;font-family:inherit">← Edit code</button>
+        <button class="pane-btn primary" onclick="downloadCode()" style="padding:4px 12px;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit">↓ Download</button>
+      </div>
+      <iframe id="pf" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+
+    <!-- EXTRACTOR -->
+    <div id="extract-pane">
+      <div class="extract-inner">
+        <div class="section-header">
+          <div class="section-tag">Extractor</div>
+          <div class="section-title">Break free from your builder</div>
+          <div class="section-desc">Export your site from any AI builder as HTML, then upload it here. The AI reads every line, removes all platform-specific code, and gives you back a clean file you own 100%.</div>
+        </div>
+
+        <div class="platform-chips">
+          <div class="pchip" style="color:#facc15;border-color:#facc1533;background:#facc1510">🟡 Wix</div>
+          <div class="pchip" style="color:#0099ff;border-color:#0099ff33;background:#0099ff10">🔵 Framer</div>
+          <div class="pchip" style="color:#8b5cf6;border-color:#8b5cf633;background:#8b5cf610">🟣 Lovable</div>
+          <div class="pchip" style="color:#f97316;border-color:#f9731633;background:#f9731610">🟠 Bolt</div>
+          <div class="pchip" style="color:#e2e2e2;border-color:#e2e2e233;background:#e2e2e210">⚪ Squarespace</div>
+          <div class="pchip" style="color:#4353ff;border-color:#4353ff33;background:#4353ff10">🔷 Webflow</div>
+        </div>
+
+        <div class="explainer">
+          <div class="explainer-title">🛠 What the AI does to your file</div>
+          <div class="exp-row"><div class="exp-icon">🔍</div><div class="exp-text"><strong>Detects the platform</strong> — identifies Wix, Framer, Lovable, Bolt or any other builder from hidden code signatures</div></div>
+          <div class="exp-row"><div class="exp-icon">✂️</div><div class="exp-text"><strong>Strips lock-in scripts</strong> — removes platform CDN links, tracking pixels, proprietary APIs and data attributes</div></div>
+          <div class="exp-row"><div class="exp-icon">🧹</div><div class="exp-text"><strong>Cleans the code</strong> — rewrites CSS, HTML and JS into clean portable code that works on any host</div></div>
+          <div class="exp-row"><div class="exp-icon">📦</div><div class="exp-text"><strong>Returns one file</strong> — a single self-contained HTML file you can download and deploy anywhere, forever</div></div>
+        </div>
+
+        <div id="dz" onclick="document.getElementById('fi').click()" ondragover="event.preventDefault();this.style.borderColor='var(--g)';this.style.background='#34d39908'" ondragleave="this.style.borderColor='var(--b3)';this.style.background='var(--bg0)'" ondrop="drop(event)">
+          <input id="fi" type="file" accept=".html,.htm,.txt" onchange="readFile(this.files[0])"/>
+          <div class="dz-icon">⬆</div>
+          <div class="dz-title">Drop your exported HTML file here</div>
+          <div class="dz-sub">Or click to choose a file from your computer<br/><span style="font-size:12px;color:var(--dm)">Supports .html and .htm files</span></div>
+          <div class="dz-btn">Choose file</div>
+        </div>
+
+        <div id="er"></div>
+      </div>
+    </div>
+
+    <!-- GUIDE -->
+    <div id="guide-pane">
+      <div class="guide-inner">
+        <div class="section-header">
+          <div class="section-tag">Guide</div>
+          <div class="section-title">How to use SiteFree</div>
+          <div class="section-desc">Everything you need to know — step by step, plain English.</div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title"><span class="guide-section-icon">⌂</span>AI Repair — Fix broken code</div>
+          <div class="guide-item">
+            <div class="gi-icon">1️⃣</div>
+            <div class="gi-body">
+              <div class="gi-title">Paste your broken code</div>
+              <div class="gi-desc">Go to the AI Repair tab. Paste any HTML, CSS or website code into the text box at the bottom. It can be broken, messy or platform-specific — the AI handles it all.</div>
+            </div>
+          </div>
+          <div class="guide-item">
+            <div class="gi-icon">2️⃣</div>
+            <div class="gi-body">
+              <div class="gi-title">Hit Fix → or use a quick action</div>
+              <div class="gi-desc">Press the Fix button or click one of the quick action buttons like "Fix layout bugs" or "Remove lock-in". The AI will analyze your code and respond in seconds.</div>
+              <div class="gi-tag">Tip: Quick actions work without pasting code — they fix whatever is already in the Editor</div>
+            </div>
+          </div>
+          <div class="guide-item">
+            <div class="gi-icon">3️⃣</div>
+            <div class="gi-body">
+              <div class="gi-title">Click "Apply AI Fix"</div>
+              <div class="gi-desc">When the AI returns fixed code, a green "✦ Apply AI Fix" button appears in the top bar. Click it to send the clean code to the Editor and see it live in Preview.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title"><span class="guide-section-icon">⬆</span>Extractor — Escape your builder</div>
+          <div class="guide-item">
+            <div class="gi-icon">1️⃣</div>
+            <div class="gi-body">
+              <div class="gi-title">Export your site as HTML first</div>
+              <div class="gi-desc">In your builder (Wix, Framer, Lovable etc.) look for an "Export" option. Choose "Export as HTML" or "Download HTML". This gives you a .html file on your computer.</div>
+              <div class="gi-tag">Wix: Publish → Export · Framer: File → Export HTML · Lovable: Download → HTML</div>
+            </div>
+          </div>
+          <div class="guide-item">
+            <div class="gi-icon">2️⃣</div>
+            <div class="gi-body">
+              <div class="gi-title">Drop it in the Extractor</div>
+              <div class="gi-desc">Go to the Extractor tab and drag your .html file onto the drop zone, or click "Choose file". The AI immediately starts analyzing it.</div>
+            </div>
+          </div>
+          <div class="guide-item">
+            <div class="gi-icon">3️⃣</div>
+            <div class="gi-body">
+              <div class="gi-title">Download your clean file</div>
+              <div class="gi-desc">In about 10–20 seconds the AI returns your site as clean, portable HTML. Click "↓ Download clean HTML" to save it, or "Open in editor" to keep editing.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title"><span class="guide-section-icon">✎</span>Editor & Preview</div>
+          <div class="guide-item">
+            <div class="gi-icon">✎</div>
+            <div class="gi-body">
+              <div class="gi-title">Editor — Your code lives here</div>
+              <div class="gi-desc">The Editor tab shows the full HTML/CSS/JS of your site. You can edit it directly by typing. Every change is reflected instantly when you switch to Preview.</div>
+            </div>
+          </div>
+          <div class="guide-item">
+            <div class="gi-icon">⊡</div>
+            <div class="gi-body">
+              <div class="gi-title">Preview — See your site live</div>
+              <div class="gi-desc">The Preview tab renders your code exactly as it would look in a real browser. Switch between Editor and Preview as many times as you like.</div>
+            </div>
+          </div>
+          <div class="guide-item">
+            <div class="gi-icon">↓</div>
+            <div class="gi-body">
+              <div class="gi-title">Download — Own it forever</div>
+              <div class="gi-desc">Click "↓ Download HTML" in the Editor toolbar to save your site as a single .html file. This file works on any computer, any browser, any hosting platform — no subscription needed.</div>
+              <div class="gi-tag">Deploy free: Drag the file to netlify.com/drop for an instant live URL</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-section">
+          <div class="guide-section-title"><span class="guide-section-icon">🌐</span>How to get your site live (free)</div>
+          <div class="guide-item">
+            <div class="gi-icon">⚡</div>
+            <div class="gi-body">
+              <div class="gi-title">Netlify Drop — easiest, 60 seconds</div>
+              <div class="gi-desc">Go to netlify.com/drop in your browser. Drag your downloaded .html file onto the page. Netlify gives you a free live URL instantly — no account needed.</div>
+              <div class="gi-tag">Example result: happy-tree-abc123.netlify.app</div>
+            </div>
+          </div>
+          <div class="guide-item">
+            <div class="gi-icon">🐙</div>
+            <div class="gi-body">
+              <div class="gi-title">GitHub Pages — free, permanent</div>
+              <div class="gi-desc">Create a free GitHub account, make a repository, upload your index.html file, enable Pages in Settings. You get a free URL at yourusername.github.io/sitename.</div>
+            </div>
+          </div>
+          <div class="guide-item">
+            <div class="gi-icon">▲</div>
+            <div class="gi-body">
+              <div class="gi-title">Vercel — free, fast, custom domain</div>
+              <div class="gi-desc">Go to vercel.com, sign up free, drag your file or connect your GitHub repo. Free hosting with custom domain support.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let KEY='',busy=false,fixCode=null,allMsgs=[];
+
+const REPAIR=`You are SiteFree's AI website repair expert. Users bring code from AI builders like Wix, Framer, Lovable, Bolt, Squarespace.
+1. Diagnose what is wrong and which platform it came from
+2. Fix ALL bugs, broken layouts, proprietary dependencies
+3. Return the FULL corrected code in a single \`\`\`html code block
+4. Explain clearly in plain English what you changed and why — use simple language, no jargon
+Never suggest returning to the original platform. Output 100% self-contained HTML/CSS/JS that works anywhere.`;
+
+const EXTRACT=`You are SiteFree's extraction engine.
+1. DETECT the source platform from class names, meta tags, script sources, comments, data attributes
+2. LIST every lock-in point in plain English: proprietary scripts, platform CDNs, tracking pixels, etc.
+3. REWRITE the entire site as clean portable HTML/CSS/JS in a single \`\`\`html block
+4. After the code, write a simple bullet list of what you removed and why — use plain language`;
+
+const STARTER=`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>My Website</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',sans-serif;background:#0f0f0f;color:#fff;min-height:100vh}
+    header{padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a}
+    .logo{font-size:1.3rem;font-weight:700;color:#fff}
+    nav a{color:#666;text-decoration:none;margin-left:2rem;font-size:.875rem;transition:color .2s}
+    nav a:hover{color:#fff}
+    .hero{padding:7rem 4rem;max-width:900px}
+    h1{font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;margin-bottom:1.5rem;letter-spacing:-1.5px}
+    h1 em{color:#6ee7b7;font-style:normal}
+    .sub{color:#555;font-size:1.1rem;margin-bottom:2.5rem;line-height:1.7;max-width:540px}
+    .btn{background:#6ee7b7;color:#000;padding:.85rem 1.8rem;border:none;border-radius:7px;font-size:.95rem;font-weight:600;cursor:pointer;transition:opacity .15s}
+    .btn:hover{opacity:.85}
+    .features{padding:4rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem}
+    .feature{background:#111;border-radius:12px;padding:1.5rem}
+    .feature-icon{font-size:2rem;margin-bottom:1rem}
+    .feature h3{font-size:1.1rem;margin-bottom:.5rem}
+    .feature p{color:#666;font-size:.9rem;line-height:1.6}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">MySite</div>
+    <nav>
+      <a href="#">About</a>
+      <a href="#">Work</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <div class="hero">
+      <h1>Your site.<br/><em>Your rules.</em></h1>
+      <p class="sub">No platform lock-in. No credit traps. Clean code that belongs to you — forever.</p>
+      <button class="btn" onclick="alert('Welcome to your freed site!')">Get Started</button>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🔓</div>
+        <h3>No lock-in</h3>
+        <p>Your code, your rules. Deploy anywhere you want.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <h3>Fast &amp; clean</h3>
+        <p>No bloated platform scripts. Pure HTML and CSS.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🌐</div>
+        <h3>Host anywhere</h3>
+        <p>Netlify, Vercel, GitHub Pages — your choice, always free.</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>`;
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function getCode(t){const m=t.match(/```(?:html|css|js)?\s*([\s\S]*?)```/);return m?m[1].trim():null}
+function stripCode(t){return t.replace(/```(?:html|css|js)?\s*[\s\S]*?```/g,'').trim()}
+
+document.getElementById('ki').onkeydown=e=>{if(e.key==='Enter')launch()};
+document.getElementById('kb').onclick=launch;
+
+function launch(){
+  const v=document.getElementById('ki').value.trim();
+  const err=document.getElementById('kerr');
+  if(!v.startsWith('sk-ant')){err.style.display='block';return;}
+  err.style.display='none';
+  KEY=v;
+  document.getElementById('gate').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('ca').value=STARTER;
+  addMsg('ai','👋 Welcome to SiteFree! Your AI is live and ready.\n\nHere is what each tab does:\n\n⌂ AI Repair — Paste broken code and I fix it for you\n✎ Editor — View and edit your HTML code directly\n⊡ Preview — See your website rendered live\n⬆ Extractor — Upload a file from Wix, Framer, Lovable etc. and I clean it\n📖 Guide — Step by step instructions for everything\n\nTo get started: paste some broken code below, or click one of the quick action buttons above the text box.');
+}
+
+function show(t){
+  ['chat','editor','preview','extract','guide'].forEach(id=>{
+    const p=document.getElementById(id+'-pane');
+    if(p)p.style.display='none';
+    const b=document.getElementById('t-'+id);
+    if(b)b.classList.remove('on');
+  });
+  const pane=document.getElementById(t+'-pane');
+  if(!pane)return;
+  if(t==='preview'||t==='editor'){
+    pane.style.display='flex';
+  } else {
+    pane.style.display=t==='chat'?'flex':'block';
+  }
+  if(t==='preview'){
+    document.getElementById('pf').srcdoc=document.getElementById('ca').value;
+  }
+  const b=document.getElementById('t-'+t);
+  if(b)b.classList.add('on');
+  if(t==='chat'){setTimeout(()=>{const m=document.getElementById('msgs');if(m)m.scrollTop=m.scrollHeight;},50);}
+}
+
+function addMsg(role,text,code){
+  allMsgs.push({role,text,code});
+  renderMsgs();
+}
+
+function renderMsgs(){
+  const el=document.getElementById('msgs');
+  el.innerHTML=allMsgs.map(m=>{
+    const u=m.role==='user';
+    let inner='';
+    if(m.code){
+      inner=`<div class="cb"><button class="cpb" onclick="copyText(this.parentElement.querySelector('pre').textContent)">copy</button><pre style="margin:0">${esc(m.code)}</pre></div>`;
+    } else {
+      inner=`<div class="bub">${esc(m.text)}</div>`;
+    }
+    return `<div class="msg ${u?'u':''}"><div class="av ${u?'u':'ai'}">${u?'You':'AI'}</div><div style="max-width:84%;display:flex;flex-direction:column;gap:6px">${inner}</div></div>`;
+  }).join('');
+  el.scrollTop=el.scrollHeight;
+}
+
+function copyText(t){navigator.clipboard.writeText(t).catch(()=>{});}
+
+function setBusy(on){
+  busy=on;
+  document.getElementById('thinking').style.display=on?'block':'none';
+  document.getElementById('sb').disabled=on;
+  document.getElementById('sb').textContent=on?'Working...':'Fix →';
+}
+
+async function callAI(sys,content){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':KEY,'anthropic-version':'2023-06-01'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4096,system:sys,messages:[{role:'user',content}]})
+  });
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'API error '+r.status);}
+  const d=await r.json();
+  return d.content?.map(b=>b.text||'').join('')||'';
+}
+
+async function send(){
+  if(busy)return;
+  const inp=document.getElementById('mi');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  inp.value='';
+  const code=document.getElementById('ca').value;
+  addMsg('user',txt);
+  setBusy(true);
+  try{
+    const ctx=(code&&code!==STARTER)?`Current code in the editor:\n\`\`\`html\n${code.slice(0,10000)}\n\`\`\`\n\nUser message: ${txt}`:txt;
+    const reply=await callAI(REPAIR,ctx);
+    const cb=getCode(reply);
+    const explanation=stripCode(reply);
+    if(explanation)addMsg('ai',explanation);
+    if(cb){
+      addMsg('ai',null,cb);
+      fixCode=cb;
+      document.getElementById('ab').style.display='block';
+    }
+    if(!cb&&!explanation)addMsg('ai','I analyzed your code but could not find specific issues. Try describing the problem in more detail.');
+  }catch(e){
+    addMsg('ai','Something went wrong: '+e.message+'\n\nPlease check:\n• Your API key is correct (starts with sk-ant-)\n• You have credits at console.anthropic.com\n• Your internet connection is working');
+  }
+  setBusy(false);
+}
+
+function qs(t){document.getElementById('mi').value=t;send();}
+
+function applyFix(){
+  if(!fixCode)return;
+  document.getElementById('ca').value=fixCode;
+  fixCode=null;
+  document.getElementById('ab').style.display='none';
+  show('preview');
+  addMsg('ai','✓ Fix applied! Switching to Preview so you can see your site.\n\nYou can also:\n• Go to Editor tab to make further changes\n• Click ↓ Download in the Editor toolbar to save your file\n• Drag the downloaded file to netlify.com/drop for a free live URL');
+}
+
+document.getElementById('mi').onkeydown=e=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}
+};
+
+function copyCode(){
+  const v=document.getElementById('ca').value;
+  navigator.clipboard.writeText(v).then(()=>alert('Code copied to clipboard!')).catch(()=>alert('Select all code manually (Ctrl+A) then copy'));
+}
+
+function downloadCode(){
+  const c=document.getElementById('ca').value;
+  const b=new Blob([c],{type:'text/html'});
+  const u=URL.createObjectURL(b);
+  const a=document.createElement('a');
+  a.href=u;a.download='my-website.html';a.click();
+  URL.revokeObjectURL(u);
+}
+
+function drop(e){
+  e.preventDefault();
+  const dz=document.getElementById('dz');
+  dz.style.borderColor='var(--b3)';
+  dz.style.background='var(--bg0)';
+  readFile(e.dataTransfer.files[0]);
+}
+
+function readFile(file){
+  if(!file)return;
+  const res=document.getElementById('er');
+  res.style.display='block';
+  res.innerHTML=`<div style="text-align:center;padding:44px 0;background:var(--bg2);border:1px solid var(--b1);border-radius:14px"><div style="font-size:32px;display:inline-block;animation:spin 1.2s linear infinite;margin-bottom:14px">⟳</div><div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:5px">Reading ${esc(file.name)}...</div><div style="font-size:13px;color:var(--mu);margin-bottom:4px">AI is analyzing your file</div><div style="font-size:12px;color:var(--dm)">Detecting platform · Removing lock-in · Cleaning code</div></div>`;
+  const reader=new FileReader();
+  reader.onload=async e=>{
+    const html=e.target.result;
+    try{
+      const reply=await callAI(EXTRACT,`File name: ${file.name}\nFile size: ${Math.round(html.length/1024)}kb\n\`\`\`html\n${html.slice(0,12000)}\n\`\`\``);
+      const clean=getCode(reply);
+      const notes=stripCode(reply);
+      const low=html.toLowerCase();
+      let platform='Unknown builder';let pcolor='#6b7a8d';
+      if(low.includes('wix.com')||low.includes('_wixcdn')){platform='Wix';pcolor='#facc15';}
+      else if(low.includes('framer.com')||low.includes('framer-motion')){platform='Framer';pcolor='#0099ff';}
+      else if(low.includes('lovable')){platform='Lovable';pcolor='#8b5cf6';}
+      else if(low.includes('bolt.new')||low.includes('stackblitz')){platform='Bolt';pcolor='#f97316';}
+      else if(low.includes('squarespace')){platform='Squarespace';pcolor='#e2e2e2';}
+      else if(low.includes('webflow')||low.includes('data-wf')){platform='Webflow';pcolor='#4353ff';}
+      window._clean=clean;
+      res.innerHTML=`
+        <div class="result-card">
+          <div class="result-header">
+            <div class="result-filename">📄 ${esc(file.name)}</div>
+            <span class="result-platform" style="color:${pcolor};background:${pcolor}18;border:1px solid ${pcolor}44">${esc(platform)} detected ✓</span>
+          </div>
+          <div class="result-notes">${esc(notes.slice(0,700))}</div>
+        </div>
+        ${clean?`<div class="code-preview">${esc(clean.slice(0,1200))}${clean.length>1200?'\n\n// ... '+Math.round(clean.length/1024)+'kb total — full code in download':''}</div>`:''}
+        <div class="result-actions">
+          ${clean?`
+            <button onclick="dlClean()" class="ra-btn" style="background:var(--gb);border-color:var(--gbr);color:var(--g)">↓ Download clean HTML</button>
+            <button onclick="toEditor()" class="ra-btn" style="background:var(--bb);border-color:var(--bbr);color:var(--bl)">Open in editor →</button>
+          `:''}
+          <button onclick="resetEx()" class="ra-btn" style="background:transparent;border-color:var(--b2);color:var(--mu)">Extract another file</button>
+        </div>
+        <div style="margin-top:14px;background:var(--bg2);border:1px solid var(--b1);border-radius:10px;padding:13px 16px">
+          <div style="font-size:12.5px;font-weight:600;color:var(--tx);margin-bottom:8px">🚀 Next steps — how to go live</div>
+          <div style="font-size:12px;color:var(--mu);line-height:1.7">
+            1. Click <strong style="color:var(--g)">Download clean HTML</strong> to save your file<br/>
+            2. Go to <strong style="color:var(--bl)">netlify.com/drop</strong> in your browser<br/>
+            3. Drag your downloaded file onto that page<br/>
+            4. You get a free live URL in under 60 seconds ✓
+          </div>
+        </div>`;
+    }catch(err){
+      res.innerHTML=`<div style="background:var(--bg2);border:1px solid #3a1010;border-radius:14px;padding:24px;text-align:center"><div style="font-size:32px;margin-bottom:12px">⚠</div><div style="color:#f87171;font-size:14px;font-weight:600;margin-bottom:8px">Something went wrong</div><div style="color:var(--mu);font-size:13px;margin-bottom:16px">${esc(err.message)}</div><button onclick="resetEx()" class="ra-btn" style="background:transparent;border-color:var(--b2);color:var(--mu)">Try again</button></div>`;
+    }
+  };
+  reader.readAsText(file);
+}
+
+function dlClean(){
+  const c=window._clean;if(!c)return;
+  const b=new Blob([c],{type:'text/html'});
+  const u=URL.createObjectURL(b);
+  const a=document.createElement('a');
+  a.href=u;a.download='clean-site.html';a.click();
+  URL.revokeObjectURL(u);
+}
+function toEditor(){if(window._clean){document.getElementById('ca').value=window._clean;show('editor');}}
+function resetEx(){document.getElementById('er').style.display='none';document.getElementById('er').innerHTML='';window._clean=null;}
+
+const style=document.createElement('style');
+style.textContent=`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-thumb{background:#1a2d40;border-radius:4px}`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
