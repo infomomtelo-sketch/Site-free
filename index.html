@@ -5,112 +5,143 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>OwnSite — AI Builds Your Website. You Own It Forever.</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--p:#ff4d6d;--p2:#ff8500;--p3:#ffd60a;--b:#7c3aed;--b2:#06b6d4;--bg:#0a0a0f;--bg2:#111118;--bg3:#18181f;--bg4:#1e1e28;--br:#ffffff12;--br2:#ffffff1f;--tx:#f0f0f8;--mu:#8888aa;--dm:#44445a;--grad:linear-gradient(135deg,#ff4d6d,#ff8500,#ffd60a);--font:'Plus Jakarta Sans',system-ui,sans-serif}
 html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--font);overflow:hidden}
-
-/* GATE */
-#gate{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;overflow-y:auto;position:relative)
-.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.2;pointer-events:none}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.2;pointer-events:none;z-index:0}
 .o1{width:500px;height:500px;background:#ff4d6d;top:-150px;left:-150px;animation:fl 9s ease-in-out infinite}
 .o2{width:400px;height:400px;background:#7c3aed;bottom:-100px;right:-100px;animation:fl 7s ease-in-out infinite reverse}
 .o3{width:250px;height:250px;background:#ffd60a;top:50%;right:5%;animation:fl 11s ease-in-out infinite 2s}
 @keyframes fl{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-40px)}}
-.gi{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:500px}
-.logo{font-size:48px;font-weight:900;letter-spacing:-2.5px}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes dp{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1.2);opacity:1}}
+.screen{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
+.screen.hidden{display:none}
+
+/* LANDING */
+#landing{background:var(--bg)}
+.li{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:500px;text-align:center}
+.logo{font-size:52px;font-weight:900;letter-spacing:-3px;line-height:1}
 .logo .o{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .logo .s{color:#fff}
-.badge{display:inline-flex;align-items:center;gap:7px;background:#fff09;border:1px solid var(--br2);border-radius:100px;padding:5px 14px;font-size:12.5px;color:var(--mu)}
+.badge{display:inline-flex;align-items:center;gap:7px;background:#ffffff09;border:1px solid var(--br2);border-radius:100px;padding:5px 14px;font-size:12.5px;color:var(--mu)}
 .badge span{width:7px;height:7px;border-radius:50%;background:var(--p);display:inline-block;animation:pu 2s infinite}
-.hl{font-size:clamp(1.5rem,3.5vw,2.1rem);font-weight:900;text-align:center;line-height:1.15;letter-spacing:-.4px}
+.hl{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:900;line-height:1.12;letter-spacing:-.5px}
 .hl em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sub{font-size:13.5px;color:var(--mu);text-align:center;line-height:1.65;max-width:380px}
-.steps{display:flex;gap:8px;width:100%;justify-content:center;flex-wrap:wrap}
-.step{flex:1;min-width:100px;max-width:115px;background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:13px 10px;text-align:center}
-.sn{width:24px;height:24px;border-radius:50%;background:var(--grad);color:#000;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 7px}
-.si{font-size:20px;margin-bottom:5px} 
-.st{font-size:11px;font-weight:700;color:#fff;margin-bottom:2px}
-.sd{font-size:10px;color:var(--mu);line-height:1.4}
-.kcard{width:100%;background:var(--bg3);border:1px solid var(--br2);border-radius:20px;padding:22px}
-.kt{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:6px}
-.ktitle{font-size:15px;font-weight:800;color:#fff}
-.kfree{font-size:11px;background:#ffd60a1a;border:1px solid #ffd60a33;color:var(--p3);border-radius:100px;padding:3px 10px;font-weight:600}
-.ksub{font-size:12.5px;color:var(--mu);margin:8px 0 14px;line-height:1.5}
-.ksteps{margin-bottom:14px}
-.ks{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px}
-.ksn{width:19px;height:19px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.kst{font-size:12px;color:var(--mu);line-height:1.5}.kst a{color:#06b6d4;text-decoration:none}
-#ki{width:100%;padding:13px 15px;background:var(--bg);border:2px solid var(--br2);border-radius:12px;color:var(--tx);font-size:14px;outline:none;font-family:monospace;margin-bottom:9px}
-#ki:focus{border-color:var(--p)}
-#ki::placeholder{color:var(--dm)}
-#kerr{font-size:12px;color:#ff4d6d;display:none;margin-bottom:8px;padding:8px 11px;background:#ff4d6d12;border:1px solid #ff4d6d33;border-radius:8px}
-#kb{width:100%;padding:13px;background:var(--grad);border:none;border-radius:12px;color:#000;font-size:15px;font-weight:800;cursor:pointer;font-family:var(--font);transition:opacity .15s,transform .1s}
-#kb:hover{opacity:.88;transform:translateY(-1px)}
-.knote{font-size:11px;color:var(--dm);text-align:center;margin-top:11px;line-height:1.6}.knote a{color:#06b6d4}
+.sub{font-size:14px;color:var(--mu);line-height:1.65;max-width:380px}
+.hsteps{display:flex;gap:8px;width:100%;justify-content:center;flex-wrap:wrap}
+.hs{flex:1;min-width:100px;max-width:115px;background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:13px 10px;text-align:center}
+.hsn{width:24px;height:24px;border-radius:50%;background:var(--grad);color:#000;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 7px}
+.hsi{font-size:20px;margin-bottom:5px}
+.hst{font-size:11px;font-weight:700;color:#fff;margin-bottom:2px}
+.hsd{font-size:10px;color:var(--mu);line-height:1.4}
+
+/* TRAP SECTION */
+.trap-section{width:100%;max-width:500px}
+.trap-label{font-size:11px;color:var(--p);letter-spacing:2px;font-weight:700;text-transform:uppercase;margin-bottom:12px;text-align:center}
+.trap-cards{display:flex;flex-direction:column;gap:6px;margin-bottom:4px}
+.tc{border-radius:12px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start}
+.tc-ic{font-size:20px;flex-shrink:0}
+.tc-t{font-size:13px;font-weight:700;margin-bottom:2px}
+.tc-d{font-size:11.5px;line-height:1.45}
+.trap-arrow{text-align:center;font-size:16px;color:var(--dm)}
+
+.land-btns{display:flex;gap:10px;width:100%}
+.btn-main{flex:1;padding:14px;background:var(--grad);border:none;border-radius:12px;color:#000;font-size:15px;font-weight:800;cursor:pointer;font-family:var(--font);transition:opacity .15s,transform .1s}
+.btn-main:hover{opacity:.88;transform:translateY(-1px)}
+.btn-sec{flex:1;padding:14px;background:var(--bg3);border:1px solid var(--br2);border-radius:12px;color:var(--tx);font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.btn-sec:hover{background:var(--bg4)}
+.trial-note{font-size:12px;color:var(--dm)}
+
+/* AUTH */
+#auth-screen{background:var(--bg)}
+.auth-card{width:100%;max-width:420px;background:var(--bg3);border:1px solid var(--br2);border-radius:20px;padding:28px;position:relative;z-index:2}
+.auth-logo{font-size:28px;font-weight:900;letter-spacing:-1px;text-align:center;margin-bottom:6px}
+.auth-logo .o{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.auth-sub{font-size:13px;color:var(--mu);text-align:center;margin-bottom:20px}
+.auth-tabs{display:flex;background:var(--bg);border:1px solid var(--br);border-radius:10px;padding:3px;margin-bottom:18px}
+.auth-tab{flex:1;padding:8px;border-radius:7px;border:none;background:transparent;color:var(--mu);font-size:13px;cursor:pointer;font-family:var(--font);font-weight:500}
+.auth-tab.on{background:var(--bg4);color:var(--tx)}
+.field{margin-bottom:13px}
+.field label{font-size:12px;color:var(--mu);display:block;margin-bottom:5px;font-weight:500}
+.field input{width:100%;padding:12px 14px;background:var(--bg);border:1.5px solid var(--br2);border-radius:10px;color:var(--tx);font-size:14px;outline:none;font-family:var(--font)}
+.field input:focus{border-color:var(--p)}
+.field input::placeholder{color:var(--dm)}
+.auth-btn{width:100%;padding:13px;background:var(--grad);border:none;border-radius:11px;color:#000;font-size:15px;font-weight:800;cursor:pointer;font-family:var(--font);margin-top:4px}
+.auth-btn:hover{opacity:.88}
+.auth-btn:disabled{opacity:.5;cursor:not-allowed}
+.auth-err{font-size:12.5px;color:#ff4d6d;background:#ff4d6d12;border:1px solid #ff4d6d33;border-radius:8px;padding:9px 12px;margin-bottom:12px;display:none}
+.auth-note{font-size:11.5px;color:var(--dm);text-align:center;margin-top:12px;line-height:1.6}
 
 /* APP */
-#app{height:100vh;display:none;flex-direction:column}
+#app-screen{padding:0;align-items:stretch}
+.app-inner{width:100%;height:100%;display:flex;flex-direction:column}
 #bar{height:52px;background:var(--bg2);border-bottom:1px solid var(--br);display:flex;align-items:center;padding:0 14px;gap:4px;flex-shrink:0}
 .blogo{font-size:16px;font-weight:900;letter-spacing:-.5px;margin-right:8px;flex-shrink:0}
 .blogo .o{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .blogo .s{color:#fff}
-.tab{padding:6px 12px;border-radius:9px;border:1px solid transparent;color:var(--mu);font-size:12.5px;cursor:pointer;background:transparent;font-family:var(--font);transition:all .15s;display:flex;align-items:center;gap:5px;white-space:nowrap;font-weight:500}
+.tab{padding:6px 11px;border-radius:9px;border:1px solid transparent;color:var(--mu);font-size:12px;cursor:pointer;background:transparent;font-family:var(--font);transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap;font-weight:500}
 .tab.on{background:var(--bg4);border-color:var(--br2);color:var(--tx)}
 .tab:hover:not(.on){background:var(--bg3)}
-#tr{margin-left:auto;display:flex;gap:8px;align-items:center}
-#ab{padding:5px 15px;background:var(--grad);border:none;border-radius:8px;color:#000;font-size:12px;cursor:pointer;font-weight:800;display:none;animation:pu 2s infinite;font-family:var(--font)}
-.lpill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mu);background:var(--bg3);border:1px solid var(--br);border-radius:100px;padding:3px 11px}
-.lpill span{width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;animation:pu 2s infinite}
+#tr{margin-left:auto;display:flex;gap:7px;align-items:center}
+#ab{padding:5px 14px;background:var(--grad);border:none;border-radius:8px;color:#000;font-size:12px;cursor:pointer;font-weight:800;display:none;animation:pu 2s infinite;font-family:var(--font)}
+.ubadge{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--br);border-radius:100px;padding:4px 12px;font-size:11.5px;color:var(--mu);cursor:pointer}
+.ubdot{width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block}
 #con{flex:1;overflow:hidden;display:flex;flex-direction:column}
 
 /* BUILD */
 #build-pane{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.bhero{background:linear-gradient(to bottom,var(--bg2),var(--bg));border-bottom:1px solid var(--br);padding:16px 18px;flex-shrink:0}
-.bht{font-size:16px;font-weight:800;color:#fff;margin-bottom:3px;letter-spacing:-.2px}
-.bhs{font-size:12.5px;color:var(--mu);line-height:1.5}
+.bhero{background:linear-gradient(to bottom,var(--bg2),var(--bg));border-bottom:1px solid var(--br);padding:14px 16px;flex-shrink:0}
+.bht{font-size:15px;font-weight:800;color:#fff;margin-bottom:3px}
+.bhs{font-size:12px;color:var(--mu);line-height:1.5}
+.usage-bar{display:flex;align-items:center;gap:10px;margin-top:8px;padding:8px 12px;background:var(--bg3);border:1px solid var(--br);border-radius:10px}
+.ub-text{font-size:12px;color:var(--mu);flex:1}
+.ub-text strong{color:var(--tx)}
+.ub-upgrade{padding:4px 12px;background:var(--grad);border:none;border-radius:7px;color:#000;font-size:11.5px;font-weight:700;cursor:pointer;font-family:var(--font)}
 .tsec{padding:10px 14px 8px;border-bottom:1px solid var(--br);flex-shrink:0}
 .tlab{font-size:10px;color:var(--dm);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px}
 .trow{display:flex;gap:6px;flex-wrap:wrap}
-.tmpl{padding:5px 13px;border-radius:100px;font-size:12px;font-weight:500;background:var(--bg3);border:1px solid var(--br);color:var(--mu);cursor:pointer;font-family:var(--font);transition:all .2s}
+.tmpl{padding:5px 13px;border-radius:100px;font-size:11.5px;font-weight:500;background:var(--bg3);border:1px solid var(--br);color:var(--mu);cursor:pointer;font-family:var(--font);transition:all .2s}
 .tmpl:hover{background:var(--bg4);border-color:var(--br2);color:var(--tx);transform:translateY(-1px)}
-#msgs{flex:1;overflow-y:auto;padding:14px 16px 4px}
+#msgs{flex:1;overflow-y:auto;padding:14px 14px 4px}
 .msg{display:flex;gap:9px;margin-bottom:14px;align-items:flex-start}
 .msg.u{flex-direction:row-reverse}
-.av{width:31px;height:31px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
 .av.ai{background:var(--grad);color:#000}
-.av.u{background:var(--bg4);border:1px solid var(--br2);color:var(--mu);font-size:11px}
-.bub{max-width:82%;background:var(--bg3);border:1px solid var(--br);border-radius:4px 14px 14px 14px;padding:11px 15px;font-size:13px;line-height:1.7;color:#d8d8ee;white-space:pre-wrap;word-break:break-word}
+.av.u{background:var(--bg4);border:1px solid var(--br2);color:var(--mu)}
+.bub{max-width:82%;background:var(--bg3);border:1px solid var(--br);border-radius:4px 14px 14px 14px;padding:10px 14px;font-size:13px;line-height:1.7;color:#d8d8ee;white-space:pre-wrap;word-break:break-word}
 .msg.u .bub{background:var(--bg4);border-color:var(--br2);border-radius:14px 4px 14px 14px;color:var(--tx)}
-.cb{background:#07070d;border:1px solid var(--br2);border-radius:12px;padding:12px 14px;font-size:11.5px;color:#7dd3fc;font-family:monospace;line-height:1.6;overflow-x:auto;max-height:180px;overflow-y:auto;position:relative;white-space:pre-wrap;word-break:break-word;max-width:82%}
-.cpb{position:absolute;top:7px;right:7px;background:var(--bg2);border:1px solid var(--br2);border-radius:6px;padding:3px 9px;font-size:10px;color:#06b6d4;cursor:pointer;font-family:var(--font)}
+.cb{background:#07070d;border:1px solid var(--br2);border-radius:11px;padding:12px 13px;font-size:11px;color:#7dd3fc;font-family:monospace;line-height:1.6;overflow-x:auto;max-height:180px;overflow-y:auto;position:relative;white-space:pre-wrap;word-break:break-word;max-width:82%}
+.cpb{position:absolute;top:7px;right:7px;background:var(--bg2);border:1px solid var(--br2);border-radius:5px;padding:2px 8px;font-size:10px;color:#06b6d4;cursor:pointer;font-family:var(--font)}
 #thinking{display:none;padding:0 14px 8px}
 .tbub{display:flex;gap:9px;align-items:flex-start}
-.ttext{background:var(--bg3);border:1px solid var(--br);border-radius:4px 14px 14px 14px;padding:11px 15px;font-size:13px;color:var(--mu);display:flex;align-items:center;gap:10px}
+.ttext{background:var(--bg3);border:1px solid var(--br);border-radius:4px 14px 14px 14px;padding:10px 14px;font-size:13px;color:var(--mu);display:flex;align-items:center;gap:10px}
 .da{display:flex;gap:4px}
 .da span{width:7px;height:7px;border-radius:50%;animation:dp 1.4s ease-in-out infinite}
 .da span:nth-child(1){background:var(--p);animation-delay:0s}
 .da span:nth-child(2){background:var(--p2);animation-delay:.2s}
 .da span:nth-child(3){background:var(--p3);animation-delay:.4s}
-@keyframes dp{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1.2);opacity:1}}
 #ir{padding:10px 14px 14px;flex-shrink:0;border-top:1px solid var(--br)}
-.irw{display:flex;gap:9px;align-items:flex-end;background:var(--bg3);border:1.5px solid var(--br2);border-radius:16px;padding:11px 13px;transition:border-color .2s}
+.irw{display:flex;gap:9px;align-items:flex-end;background:var(--bg3);border:1.5px solid var(--br2);border-radius:14px;padding:11px 12px;transition:border-color .2s}
 .irw:focus-within{border-color:var(--p)}
 #mi{flex:1;background:transparent;border:none;color:var(--tx);font-size:13.5px;resize:none;outline:none;font-family:var(--font);line-height:1.55;max-height:100px}
 #mi::placeholder{color:var(--dm)}
-#sb{padding:10px 18px;background:var(--grad);border:none;border-radius:10px;color:#000;font-size:13px;cursor:pointer;font-weight:800;font-family:var(--font);white-space:nowrap;flex-shrink:0}
+#sb{padding:9px 16px;background:var(--grad);border:none;border-radius:10px;color:#000;font-size:13px;cursor:pointer;font-weight:800;font-family:var(--font);white-space:nowrap;flex-shrink:0}
 #sb:disabled{background:var(--bg4);color:var(--dm);cursor:not-allowed}
-.ihint{font-size:10.5px;color:var(--dm);margin-top:6px;padding-left:2px}
+.ihint{font-size:10px;color:var(--dm);margin-top:5px;padding-left:2px}
 
 /* EDITOR */
 #editor-pane{flex:1;display:none;flex-direction:column;overflow:hidden}
-.ph{background:var(--bg2);border-bottom:1px solid var(--br);padding:9px 15px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ph{background:var(--bg2);border-bottom:1px solid var(--br);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .phl .pt{font-size:13px;font-weight:700;color:#fff}.phl .ps{font-size:11px;color:var(--mu)}
 .phr{display:flex;gap:6px}
-.pb{padding:5px 13px;border-radius:8px;font-size:12px;cursor:pointer;font-family:var(--font);border:1px solid var(--br);background:transparent;color:var(--mu);font-weight:500}
+.pb{padding:5px 12px;border-radius:7px;font-size:11.5px;cursor:pointer;font-family:var(--font);border:1px solid var(--br);background:transparent;color:var(--mu);font-weight:500}
 .pb:hover{background:var(--bg3);color:var(--tx)}
 .pb.p{background:var(--grad);border:none;color:#000;font-weight:700}
-#ca{flex:1;width:100%;background:#07070d;color:#7dd3fc;border:none;outline:none;padding:18px 22px;font-size:12px;font-family:'Fira Code',monospace;line-height:1.75;resize:none}
+#ca{flex:1;width:100%;background:#07070d;color:#7dd3fc;border:none;outline:none;padding:18px 20px;font-size:12px;font-family:'Fira Code',monospace;line-height:1.75;resize:none}
 
 /* PREVIEW */
 #preview-pane{flex:1;display:none;flex-direction:column;overflow:hidden}
@@ -121,271 +152,383 @@ html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--fon
 
 /* FIX */
 #fix-pane{flex:1;display:none;overflow-y:auto}
-.fiw{padding:22px;max-width:740px;margin:0 auto}
-.fhero{background:linear-gradient(135deg,#ff4d6d15,#7c3aed15);border:1px solid var(--br2);border-radius:18px;padding:22px;margin-bottom:18px}
-.fht{font-size:19px;font-weight:800;color:#fff;margin-bottom:5px;letter-spacing:-.3px}
+.fiw{padding:20px;max-width:720px;margin:0 auto}
+.fhero{background:linear-gradient(135deg,#ff4d6d15,#7c3aed15);border:1px solid var(--br2);border-radius:16px;padding:20px;margin-bottom:16px}
+.fht{font-size:18px;font-weight:800;color:#fff;margin-bottom:5px;letter-spacing:-.3px}
 .fhs{font-size:13px;color:var(--mu);line-height:1.6}
-.pchips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.pchips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
 .pc{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:500;border:1px solid}
-.exp{background:var(--bg3);border:1px solid var(--br);border-radius:15px;padding:16px 18px;margin-bottom:16px}
-.expt{font-size:13px;font-weight:700;color:#fff;margin-bottom:11px}
-.expr{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px}
+.exp{background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:15px 17px;margin-bottom:15px}
+.expt{font-size:13px;font-weight:700;color:#fff;margin-bottom:10px}
+.expr{display:flex;gap:9px;align-items:flex-start;margin-bottom:8px}
 .expic{font-size:15px;width:22px;text-align:center;flex-shrink:0}
 .exptx{font-size:12.5px;color:var(--mu);line-height:1.5}.exptx strong{color:var(--tx)}
-#dz{border:2px dashed var(--br2);border-radius:16px;padding:48px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
+#dz{border:2px dashed var(--br2);border-radius:16px;padding:44px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
 #dz:hover{border-color:var(--p);background:#ff4d6d06}
 #dz input{display:none}
 #er{display:none}
-
-/* GUIDE */
-#guide-pane{flex:1;display:none;overflow-y:auto}
-.gw{padding:22px;max-width:680px;margin:0 auto}
-.gtit{font-size:21px;font-weight:900;color:#fff;letter-spacing:-.4px;margin-bottom:5px}
-.gsub{font-size:13px;color:var(--mu);margin-bottom:18px}
-.gs{background:var(--bg3);border:1px solid var(--br);border-radius:15px;padding:18px;margin-bottom:12px}
-.gst{font-size:14px;font-weight:800;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:7px;letter-spacing:-.2px}
-.gitem{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #ffffff08}
-.gitem:last-child{border-bottom:none;padding-bottom:0}
-.gic{font-size:17px;width:26px;text-align:center;flex-shrink:0;margin-top:1px}
-.gtt{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:3px}
-.gdd{font-size:12px;color:var(--mu);line-height:1.55}
-.gtag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:6px;margin-top:4px;background:var(--grad);color:#000}
-
-/* result */
-.rc{background:var(--bg3);border:1px solid var(--br);border-radius:15px;padding:16px 18px;margin-bottom:12px}
+.rc{background:var(--bg3);border:1px solid var(--br);border-radius:14px;padding:15px 17px;margin-bottom:12px}
 .rh{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:7px;margin-bottom:9px}
 .rf{font-size:14px;font-weight:700;color:#fff}
 .rp{font-size:11.5px;border-radius:7px;padding:3px 11px;font-weight:600}
 .rn{font-size:12.5px;color:var(--mu);line-height:1.65;border-top:1px solid var(--br);padding-top:10px}
-.cpr{background:#07070d;border:1px solid var(--br2);border-radius:10px;padding:12px;font-size:11px;color:#7dd3fc;font-family:monospace;line-height:1.6;overflow-x:auto;max-height:160px;overflow-y:auto;margin-bottom:12px;white-space:pre-wrap;word-break:break-word}
+.cpr{background:#07070d;border:1px solid var(--br2);border-radius:9px;padding:12px;font-size:11px;color:#7dd3fc;font-family:monospace;line-height:1.6;overflow-x:auto;max-height:160px;overflow-y:auto;margin-bottom:12px;white-space:pre-wrap;word-break:break-word}
 .ract{display:flex;gap:8px;flex-wrap:wrap}
-.rb{padding:9px 18px;border-radius:9px;font-size:12.5px;cursor:pointer;font-weight:600;font-family:var(--font);border:1px solid}
-.nxt{background:linear-gradient(135deg,#ff4d6d0d,#ffd60a0d);border:1px solid var(--br2);border-radius:13px;padding:15px 17px;margin-top:12px}
-.nxtt{font-size:12.5px;font-weight:700;color:#fff;margin-bottom:9px}
-.nxts{display:flex;gap:9px;align-items:flex-start;margin-bottom:7px}
-.nxtn{width:19px;height:19px;border-radius:50%;background:var(--grad);color:#000;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rb{padding:9px 17px;border-radius:9px;font-size:12.5px;cursor:pointer;font-weight:600;font-family:var(--font);border:1px solid}
+.nxt{background:linear-gradient(135deg,#ff4d6d0d,#ffd60a0d);border:1px solid var(--br2);border-radius:12px;padding:14px 16px;margin-top:12px}
+.nxtt{font-size:12.5px;font-weight:700;color:#fff;margin-bottom:8px}
+.nxts{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px}
+.nxtn{width:18px;height:18px;border-radius:50%;background:var(--grad);color:#000;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .nxttx{font-size:12px;color:var(--mu);line-height:1.5}.nxttx strong{color:#06b6d4}
 
-@keyframes pu{0%,100%{opacity:1}50%{opacity:.35}}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+/* UPGRADE MODAL */
+#upgrade-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+#upgrade-modal.show{display:flex}
+.ucard{background:var(--bg3);border:1px solid var(--br2);border-radius:20px;padding:28px;width:100%;max-width:380px;text-align:center}
+.ucard-icon{font-size:36px;margin-bottom:14px}
+.ucard-title{font-size:20px;font-weight:900;color:#fff;margin-bottom:6px;letter-spacing:-.3px}
+.ucard-sub{font-size:13px;color:var(--mu);margin-bottom:22px;line-height:1.6}
+.plan-box{background:var(--bg4);border:2px solid var(--p);border-radius:14px;padding:18px;margin-bottom:16px}
+.plan-name{font-size:12px;color:var(--p);font-weight:700;margin-bottom:4px;letter-spacing:1px}
+.plan-price{font-size:38px;font-weight:900;color:#fff;letter-spacing:-1.5px;margin-bottom:2px}
+.plan-price span{font-size:14px;color:var(--mu);font-weight:400}
+.plan-feats{margin:12px 0 0;text-align:left}
+.plan-feat{display:flex;gap:8px;align-items:center;margin-bottom:8px;font-size:13px;color:#d8d8ee}
+.plan-feat .fc{color:var(--p3)}
+.upgrade-btn{width:100%;padding:14px;background:var(--grad);border:none;border-radius:12px;color:#000;font-size:15px;font-weight:800;cursor:pointer;font-family:var(--font);margin-bottom:10px}
+.upgrade-btn:hover{opacity:.88}
+.upgrade-close{background:transparent;border:none;color:var(--mu);font-size:13px;cursor:pointer;font-family:var(--font)}
+
 ::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-thumb{background:var(--br2);border-radius:4px}
 </style>
 </head>
 <body>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
 
-<div id="gate">
-  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
-  <div class="gi">
+<!-- LANDING -->
+<div id="landing" class="screen">
+  <div class="li">
     <div class="logo"><span class="o">Own</span><span class="s">Site</span></div>
     <div class="badge"><span></span>No Lovable. No Emergent. No credit traps.</div>
     <div class="hl">AI builds your website.<br/><em>You own it forever.</em></div>
-    <p class="sub">Describe any website in plain English. AI builds it in 20 seconds — real design, working code, ready to go live. No coding. No monthly fees. Just yours.</p>
-    <div class="steps">
-      <div class="step"><div class="sn">1</div><div class="si">💬</div><div class="st">Describe it</div><div class="sd">Tell us what site you need</div></div>
-      <div class="step"><div class="sn">2</div><div class="si">⚡</div><div class="st">AI builds it</div><div class="sd">Full site in 20 seconds</div></div>
-      <div class="step"><div class="sn">3</div><div class="si">👀</div><div class="st">See it live</div><div class="sd">Real preview in browser</div></div>
-      <div class="step"><div class="sn">4</div><div class="si">🔓</div><div class="st">Own forever</div><div class="sd">Download &amp; deploy free</div></div>
+    <p class="sub">Describe any website in plain English. AI builds it in 20 seconds. No coding. No monthly fees. Just yours.</p>
+    <div class="hsteps">
+      <div class="hs"><div class="hsn">1</div><div class="hsi">💬</div><div class="hst">Describe it</div><div class="hsd">Tell us what site you need</div></div>
+      <div class="hs"><div class="hsn">2</div><div class="hsi">⚡</div><div class="hst">AI builds it</div><div class="hsd">Full site in 20 seconds</div></div>
+      <div class="hs"><div class="hsn">3</div><div class="hsi">👀</div><div class="hst">See it live</div><div class="hsd">Real preview in browser</div></div>
+      <div class="hs"><div class="hsn">4</div><div class="hsi">🔓</div><div class="hst">Own forever</div><div class="hsd">Download &amp; deploy free</div></div>
     </div>
-    <div class="kcard">
-      <div class="kt"><div class="ktitle">Enter your Anthropic API Key</div><div class="kfree">✨ ~$5 free credits</div></div>
-      <div class="ksub">Your key stays in your browser only — never stored anywhere. Takes 2 minutes to get.</div>
-      <div class="ksteps">
-        <div class="ks"><div class="ksn">1</div><div class="kst">Go to <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> and sign in or create a free account</div></div>
-        <div class="ks"><div class="ksn">2</div><div class="kst">Click <strong style="color:var(--tx)">Settings → API Keys → Create Key</strong></div></div>
-        <div class="ks"><div class="ksn">3</div><div class="kst">Copy the key (starts with <code style="color:var(--p3);font-size:11px;background:var(--bg);padding:1px 5px;border-radius:3px">sk-ant-</code>) and paste below</div></div>
+
+    <!-- TRAP SECTION -->
+    <div class="trap-section">
+      <div class="trap-label">😤 Does this sound familiar?</div>
+      <div class="trap-cards">
+        <div class="tc" style="background:#1a0a0a;border:1px solid #ff4d6d33;border-left:3px solid #ff4d6d">
+          <div class="tc-ic">😤</div>
+          <div><div class="tc-t" style="color:#ff8888">You just need a simple fix</div><div class="tc-d" style="color:#884444">Change a color. Update text. Add a button. Should take 10 seconds.</div></div>
+        </div>
+        <div class="trap-arrow">↓</div>
+        <div class="tc" style="background:#1a1200;border:1px solid #f59e0b33;border-left:3px solid #f59e0b">
+          <div class="tc-ic">💳</div>
+          <div><div class="tc-t" style="color:#f59e0b">Lovable / Emergent says "buy more credits"</div><div class="tc-d" style="color:#7a5500">"You've run out of credits." For a one-line change. Every. Single. Time.</div></div>
+        </div>
+        <div class="trap-arrow">↓</div>
+        <div class="tc" style="background:#0a001a;border:1px solid #8b5cf633;border-left:3px solid #8b5cf6">
+          <div class="tc-ic">🔒</div>
+          <div><div class="tc-t" style="color:#a78bfa">Don't pay? They shut your site down.</div><div class="tc-d" style="color:#553388">Your business, your clients — held hostage. Pay again or lose everything.</div></div>
+        </div>
+        <div class="trap-arrow">↓</div>
+        <div class="tc" style="background:#001a0a;border:1px solid #34d39933;border-left:3px solid #34d399">
+          <div class="tc-ic">✅</div>
+          <div><div class="tc-t" style="color:#34d399">OwnSite fixes it — you own it forever</div><div class="tc-d" style="color:#1a6644">Upload your site. We clean it. You download it. Nobody can ever shut it down again.</div></div>
+        </div>
       </div>
-      <input id="ki" type="password" placeholder="Paste your key here → sk-ant-api03-..." autocomplete="off" spellcheck="false"/>
-      <div id="kerr">⚠ Must start with sk-ant- — check your key and try again</div>
-      <button id="kb">🚀 Launch OwnSite →</button>
-      <p class="knote">Used only to call Anthropic AI directly from your browser. Never stored. · <a href="https://console.anthropic.com" target="_blank">Get free key</a></p>
+    </div>
+
+    <div class="land-btns">
+      <button class="btn-main" onclick="goAuth('signup')">🚀 Start building free</button>
+      <button class="btn-sec" onclick="goAuth('signin')">Sign in</button>
+    </div>
+    <div class="trial-note">✨ 1 free website build — no credit card needed</div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div id="auth-screen" class="screen hidden">
+  <div class="auth-card">
+    <div class="auth-logo"><span class="o">Own</span><span class="s">Site</span></div>
+    <div class="auth-sub" id="auth-sub">Create your free account</div>
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="tab-signup" onclick="switchAuth('signup')">Sign up free</button>
+      <button class="auth-tab" id="tab-signin" onclick="switchAuth('signin')">Sign in</button>
+    </div>
+    <div id="auth-err" class="auth-err"></div>
+    <div class="field"><label>Email address</label><input id="auth-email" type="email" placeholder="you@example.com"/></div>
+    <div class="field"><label>Password</label><input id="auth-password" type="password" placeholder="At least 6 characters"/></div>
+    <button class="auth-btn" id="auth-submit" onclick="submitAuth('signup')">Create free account</button>
+    <p class="auth-note">1 free build included — no credit card needed ever.</p>
+    <button onclick="showScreen('landing')" style="background:none;border:none;color:var(--dm);font-size:12px;cursor:pointer;font-family:var(--font);display:block;margin:10px auto 0">← Back</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen" class="screen hidden" style="padding:0">
+  <div class="app-inner">
+    <div id="bar">
+      <div class="blogo"><span class="o">Own</span><span class="s">Site</span></div>
+      <button class="tab on" id="t-build" onclick="show('build')">🏗 Build</button>
+      <button class="tab" id="t-editor" onclick="show('editor')">✎ Editor</button>
+      <button class="tab" id="t-preview" onclick="show('preview')">⊡ Preview</button>
+      <button class="tab" id="t-fix" onclick="show('fix')">🔧 Fix Site</button>
+      <div id="tr">
+        <button id="ab" onclick="applyFix()">✦ Apply</button>
+        <div class="ubadge" onclick="signOut()"><div class="ubdot"></div><span id="user-display">Account</span></div>
+      </div>
+    </div>
+    <div id="con">
+
+      <!-- BUILD -->
+      <div id="build-pane">
+        <div class="bhero">
+          <div class="bht">🏗 Describe any website — AI builds it for you</div>
+          <div class="bhs">No coding needed. Describe what you want, AI builds the full working website in seconds. You own it forever.</div>
+          <div class="usage-bar" id="usage-bar"><div class="ub-text">Loading...</div></div>
+        </div>
+        <div class="tsec">
+          <div class="tlab">⚡ Quick start — click any template</div>
+          <div class="trow">
+            <button class="tmpl" onclick="qs('Build me a modern SaaS landing page for a project management tool called Spark. Dark theme with purple and blue gradients. Hero with email signup, 3 key features, how it works in 3 steps, pricing with Free and Pro at $29/month, testimonials, footer.')">🚀 SaaS</button>
+            <button class="tmpl" onclick="qs('Build me a portfolio for freelance UI/UX designer Alex Rivera. Light minimal theme. Hero, about, services, portfolio grid 6 projects, testimonials, contact form.')">🎨 Portfolio</button>
+            <button class="tmpl" onclick="qs('Build a restaurant website for Italian place La Stella. Warm dark theme gold accents. Hero with reservation button, our story, menu with categories, gallery, hours, reservation form, footer.')">🍽 Restaurant</button>
+            <button class="tmpl" onclick="qs('Build an e-commerce landing page for skincare brand Glow. Clean white and pink. Hero with promo banner, products grid 6 items with prices, bestsellers, testimonials, newsletter signup.')">🛍 Store</button>
+            <button class="tmpl" onclick="qs('Build a mobile app landing page for fitness app FitPulse. Dark energetic theme orange gradients. Hero with screenshots, 4 features, how it works, testimonials, pricing, App Store and Google Play buttons.')">📱 App</button>
+            <button class="tmpl" onclick="qs('Build a coming soon page for AI startup Nova. Dark space theme purple. Countdown timer 30 days, what we are building, email waitlist, 3 early access benefits, social links.')">⏳ Coming Soon</button>
+            <button class="tmpl" onclick="qs('Build a personal brand site for business coach Sarah Chen. Professional clean theme teal. Hero, about, 3 service packages with prices, client wins, free resource signup, booking form.')">💼 Coach</button>
+            <button class="tmpl" onclick="qs('Build a digital agency website for Pixel Studio. Bold dark theme neon green. Animated hero, services, portfolio 4 case studies, process steps, team section, client logos, contact form.')">🏢 Agency</button>
+          </div>
+        </div>
+        <div id="msgs"></div>
+        <div id="thinking">
+          <div class="tbub" style="padding:2px 14px 6px">
+            <div class="av ai">AI</div>
+            <div class="ttext">Building your website <div class="da"><span></span><span></span><span></span></div></div>
+          </div>
+        </div>
+        <div id="ir">
+          <div class="irw">
+            <textarea id="mi" rows="2" placeholder="Describe your website... e.g. 'Build a landing page for my bakery Sweet Dreams. Warm cozy feel, menu, gallery, contact form.'"></textarea>
+            <button id="sb" onclick="send()">Build →</button>
+          </div>
+          <div class="ihint">Be specific — include business name, colors, sections. More detail = better result. Press Enter to build.</div>
+        </div>
+      </div>
+
+      <!-- EDITOR -->
+      <div id="editor-pane">
+        <div class="ph">
+          <div class="phl"><div class="pt">✎ Code Editor</div><div class="ps">Edit your website code directly</div></div>
+          <div class="phr">
+            <button class="pb" onclick="copyCode()">⎘ Copy</button>
+            <button class="pb" onclick="dlCode()">↓ Download</button>
+            <button class="pb p" onclick="show('preview')">⊡ Preview →</button>
+          </div>
+        </div>
+        <textarea id="ca" spellcheck="false"></textarea>
+      </div>
+
+      <!-- PREVIEW -->
+      <div id="preview-pane">
+        <div class="ptb">
+          <div class="d3"><div class="dd" style="background:#ff5f57"></div><div class="dd" style="background:#ffbd2e"></div><div class="dd" style="background:#28c840"></div></div>
+          <div class="urlb">ownsite — your website live preview</div>
+          <button class="pb" onclick="show('editor')" style="padding:4px 11px;font-size:11px;border-radius:6px;border:1px solid var(--br);background:transparent;color:var(--mu);cursor:pointer;font-family:var(--font)">← Edit</button>
+          <button class="pb p" onclick="dlCode()" style="padding:4px 11px;font-size:11px;border-radius:6px;cursor:pointer;font-family:var(--font)">↓ Download</button>
+        </div>
+        <iframe id="pf" sandbox="allow-scripts allow-same-origin"></iframe>
+      </div>
+
+      <!-- FIX -->
+      <div id="fix-pane">
+        <div class="fiw">
+          <div class="fhero">
+            <div class="fht">🔧 Escape your builder — free your site</div>
+            <div class="fhs">Trapped on Lovable, Emergent, Wix, Framer or Bolt? Upload your exported HTML. AI strips all platform lock-in so you own it forever. No more credit threats. No more shutdowns.</div>
+          </div>
+          <div class="pchips">
+            <div class="pc" style="color:#facc15;border-color:#facc1533;background:#facc1510">🟡 Wix</div>
+            <div class="pc" style="color:#0099ff;border-color:#0099ff33;background:#0099ff10">🔵 Framer</div>
+            <div class="pc" style="color:#8b5cf6;border-color:#8b5cf633;background:#8b5cf610">🟣 Lovable</div>
+            <div class="pc" style="color:#f97316;border-color:#f9731633;background:#f9731610">🟠 Emergent</div>
+            <div class="pc" style="color:#f97316;border-color:#f9731633;background:#f9731610">🔥 Bolt</div>
+            <div class="pc" style="color:#4353ff;border-color:#4353ff33;background:#4353ff10">🔷 Webflow</div>
+          </div>
+          <div class="exp">
+            <div class="expt">What AI does to your file</div>
+            <div class="expr"><div class="expic">🔍</div><div class="exptx"><strong>Detects the platform</strong> — identifies which builder your site came from</div></div>
+            <div class="expr"><div class="expic">✂️</div><div class="exptx"><strong>Removes lock-in</strong> — strips platform scripts, CDN links, shutdown triggers</div></div>
+            <div class="expr"><div class="expic">🧹</div><div class="exptx"><strong>Cleans the code</strong> — rewrites as pure portable HTML/CSS/JS</div></div>
+            <div class="expr"><div class="expic">📦</div><div class="exptx"><strong>One file returned</strong> — deploy anywhere, forever, for free</div></div>
+          </div>
+          <div id="dz" onclick="document.getElementById('fi').click()" ondragover="event.preventDefault();this.style.borderColor='var(--p)'" ondragleave="this.style.borderColor='var(--br2)'" ondrop="dropFile(event)">
+            <input id="fi" type="file" accept=".html,.htm,.txt" onchange="readFile(this.files[0])"/>
+            <div style="font-size:40px;margin-bottom:12px">⬆</div>
+            <div style="font-size:15px;color:#fff;font-weight:700;margin-bottom:5px">Drop your HTML export here</div>
+            <div style="font-size:13px;color:var(--mu);margin-bottom:15px">Click to choose from your computer</div>
+            <div style="display:inline-block;padding:9px 20px;background:var(--grad);border-radius:10px;color:#000;font-size:13px;font-weight:700">Choose file</div>
+          </div>
+          <div id="er"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
 
-<div id="app">
-  <div id="bar">
-    <div class="blogo"><span class="o">Own</span><span class="s">Site</span></div>
-    <button class="tab on" id="t-build" onclick="show('build')">🏗 Build</button>
-    <button class="tab" id="t-editor" onclick="show('editor')">✎ Editor</button>
-    <button class="tab" id="t-preview" onclick="show('preview')">⊡ Preview</button>
-    <button class="tab" id="t-fix" onclick="show('fix')">🔧 Fix Site</button>
-    <button class="tab" id="t-guide" onclick="show('guide')">📖 Guide</button>
-    <div id="tr">
-      <button id="ab" onclick="applyFix()">✦ Apply</button>
-      <div class="lpill"><span></span>AI live</div>
-    </div>
-  </div>
-  <div id="con">
-
-    <div id="build-pane">
-      <div class="bhero" id="bh">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
-          <div><div class="bht">🏗 Build any website — just describe it</div><div class="bhs">No coding needed. Describe what you want and AI builds the full working website in seconds. You see it live, download it and own it forever. No monthly fees, no shutdowns, no credit traps.</div></div>
-          <button onclick="document.getElementById('bh').style.display='none'" style="background:none;border:none;color:var(--dm);cursor:pointer;font-size:15px;flex-shrink:0">✕</button>
-        </div>
-      </div>
-      <div class="tsec">
-        <div class="tlab">⚡ Quick start — click any template</div>
-        <div class="trow">
-          <button class="tmpl" onclick="qs('Build me a modern SaaS landing page for a project management tool called Spark. Dark theme with purple and blue gradients. Hero with email signup, 3 key features with icons, how it works in 3 steps, pricing with Free at $0 and Pro at $29/month, 3 customer testimonials, and footer.')">🚀 SaaS</button>
-          <button class="tmpl" onclick="qs('Build me a creative portfolio for a freelance UI/UX designer named Alex Rivera. Light minimal theme with bold typography. Hero with name and title, about section, services, portfolio grid with 6 projects, testimonials, contact form.')">🎨 Portfolio</button>
-          <button class="tmpl" onclick="qs('Build a restaurant website for an Italian place called La Stella. Warm dark theme with gold accents. Full-screen hero with reservation button, our story, menu with starters/mains/desserts, gallery, opening hours, reservation form, footer.')">🍽 Restaurant</button>
-          <button class="tmpl" onclick="qs('Build an e-commerce landing page for a skincare brand called Glow. Clean white and pink theme. Hero with promo banner, featured products grid with 6 items and prices, bestsellers, testimonials, ingredients section, newsletter signup, footer.')">🛍 Store</button>
-          <button class="tmpl" onclick="qs('Build a mobile app landing page for a fitness app called FitPulse. Dark energetic theme with orange gradients. Bold hero with app screenshots, 4 features, how it works, 500k users stat, testimonials, pricing monthly and yearly, App Store and Google Play buttons.')">📱 App</button>
-          <button class="tmpl" onclick="qs('Build a coming soon page for an AI writing startup called Nova. Dark space theme with purple and blue. Countdown timer 30 days, what we are building, email waitlist signup, 3 early access benefits, social links.')">⏳ Coming Soon</button>
-          <button class="tmpl" onclick="qs('Build a personal brand site for business coach Sarah Chen. Professional clean theme with teal. Hero with CTA, about me, 3 service packages with prices, client success stories, free resource signup, booking form, footer.')">💼 Coach</button>
-          <button class="tmpl" onclick="qs('Build a digital agency website for Pixel Studio. Bold dark theme with neon green. Animated hero, services, portfolio with 4 case studies, our process, 4 team members, client logos, contact form, footer.')">🏢 Agency</button>
-        </div>
-      </div>
-      <div id="msgs"></div>
-      <div id="thinking">
-        <div class="tbub" style="padding:2px 14px 6px">
-          <div class="av ai">AI</div>
-          <div class="ttext">Building your website <div class="da"><span></span><span></span><span></span></div></div>
-        </div>
-      </div>
-      <div id="ir">
-        <div class="irw">
-          <textarea id="mi" rows="2" placeholder="Describe the website you want... e.g. 'Build a landing page for my bakery called Sweet Dreams. Warm cozy feel, menu, gallery, and contact form.'"></textarea>
-          <button id="sb" onclick="send()">Build →</button>
-        </div>
-        <div class="ihint">Be specific — mention your business name, colors, sections needed, and style. More detail = better result. Press Enter to build.</div>
+<!-- UPGRADE MODAL -->
+<div id="upgrade-modal">
+  <div class="ucard">
+    <div class="ucard-icon">🔓</div>
+    <div class="ucard-title">Upgrade to Pro</div>
+    <div class="ucard-sub">You've used your 1 free build. Upgrade for unlimited websites, unlimited fixes — build as much as you want.</div>
+    <div class="plan-box">
+      <div class="plan-name">PRO PLAN</div>
+      <div class="plan-price">$12<span>/month</span></div>
+      <div class="plan-feats">
+        <div class="plan-feat"><span class="fc">✦</span>Unlimited website builds</div>
+        <div class="plan-feat"><span class="fc">✦</span>Unlimited site fixes</div>
+        <div class="plan-feat"><span class="fc">✦</span>Download all your sites</div>
+        <div class="plan-feat"><span class="fc">✦</span>No API key ever needed</div>
+        <div class="plan-feat"><span class="fc">✦</span>Cancel anytime</div>
       </div>
     </div>
-
-    <div id="editor-pane">
-      <div class="ph">
-        <div class="phl"><div class="pt">✎ Code Editor</div><div class="ps">Your website code — edit anything directly</div></div>
-        <div class="phr">
-          <button class="pb" onclick="copyCode()">⎘ Copy</button>
-          <button class="pb" onclick="dlCode()">↓ Download</button>
-          <button class="pb p" onclick="show('preview')">⊡ Preview →</button>
-        </div>
-      </div>
-      <textarea id="ca" spellcheck="false"></textarea>
-    </div>
-
-    <div id="preview-pane">
-      <div class="ptb">
-        <div class="d3"><div class="dd" style="background:#ff5f57"></div><div class="dd" style="background:#ffbd2e"></div><div class="dd" style="background:#28c840"></div></div>
-        <div class="urlb">ownsite — your website live preview</div>
-        <button class="pb" onclick="show('editor')" style="padding:4px 11px;font-size:11px;border-radius:6px;border:1px solid var(--br);background:transparent;color:var(--mu);cursor:pointer;font-family:var(--font)">← Edit</button>
-        <button class="pb p" onclick="dlCode()" style="padding:4px 11px;font-size:11px;border-radius:6px;cursor:pointer;font-family:var(--font)">↓ Download</button>
-      </div>
-      <iframe id="pf" sandbox="allow-scripts allow-same-origin"></iframe>
-    </div>
-
-    <div id="fix-pane">
-      <div class="fiw">
-        <div class="fhero">
-          <div class="fht">🔧 Escape your builder — free your site</div>
-          <div class="fhs">Trapped on Lovable, Emergent, Wix, Framer or Bolt? Upload your exported HTML. AI strips all platform dependencies and returns code you own forever — no more credit threats, no more shutdowns.</div>
-        </div>
-        <div class="pchips">
-          <div class="pc" style="color:#facc15;border-color:#facc1533;background:#facc1510">🟡 Wix</div>
-          <div class="pc" style="color:#0099ff;border-color:#0099ff33;background:#0099ff10">🔵 Framer</div>
-          <div class="pc" style="color:#8b5cf6;border-color:#8b5cf633;background:#8b5cf610">🟣 Lovable</div>
-          <div class="pc" style="color:#f97316;border-color:#f9731633;background:#f9731610">🟠 Emergent</div>
-          <div class="pc" style="color:#f97316;border-color:#f9731633;background:#f9731610">🔥 Bolt</div>
-          <div class="pc" style="color:#4353ff;border-color:#4353ff33;background:#4353ff10">🔷 Webflow</div>
-        </div>
-        <div class="exp">
-          <div class="expt">What AI does to your file</div>
-          <div class="expr"><div class="expic">🔍</div><div class="exptx"><strong>Detects the platform</strong> — finds exactly which builder your site came from</div></div>
-          <div class="expr"><div class="expic">✂️</div><div class="exptx"><strong>Removes lock-in</strong> — strips platform scripts, CDN links, shutdown triggers</div></div>
-          <div class="expr"><div class="expic">🧹</div><div class="exptx"><strong>Cleans the code</strong> — rewrites as pure portable HTML/CSS/JS</div></div>
-          <div class="expr"><div class="expic">📦</div><div class="exptx"><strong>Returns one file</strong> — download and deploy anywhere, forever, for free</div></div>
-        </div>
-        <div id="dz" onclick="document.getElementById('fi').click()" ondragover="event.preventDefault();this.style.borderColor='var(--p)'" ondragleave="this.style.borderColor='var(--br2)'" ondrop="drop(event)">
-          <input id="fi" type="file" accept=".html,.htm,.txt" onchange="readFile(this.files[0])"/>
-          <div style="font-size:42px;margin-bottom:12px">⬆</div>
-          <div style="font-size:15px;color:#fff;font-weight:700;margin-bottom:6px">Drop your HTML export here</div>
-          <div style="font-size:13px;color:var(--mu);margin-bottom:16px">Click to choose from your computer<br/><span style="font-size:11.5px;color:var(--dm)">Supports .html and .htm files</span></div>
-          <div style="display:inline-block;padding:9px 20px;background:var(--grad);border-radius:10px;color:#000;font-size:13.5px;font-weight:700">Choose file</div>
-        </div>
-        <div id="er"></div>
-      </div>
-    </div>
-
-    <div id="guide-pane">
-      <div class="gw">
-        <div class="gtit">📖 How to use OwnSite</div>
-        <div class="gsub">Plain English. No tech knowledge needed.</div>
-        <div class="gs">
-          <div class="gst">🏗 Build — Create a website from scratch</div>
-          <div class="gitem"><div class="gic">1️⃣</div><div><div class="gtt">Describe your website</div><div class="gdd">Type what you want in plain English. Mention your business name, what it does, sections you need, style and colors. More detail = better result.</div><div class="gtag">Example: "Build a landing page for my coffee shop Brew Lab. Warm dark theme, menu, gallery, location and contact."</div></div></div>
-          <div class="gitem"><div class="gic">2️⃣</div><div><div class="gtt">Wait 15–20 seconds</div><div class="gdd">AI writes your complete website. You see the animated dots while it works. This uses your Anthropic API credits — about $0.01 per site.</div></div></div>
-          <div class="gitem"><div class="gic">3️⃣</div><div><div class="gtt">Click ✦ Apply to see it live</div><div class="gdd">When AI finishes, click the orange Apply button at the top. Your website opens in Preview — real, working, in your browser right now.</div></div></div>
-          <div class="gitem"><div class="gic">4️⃣</div><div><div class="gtt">Download and go live for free</div><div class="gdd">Click Download to save your site. Go to netlify.com/drop, drag the file, get a free live URL in 60 seconds. Or push to your GitHub — Cloudflare auto-deploys it.</div><div class="gtag">Your site costs $0/month to keep live — forever</div></div></div>
-        </div>
-        <div class="gs">
-          <div class="gst">🔧 Fix Site — Escape a broken builder</div>
-          <div class="gitem"><div class="gic">1️⃣</div><div><div class="gtt">Export from your builder first</div><div class="gdd">In Lovable, Wix, Framer or Bolt — look for Export or Download HTML. Save the .html file.</div><div class="gtag">Lovable: Share → Export · Framer: File → Export HTML · Wix: try right-click Save As</div></div></div>
-          <div class="gitem"><div class="gic">2️⃣</div><div><div class="gtt">Upload it in Fix Site tab</div><div class="gdd">Drag your file onto the drop zone or click Choose file. AI analyzes it immediately.</div></div></div>
-          <div class="gitem"><div class="gic">3️⃣</div><div><div class="gtt">Download your free clean file</div><div class="gdd">In 15–20 seconds you get a fully cleaned site — no platform scripts, no shutdown threats. Download it and it is yours forever.</div></div></div>
-        </div>
-        <div class="gs">
-          <div class="gst">🌐 Get live — free options</div>
-          <div class="gitem"><div class="gic">⚡</div><div><div class="gtt">Netlify Drop — 60 seconds, no account</div><div class="gdd">netlify.com/drop — drag your file, get a live URL instantly.</div><div class="gtag">Fastest way to go live</div></div></div>
-          <div class="gitem"><div class="gic">🔶</div><div><div class="gtt">Your Cloudflare Pages</div><div class="gdd">Upload to your GitHub repo → Cloudflare auto-deploys in 30 seconds to your existing URL.</div></div></div>
-          <div class="gitem"><div class="gic">▲</div><div><div class="gtt">Vercel — free custom domain</div><div class="gdd">vercel.com — free hosting with custom domain support.</div></div></div>
-        </div>
-      </div>
-    </div>
-
+    <button class="upgrade-btn" onclick="goUpgrade()">Upgrade now — $12/month →</button>
+    <button class="upgrade-close" onclick="closeUpgrade()">Maybe later</button>
   </div>
 </div>
 
 <script>
-let KEY='',busy=false,fixCode=null,allMsgs=[];
+// ═══════════════════════════════════════
+// CONFIG — already filled in with your keys
+// ═══════════════════════════════════════
+const WORKER_URL   = 'https://ownsite-api.infomomtelo.workers.dev'; // ← paste after deploying worker
+const SUPA_URL     = 'https://dmemzljerldzeiwqfxzp.supabase.co';
+const SUPA_ANON    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtZW16bGplcmxkemVpd3FmeHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NDMxNzgsImV4cCI6MjA5NDIxOTE3OH0.u4FL1mk555dUesVNjF58pXwkQlvvQYQgR5JpcxRtB40';
+const STRIPE_LINK  = 'https://buy.stripe.com/9B64gBdbTgMAdBb9H59Ve01';
+// ═══════════════════════════════════════
 
-const BP=`You are OwnSite's AI website builder. Build complete, stunning, professional websites.
+const { createClient } = supabase;
+const sb = createClient(SUPA_URL, SUPA_ANON);
 
-RULES:
-1. Output ONE complete self-contained HTML file in a \`\`\`html code block
-2. The design must be BEAUTIFUL and PROFESSIONAL — like a $5000 agency-built site
-3. Include ALL sections requested with real relevant content — no lorem ipsum
-4. Use Google Fonts for great typography
-5. Fully responsive — perfect on mobile and desktop
-6. Smooth animations, hover effects, working navigation
-7. Real placeholder content relevant to the business described
-8. Output ONLY the HTML code block — no explanation before or after`;
-
-const FP=`You are OwnSite's extraction engine. Clean platform-locked websites.
-1. DETECT the platform (Lovable, Emergent, Wix, Framer, Bolt, Squarespace, Webflow)
-2. LIST lock-in points in plain English
-3. REWRITE as clean self-contained HTML/CSS/JS in a \`\`\`html block — as beautiful as original
-4. After code, explain what you removed in simple English`;
+let currentUser = null;
+let userPlan = 'free';
+let buildsUsed = 0;
+let fixCode = null;
+let busy = false;
+let allMsgs = [];
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function getCode(t){const m=t.match(/```(?:html)?\s*([\s\S]*?)```/);return m?m[1].trim():null}
-function stripCode(t){return t.replace(/```[\s\S]*?```/g,'').trim()}
 
-document.getElementById('ki').onkeydown=e=>{if(e.key==='Enter')go()};
-document.getElementById('kb').onclick=go;
-
-function go(){
-  const v=document.getElementById('ki').value.trim();
-  const err=document.getElementById('kerr');
-  if(!v.startsWith('sk-ant')){err.style.display='block';return;}
-  err.style.display='none';KEY=v;
-  document.getElementById('gate').style.display='none';
-  document.getElementById('app').style.display='flex';
-  addMsg('ai','👋 Welcome to OwnSite! AI is live.\n\n🏗 Build — Describe any website, AI builds it for you in seconds. No coding at all.\n🔧 Fix Site — Upload HTML from Lovable, Emergent, Wix etc. I clean it so you own it forever.\n✎ Editor — View and edit your code.\n⊡ Preview — See your website live.\n📖 Guide — Step by step help.\n\nClick a template above or describe your website below to get started.');
+// ── SCREENS ──────────────────────────────────────
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
 }
 
+function goAuth(mode){ switchAuth(mode); showScreen('auth-screen'); }
+
+function switchAuth(mode){
+  document.getElementById('tab-signup').classList.toggle('on', mode==='signup');
+  document.getElementById('tab-signin').classList.toggle('on', mode==='signin');
+  document.getElementById('auth-sub').textContent = mode==='signup' ? 'Create your free account' : 'Welcome back';
+  document.getElementById('auth-submit').textContent = mode==='signup' ? 'Create free account' : 'Sign in';
+  document.getElementById('auth-submit').onclick = ()=>submitAuth(mode);
+  document.getElementById('auth-err').style.display='none';
+}
+
+// ── AUTH ─────────────────────────────────────────
+async function submitAuth(mode){
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const btn = document.getElementById('auth-submit');
+  const err = document.getElementById('auth-err');
+  err.style.display='none';
+  if(!email||!password){showAuthErr('Please enter your email and password.');return;}
+  if(password.length<6){showAuthErr('Password must be at least 6 characters.');return;}
+  btn.disabled=true;
+  btn.textContent=mode==='signup'?'Creating account...':'Signing in...';
+  try{
+    let result;
+    if(mode==='signup'){
+      result=await sb.auth.signUp({email,password});
+    } else {
+      result=await sb.auth.signInWithPassword({email,password});
+    }
+    if(result.error) throw result.error;
+    currentUser=result.data.user;
+    await loadUserData();
+    launchApp();
+  } catch(e){
+    showAuthErr(e.message||'Something went wrong. Please try again.');
+  }
+  btn.disabled=false;
+  btn.textContent=mode==='signup'?'Create free account':'Sign in';
+}
+
+function showAuthErr(msg){
+  const err=document.getElementById('auth-err');
+  err.textContent=msg;
+  err.style.display='block';
+}
+
+async function signOut(){
+  if(!confirm('Sign out of OwnSite?'))return;
+  await sb.auth.signOut();
+  currentUser=null;
+  showScreen('landing');
+}
+
+// ── USER DATA ─────────────────────────────────────
+async function loadUserData(){
+  if(!currentUser)return;
+  const{data}=await sb.from('profiles').select('plan,builds_used').eq('id',currentUser.id).single();
+  if(data){userPlan=data.plan||'free';buildsUsed=data.builds_used||0;}
+  updateUsageBar();
+}
+
+function updateUsageBar(){
+  const bar=document.getElementById('usage-bar');
+  if(!bar)return;
+  if(userPlan==='pro'){
+    bar.innerHTML=`<div class="ub-text">✨ <strong>Pro Plan</strong> — Unlimited builds &amp; fixes</div>`;
+  } else {
+    const rem=Math.max(0,1-buildsUsed);
+    bar.innerHTML=`<div class="ub-text">${rem>0?`<strong>${rem} free build</strong> remaining`:'⚠ <strong>Free build used</strong> — upgrade for unlimited'}</div><button class="ub-upgrade" onclick="showUpgrade()">Upgrade $12/mo</button>`;
+  }
+  const el=document.getElementById('user-display');
+  if(el&&currentUser) el.textContent=currentUser.email?.split('@')[0]||'Account';
+}
+
+function launchApp(){
+  showScreen('app-screen');
+  addMsg('ai','👋 Welcome to OwnSite!\n\n🏗 Build — Describe any website, AI builds it for you in seconds. No coding needed.\n🔧 Fix Site — Upload HTML from Lovable, Emergent, Wix etc. to escape and own it forever.\n✎ Editor — View and edit your code.\n⊡ Preview — See your website live.\n\nClick a template above or describe your website below to start.');
+}
+
+// ── TABS ─────────────────────────────────────────
 function show(t){
-  ['build','editor','preview','fix','guide'].forEach(id=>{
+  ['build','editor','preview','fix'].forEach(id=>{
     const p=document.getElementById(id+'-pane');if(p)p.style.display='none';
     const b=document.getElementById('t-'+id);if(b)b.classList.remove('on');
   });
   const pane=document.getElementById(t+'-pane');if(!pane)return;
   pane.style.display=(t==='build'||t==='editor'||t==='preview')?'flex':'block';
-  if(t==='preview')document.getElementById('pf').srcdoc=document.getElementById('ca').value;
+  if(t==='preview') document.getElementById('pf').srcdoc=document.getElementById('ca').value;
   const b=document.getElementById('t-'+t);if(b)b.classList.add('on');
   if(t==='build'){setTimeout(()=>{const m=document.getElementById('msgs');if(m)m.scrollTop=m.scrollHeight;},50);}
 }
 
+// ── MESSAGES ─────────────────────────────────────
 function addMsg(role,text,code){allMsgs.push({role,text,code});renderMsgs();}
 
 function renderMsgs(){
@@ -395,7 +538,7 @@ function renderMsgs(){
     let inner=m.code
       ?`<div class="cb"><button class="cpb" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('pre').textContent)">copy</button><pre style="margin:0">${esc(m.code)}</pre></div>`
       :`<div class="bub">${esc(m.text)}</div>`;
-    return `<div class="msg ${u?'u':''}"><div class="av ${u?'u':'ai'}">${u?'You':'AI'}</div><div style="max-width:82%;display:flex;flex-direction:column;gap:6px">${inner}</div></div>`;
+    return `<div class="msg ${u?'u':''}"><div class="av ${u?'u':'ai'}">${u?'You':'AI'}</div><div style="max-width:82%;display:flex;flex-direction:column;gap:5px">${inner}</div></div>`;
   }).join('');
   el.scrollTop=el.scrollHeight;
 }
@@ -403,39 +546,36 @@ function renderMsgs(){
 function setBusy(on){
   busy=on;
   document.getElementById('thinking').style.display=on?'block':'none';
-  const sb=document.getElementById('sb');
-  sb.disabled=on;sb.textContent=on?'Building...':'Build →';
+  const s=document.getElementById('sb');
+  s.disabled=on;s.textContent=on?'Building...':'Build →';
 }
 
-async function callAI(sys,content){
-  const r=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':KEY,'anthropic-version':'2023-06-01'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4096,system:sys,messages:[{role:'user',content}]})
-  });
-  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'API error '+r.status);}
-  const d=await r.json();
-  return d.content?.map(b=>b.text||'').join('')||'';
-}
-
+// ── BUILD ─────────────────────────────────────────
 async function send(){
   if(busy)return;
   const inp=document.getElementById('mi');
   const txt=inp.value.trim();if(!txt)return;
+  if(userPlan==='free'&&buildsUsed>=1){showUpgrade();return;}
   inp.value='';addMsg('user',txt);setBusy(true);
   try{
-    const reply=await callAI(BP,txt);
-    const code=getCode(reply);
-    if(code){
-      addMsg('ai',null,code);
-      fixCode=code;
-      document.getElementById('ab').style.display='block';
-      addMsg('ai','✅ Your website is ready!\n\nClick the orange ✦ Apply button at the top to see it live.\n\nThen:\n• Editor tab — change any text, colors or sections\n• Preview tab — see it in your browser\n• ↓ Download — save the file\n• Deploy to Netlify or Cloudflare for a free live URL');
-    } else {
-      addMsg('ai','I could not build the site. Try again with more details — include your business name, what it does, and which sections you need.');
-    }
+    const{data:{session}}=await sb.auth.getSession();
+    const token=session?.access_token;
+    const res=await fetch(`${WORKER_URL}/build`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({description:txt,token})
+    });
+    const data=await res.json();
+    if(data.error==='upgrade_required'){addMsg('ai','You have used your 1 free build. Upgrade to Pro for unlimited websites.');showUpgrade();setBusy(false);return;}
+    if(data.error) throw new Error(data.error);
+    addMsg('ai',null,data.html);
+    fixCode=data.html;
+    document.getElementById('ab').style.display='block';
+    buildsUsed=data.buildsUsed||buildsUsed+1;
+    updateUsageBar();
+    addMsg('ai','✅ Your website is ready!\n\nClick the orange ✦ Apply button at the top to see it live in Preview.\n\nThen:\n• Editor — change any text or colors\n• ↓ Download — save your file\n• Go to netlify.com/drop for a free live URL in 60 seconds');
   }catch(e){
-    addMsg('ai','Error: '+e.message+'\n\nCheck your API key at console.anthropic.com and try again.');
+    addMsg('ai','Something went wrong: '+e.message+'\n\nPlease try again.');
   }
   setBusy(false);
 }
@@ -451,57 +591,58 @@ function applyFix(){
 
 document.getElementById('mi').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}};
 
-function copyCode(){navigator.clipboard.writeText(document.getElementById('ca').value).then(()=>alert('Copied!')).catch(()=>alert('Press Cmd+A then Cmd+C'));}
+// ── FIX SITE ──────────────────────────────────────
+function dropFile(e){e.preventDefault();document.getElementById('dz').style.borderColor='var(--br2)';readFile(e.dataTransfer.files[0]);}
 
-function dlCode(){
-  const c=document.getElementById('ca').value;
-  if(!c.trim()){alert('Build a website first!');return;}
-  const b=new Blob([c],{type:'text/html'});
-  const u=URL.createObjectURL(b);
-  const a=document.createElement('a');
-  a.href=u;a.download='ownsite.html';a.click();URL.revokeObjectURL(u);
-}
-
-function drop(e){e.preventDefault();document.getElementById('dz').style.borderColor='var(--br2)';readFile(e.dataTransfer.files[0]);}
-
-function readFile(file){
+async function readFile(file){
   if(!file)return;
+  if(userPlan==='free'&&buildsUsed>=1){showUpgrade();return;}
   const res=document.getElementById('er');res.style.display='block';
-  res.innerHTML=`<div style="text-align:center;padding:44px;background:var(--bg3);border:1px solid var(--br);border-radius:16px;margin-top:14px"><div style="font-size:34px;display:inline-block;animation:spin 1.2s linear infinite;margin-bottom:14px">⟳</div><div style="font-size:15px;color:#fff;font-weight:800;margin-bottom:5px;letter-spacing:-.2px">Analyzing ${esc(file.name)}</div><div style="font-size:12.5px;color:var(--mu)">Detecting platform · Removing lock-in · Cleaning code</div></div>`;
+  res.innerHTML=`<div style="text-align:center;padding:40px;background:var(--bg3);border:1px solid var(--br);border-radius:14px;margin-top:14px"><div style="font-size:32px;display:inline-block;animation:spin 1.2s linear infinite;margin-bottom:12px">⟳</div><div style="font-size:15px;color:#fff;font-weight:700;margin-bottom:4px">Analyzing ${esc(file.name)}</div><div style="font-size:12.5px;color:var(--mu)">Detecting platform · Removing lock-in · Cleaning code</div></div>`;
   const reader=new FileReader();
   reader.onload=async e=>{
     const html=e.target.result;
     try{
-      const reply=await callAI(FP,`File: ${file.name}\n\`\`\`html\n${html.slice(0,12000)}\n\`\`\``);
-      const clean=getCode(reply);const notes=stripCode(reply);
+      const{data:{session}}=await sb.auth.getSession();
+      const token=session?.access_token;
+      const response=await fetch(`${WORKER_URL}/fix`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({html:html.slice(0,12000),filename:file.name,token})
+      });
+      const data=await response.json();
+      if(data.error==='upgrade_required'){showUpgrade();return;}
+      if(data.error) throw new Error(data.error);
+      const clean=data.html;
       const low=html.toLowerCase();
-      let platform='Unknown builder',pc='#8888aa';
+      let platform='Unknown',pc='#8888aa';
       if(low.includes('wix.com')||low.includes('_wixcdn')){platform='Wix';pc='#facc15';}
-      else if(low.includes('framer.com')||low.includes('framer-motion')){platform='Framer';pc='#0099ff';}
+      else if(low.includes('framer.com')){platform='Framer';pc='#0099ff';}
       else if(low.includes('lovable')){platform='Lovable';pc='#8b5cf6';}
       else if(low.includes('emergent')){platform='Emergent';pc='#f97316';}
-      else if(low.includes('bolt.new')||low.includes('stackblitz')){platform='Bolt';pc='#f97316';}
+      else if(low.includes('bolt.new')){platform='Bolt';pc='#f97316';}
       else if(low.includes('squarespace')){platform='Squarespace';pc='#e2e2e2';}
-      else if(low.includes('webflow')||low.includes('data-wf')){platform='Webflow';pc='#4353ff';}
-      window._clean=clean;
+      else if(low.includes('webflow')){platform='Webflow';pc='#4353ff';}
+      window._clean=clean;buildsUsed++;updateUsageBar();
       res.innerHTML=`
         <div class="rc" style="margin-top:14px">
           <div class="rh"><div class="rf">📄 ${esc(file.name)}</div><span class="rp" style="color:${pc};background:${pc}18;border:1px solid ${pc}44">${esc(platform)} detected ✓</span></div>
-          <div class="rn">${esc(notes.slice(0,700))}</div>
+          <div class="rn">Site cleaned and freed from ${esc(platform)}. All platform lock-in removed.</div>
         </div>
         ${clean?`<div class="cpr">${esc(clean.slice(0,1200))}${clean.length>1200?'\n// ...':''}</div>`:''}
         <div class="ract">
-          ${clean?`<button onclick="dlClean()" class="rb" style="background:var(--grad);border:none;color:#000">↓ Download clean site</button><button onclick="toEditor()" class="rb" style="background:var(--bg3);border-color:var(--br2);color:#06b6d4">Open in editor →</button>`:''}
+          ${clean?`<button onclick="dlClean()" class="rb" style="background:var(--grad);border:none;color:#000">↓ Download clean site</button>
+          <button onclick="toEditor()" class="rb" style="background:var(--bg3);border-color:var(--br2);color:#06b6d4">Open in editor →</button>`:''}
           <button onclick="resetEx()" class="rb" style="background:transparent;border-color:var(--br);color:var(--mu)">Fix another</button>
         </div>
         <div class="nxt">
-          <div class="nxtt">🚀 Now go live — 3 options</div>
-          <div class="nxts"><div class="nxtn">1</div><div class="nxttx">Download → go to <strong>netlify.com/drop</strong> → drag file → free live URL in 60 sec</div></div>
-          <div class="nxts"><div class="nxtn">2</div><div class="nxttx">Upload to <strong>GitHub repo</strong> → Cloudflare auto-deploys to your existing URL</div></div>
-          <div class="nxts"><div class="nxtn">3</div><div class="nxttx">Open in Editor → keep improving → download when ready</div></div>
+          <div class="nxtt">🚀 Go live in 60 seconds</div>
+          <div class="nxts"><div class="nxtn">1</div><div class="nxttx">Click <strong>Download clean site</strong></div></div>
+          <div class="nxts"><div class="nxtn">2</div><div class="nxttx">Go to <strong>netlify.com/drop</strong></div></div>
+          <div class="nxts"><div class="nxtn">3</div><div class="nxttx">Drag file → get a <strong>free live URL instantly</strong></div></div>
         </div>`;
     }catch(err){
-      res.innerHTML=`<div style="background:var(--bg3);border:1px solid #ff4d6d33;border-radius:15px;padding:22px;text-align:center;margin-top:14px"><div style="font-size:30px;margin-bottom:10px">⚠</div><div style="color:#ff4d6d;font-size:14px;font-weight:700;margin-bottom:7px">Something went wrong</div><div style="color:var(--mu);font-size:12.5px;margin-bottom:14px">${esc(err.message)}</div><button onclick="resetEx()" class="rb" style="background:transparent;border-color:var(--br);color:var(--mu)">Try again</button></div>`;
+      res.innerHTML=`<div style="background:var(--bg3);border:1px solid #ff4d6d33;border-radius:14px;padding:22px;text-align:center;margin-top:14px"><div style="font-size:28px;margin-bottom:10px">⚠</div><div style="color:#ff4d6d;font-size:14px;font-weight:700;margin-bottom:7px">Something went wrong</div><div style="color:var(--mu);font-size:12.5px;margin-bottom:14px">${esc(err.message)}</div><button onclick="resetEx()" class="rb" style="background:transparent;border-color:var(--br);color:var(--mu)">Try again</button></div>`;
     }
   };
   reader.readAsText(file);
@@ -510,6 +651,26 @@ function readFile(file){
 function dlClean(){const c=window._clean;if(!c)return;const b=new Blob([c],{type:'text/html'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='ownsite-clean.html';a.click();URL.revokeObjectURL(u);}
 function toEditor(){if(window._clean){document.getElementById('ca').value=window._clean;show('editor');}}
 function resetEx(){document.getElementById('er').style.display='none';document.getElementById('er').innerHTML='';window._clean=null;}
+
+// ── EDITOR ────────────────────────────────────────
+function copyCode(){navigator.clipboard.writeText(document.getElementById('ca').value).then(()=>alert('Copied!')).catch(()=>alert('Press Cmd+A then Cmd+C'));}
+function dlCode(){
+  const c=document.getElementById('ca').value;
+  if(!c.trim()){alert('Build a website first!');return;}
+  const b=new Blob([c],{type:'text/html'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='ownsite.html';a.click();URL.revokeObjectURL(u);
+}
+
+// ── UPGRADE ───────────────────────────────────────
+function showUpgrade(){document.getElementById('upgrade-modal').classList.add('show');}
+function closeUpgrade(){document.getElementById('upgrade-modal').classList.remove('show');}
+function goUpgrade(){window.open(STRIPE_LINK,'_blank');closeUpgrade();}
+
+// ── INIT ──────────────────────────────────────────
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(session?.user){currentUser=session.user;await loadUserData();launchApp();}
+}
+init();
 </script>
 </body>
 </html>
