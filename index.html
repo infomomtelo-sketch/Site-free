@@ -243,6 +243,8 @@ html,body{height:100%;font-family:var(--font);overflow:hidden}
 .upgrade-close{background:transparent;border:none;color:rgba(255,255,255,0.25);font-size:12.5px;cursor:pointer;font-family:var(--font)}
 
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes skel{0%,100%{opacity:.4}50%{opacity:.8}}
+.skel{background:rgba(255,255,255,0.08);animation:skel 1.5s ease-in-out infinite}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:4px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -326,16 +328,46 @@ html,body{height:100%;font-family:var(--font);overflow:hidden}
   <div class="auth-card glass">
     <div class="auth-logo">Own<span class="logo-dot">.</span>Site</div>
     <div class="auth-sub" id="auth-sub">Create your free account</div>
-    <div class="auth-tabs">
-      <button class="auth-tab on" id="tab-signup" onclick="switchAuth('signup')">Sign up free</button>
-      <button class="auth-tab" id="tab-signin" onclick="switchAuth('signin')">Sign in</button>
+
+    <!-- MODE: signup/signin -->
+    <div id="auth-main">
+      <div class="auth-tabs">
+        <button class="auth-tab on" id="tab-signup" onclick="switchAuth('signup')">Sign up free</button>
+        <button class="auth-tab" id="tab-signin" onclick="switchAuth('signin')">Sign in</button>
+      </div>
+      <div id="auth-err" class="auth-err"></div>
+      <div class="field"><label>Email address</label><input id="auth-email" type="email" placeholder="you@example.com"/></div>
+      <div class="field"><label>Password</label><input id="auth-password" type="password" placeholder="At least 6 characters"/></div>
+      <button class="auth-btn" id="auth-submit" onclick="submitAuth('signup')">Create free account</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <button onclick="showForgot()" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:12px;cursor:pointer;font-family:var(--font)">Forgot password?</button>
+        <button onclick="showScreen('landing')" style="background:none;border:none;color:rgba(255,255,255,0.2);font-size:12px;cursor:pointer;font-family:var(--font)">Back</button>
+      </div>
+      <p class="auth-note">1 free build. No credit card needed.</p>
     </div>
-    <div id="auth-err" class="auth-err"></div>
-    <div class="field"><label>Email address</label><input id="auth-email" type="email" placeholder="you@example.com"/></div>
-    <div class="field"><label>Password</label><input id="auth-password" type="password" placeholder="At least 6 characters"/></div>
-    <button class="auth-btn" id="auth-submit" onclick="submitAuth('signup')">Create free account</button>
-    <p class="auth-note">1 free build. No credit card needed.</p>
-    <button onclick="showScreen('landing')" style="background:none;border:none;color:rgba(255,255,255,0.2);font-size:12px;cursor:pointer;font-family:var(--font);display:block;margin:10px auto 0">Back</button>
+
+    <!-- MODE: forgot password -->
+    <div id="auth-forgot" style="display:none">
+      <div id="forgot-err" class="auth-err"></div>
+      <div id="forgot-success" style="display:none;font-size:13px;color:#86efac;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:10px 12px;margin-bottom:12px;line-height:1.5"></div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:14px;line-height:1.55">Enter your email and we will send you a link to reset your password.</p>
+      <div class="field"><label>Email address</label><input id="forgot-email" type="email" placeholder="you@example.com"/></div>
+      <button class="auth-btn" id="forgot-submit" onclick="submitForgot()">Send reset link</button>
+      <div style="text-align:center;margin-top:12px">
+        <button onclick="showMain()" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:12px;cursor:pointer;font-family:var(--font)">Back to sign in</button>
+      </div>
+    </div>
+
+    <!-- MODE: reset password (after clicking email link) -->
+    <div id="auth-reset" style="display:none">
+      <div id="reset-err" class="auth-err"></div>
+      <div id="reset-success" style="display:none;font-size:13px;color:#86efac;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:10px 12px;margin-bottom:12px;line-height:1.5"></div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:14px;line-height:1.55">Enter your new password below.</p>
+      <div class="field"><label>New password</label><input id="reset-password" type="password" placeholder="At least 6 characters"/></div>
+      <div class="field"><label>Confirm new password</label><input id="reset-confirm" type="password" placeholder="Repeat your password"/></div>
+      <button class="auth-btn" id="reset-submit" onclick="submitReset()">Update password</button>
+    </div>
+
   </div>
 </div>
 
@@ -596,6 +628,8 @@ function updateUsageBar(){
 }
 function launchApp(){
   showScreen('app-screen');
+  // Clear old messages on fresh login
+  allMsgs=[];
   addMsg('ai','Welcome to OwnSite.\n\nBuild — Describe any website. AI builds it for you in seconds.\nFix Site — Upload HTML from Lovable, Emergent, Wix or any builder. We free it.\nEditor — View and edit your code.\nPreview — See your site live.\n\nSelect a template above or describe your website below to get started.');
 }
 
@@ -625,8 +659,48 @@ function renderMsgs(){
 }
 function setBusy(on){
   busy=on;
-  document.getElementById('thinking').style.display=on?'block':'none';
-  const s=document.getElementById('sb');s.disabled=on;s.textContent=on?'Building...':'Build';
+  const msgs=document.getElementById('msgs');
+  const preview=document.getElementById('building-preview');
+  const s=document.getElementById('sb');
+  s.disabled=on;
+  s.textContent=on?'Building...':'Build';
+  if(on){
+    msgs.style.display='none';
+    preview.style.display='flex';
+    animateBuild();
+  } else {
+    msgs.style.display='block';
+    preview.style.display='none';
+    if(buildTimer) clearInterval(buildTimer);
+  }
+}
+
+let buildTimer=null;
+const BUILD_STEPS=[
+  {msg:'Analyzing your description...',pct:10},
+  {msg:'Designing the layout...',pct:22},
+  {msg:'Writing the HTML structure...',pct:38},
+  {msg:'Styling with CSS...',pct:52},
+  {msg:'Adding animations...',pct:65},
+  {msg:'Building sections...',pct:75},
+  {msg:'Polishing the design...',pct:85},
+  {msg:'Almost ready...',pct:95},
+];
+let buildStep=0;
+
+function animateBuild(){
+  buildStep=0;
+  const status=document.getElementById('build-status');
+  const progress=document.getElementById('build-progress');
+  if(status) status.textContent=BUILD_STEPS[0].msg;
+  if(progress) progress.style.width=BUILD_STEPS[0].pct+'%';
+  buildTimer=setInterval(()=>{
+    buildStep++;
+    if(buildStep>=BUILD_STEPS.length){clearInterval(buildTimer);return;}
+    const step=BUILD_STEPS[buildStep];
+    if(status) status.textContent=step.msg;
+    if(progress) progress.style.width=step.pct+'%';
+  },2200);
 }
 
 async function send(){
@@ -635,8 +709,27 @@ async function send(){
   if(userPlan==='free'&&buildsUsed>=1){showUpgrade();return;}
   inp.value='';addMsg('user',txt);setBusy(true);
   try{
-    const{data:{session}}=await sb.auth.getSession();
-    const res=await fetch(`${WORKER_URL}/build`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({description:txt,token:session?.access_token})});
+    // Refresh session first to ensure valid token
+    const{data:{session},error:sessionError}=await sb.auth.getSession();
+    if(sessionError||!session){
+      // Try to refresh
+      const{data:refreshData,error:refreshError}=await sb.auth.refreshSession();
+      if(refreshError||!refreshData.session){
+        addMsg('ai','Your session expired. Please sign out and sign back in.');
+        setBusy(false);return;
+      }
+      const token=refreshData.session.access_token;
+      const res=await fetch(`${WORKER_URL}/build`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({description:txt,token})});
+      const data=await res.json();
+      if(data.error==='upgrade_required'){addMsg('ai','You have used your 1 free build. Upgrade to Pro for unlimited.');showUpgrade();setBusy(false);return;}
+      if(data.error)throw new Error(data.error);
+      addMsg('ai',null,data.html);fixCode=data.html;
+      document.getElementById('ab').style.display='block';
+      buildsUsed=data.buildsUsed||buildsUsed+1;updateUsageBar();
+      addMsg('ai','Your website is ready.\n\nClick "Apply fix" above to see it live in Preview.\nUse Editor to change any text or colors.\nClick Download to save it.\nGo to netlify.com/drop for a free live URL in 60 seconds.');
+      setBusy(false);return;
+    }
+    const res=await fetch(`${WORKER_URL}/build`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({description:txt,token:session.access_token})});
     const data=await res.json();
     if(data.error==='upgrade_required'){addMsg('ai','You have used your 1 free build. Upgrade to Pro for unlimited.');showUpgrade();setBusy(false);return;}
     if(data.error)throw new Error(data.error);
@@ -709,9 +802,120 @@ function showUpgrade(){document.getElementById('upgrade-modal').classList.add('s
 function closeUpgrade(){document.getElementById('upgrade-modal').classList.remove('show');}
 function goUpgrade(){window.open(STRIPE_LINK,'_blank');closeUpgrade();}
 
+// ── AUTH FLOW ─────────────────────────────────────────
+function showForgot(){
+  document.getElementById('auth-main').style.display='none';
+  document.getElementById('auth-forgot').style.display='block';
+  document.getElementById('auth-reset').style.display='none';
+  document.getElementById('auth-sub').textContent='Reset your password';
+  document.getElementById('forgot-err').style.display='none';
+  document.getElementById('forgot-success').style.display='none';
+}
+
+function showMain(){
+  document.getElementById('auth-main').style.display='block';
+  document.getElementById('auth-forgot').style.display='none';
+  document.getElementById('auth-reset').style.display='none';
+  document.getElementById('auth-sub').textContent='Welcome back';
+  switchAuth('signin');
+}
+
+function showReset(){
+  document.getElementById('auth-main').style.display='none';
+  document.getElementById('auth-forgot').style.display='none';
+  document.getElementById('auth-reset').style.display='block';
+  document.getElementById('auth-sub').textContent='Set a new password';
+  showScreen('auth-screen');
+}
+
+async function submitForgot(){
+  const email=document.getElementById('forgot-email').value.trim();
+  const btn=document.getElementById('forgot-submit');
+  const err=document.getElementById('forgot-err');
+  const success=document.getElementById('forgot-success');
+  err.style.display='none';success.style.display='none';
+  if(!email){err.textContent='Please enter your email address.';err.style.display='block';return;}
+  btn.disabled=true;btn.textContent='Sending...';
+  try{
+    const{error}=await sb.auth.resetPasswordForEmail(email,{
+      redirectTo:window.location.origin+'?reset=true'
+    });
+    if(error)throw error;
+    success.textContent='Check your email — we sent you a reset link. It may take a minute to arrive.';
+    success.style.display='block';
+    btn.textContent='Email sent';
+  }catch(e){
+    err.textContent=e.message||'Something went wrong. Please try again.';
+    err.style.display='block';
+    btn.disabled=false;btn.textContent='Send reset link';
+  }
+}
+
+async function submitReset(){
+  const password=document.getElementById('reset-password').value;
+  const confirm=document.getElementById('reset-confirm').value;
+  const btn=document.getElementById('reset-submit');
+  const err=document.getElementById('reset-err');
+  const success=document.getElementById('reset-success');
+  err.style.display='none';success.style.display='none';
+  if(!password||password.length<6){err.textContent='Password must be at least 6 characters.';err.style.display='block';return;}
+  if(password!==confirm){err.textContent='Passwords do not match.';err.style.display='block';return;}
+  btn.disabled=true;btn.textContent='Updating...';
+  try{
+    const{error}=await sb.auth.updateUser({password});
+    if(error)throw error;
+    success.textContent='Password updated successfully. Signing you in...';
+    success.style.display='block';
+    setTimeout(async()=>{
+      const{data:{session}}=await sb.auth.getSession();
+      if(session?.user){currentUser=session.user;await loadUserData();launchApp();}
+    },1500);
+  }catch(e){
+    err.textContent=e.message||'Something went wrong. Please try again.';
+    err.style.display='block';
+    btn.disabled=false;btn.textContent='Update password';
+  }
+}
+
 async function init(){
-  const{data:{session}}=await sb.auth.getSession();
-  if(session?.user){currentUser=session.user;await loadUserData();launchApp();}
+  const params=new URLSearchParams(window.location.search);
+  const hash=window.location.hash;
+
+  if(hash.includes('type=recovery')||params.get('reset')==='true'){
+    const{data:{session}}=await sb.auth.getSession();
+    if(session){showReset();return;}
+  }
+
+  // Try to get existing session, refresh if needed
+  let{data:{session}}=await sb.auth.getSession();
+
+  if(!session){
+    // Try refreshing
+    const{data:r}=await sb.auth.refreshSession();
+    session=r?.session;
+  }
+
+  if(session?.user){
+    currentUser=session.user;
+    await loadUserData();
+    launchApp();
+  }
+
+  sb.auth.onAuthStateChange(async(event,session)=>{
+    if(event==='PASSWORD_RECOVERY'){showReset();}
+    if(event==='SIGNED_IN'&&session){
+      currentUser=session.user;
+      await loadUserData();
+      launchApp();
+    }
+    if(event==='SIGNED_OUT'){
+      currentUser=null;
+      showScreen('landing');
+    }
+    if(event==='TOKEN_REFRESHED'&&session){
+      currentUser=session.user;
+    }
+  });
 }
 init();
 </script>
