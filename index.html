@@ -643,11 +643,27 @@ function updateUsageBar(){
   const el=document.getElementById('user-display');
   if(el&&currentUser)el.textContent=currentUser.email?.split('@')[0]||'Account';
 }
-function launchApp(){
+  function launchApp(){
   showScreen('app-screen');
-  // Clear old messages on fresh login
   allMsgs=[];
+
+  // Barry handoff from thejudgy.com
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('source')==='barry'){
+    try{
+      const html=sessionStorage.getItem('barry_handoff');
+      if(html){
+        document.getElementById('ca').value=html;
+        addMsg('ai','Barry sent this over from The Judgy. Your landing page is loaded — click Preview to see it, Editor to tweak it, or Download to save it.');
+        show('preview');
+        return;
+      }
+    }catch(e){}
+  }
+
   addMsg('ai','Welcome to OwnSite.\n\nBuild — Describe any website. AI builds it for you in seconds.\nFix Site — Upload HTML from Lovable, Emergent, Wix or any builder. We free it.\nEditor — View and edit your code.\nPreview — See your site live.\n\nSelect a template above or describe your website below to get started.');
+}
+
 }
 
 function show(t){
