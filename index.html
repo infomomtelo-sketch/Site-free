@@ -252,6 +252,23 @@ html,body{height:100%;font-family:var(--font);overflow:hidden}
 </head>
 <body>
 
+  <script>
+// Barry handoff from thejudgy.com
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('source') === 'barry') {
+    try {
+      const html = sessionStorage.getItem('barry_handoff');
+      if (html) {
+        // Wait for app to init then inject
+        window.barryHandoff = html;
+        window.__barryReady = true;
+      }
+    } catch(e) {}
+  }
+})();
+</script>
+
 <!-- SKY BACKGROUND -->
 <div id="bg"></div>
 
