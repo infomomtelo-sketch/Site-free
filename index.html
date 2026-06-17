@@ -1,444 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>OwnSite — Build & Own Your Website</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>OwnSite — AI Web Builder powered by Barry-X</title>
+<meta name="description" content="Describe any website. Barry-X builds it clean, fast, and yours forever. No platform lock-in. No monthly fees. No shutdowns.">
+<meta property="og:title" content="OwnSite — Build any website. Own it forever.">
+<meta property="og:description" content="Barry-X builds you a flawless website. You own it forever. No Lovable. No Wix. No hostage situations.">
+<meta property="og:url" content="https://ownsite.app">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://ownsite.app/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OwnSite — AI Web Builder">
+<meta name="twitter:description" content="Barry-X builds it. You own it forever.">
+<meta name="twitter:image" content="https://ownsite.app/og-image.jpg">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --font:'Inter',system-ui,sans-serif;
-  --accent:#4ade80;
-  --accent-dim:rgba(74,222,128,0.12);
-}
-html,body{height:100%;font-family:var(--font);overflow:hidden}
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --accent: #7c6af7;
+    --accent2: #a855f7;
+    --gold: #f4c430;
+    --text: #f0eeff;
+    --text2: #9896b8;
+    --border: rgba(124,106,247,0.18);
+    --font: 'Inter', -apple-system, sans-serif;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; -webkit-font-smoothing: antialiased; min-height: 100vh; }
 
-/* DYNAMIC BACKGROUND */
-#bg{position:fixed;inset:0;z-index:0;transition:background 120s linear}
+  /* ── SCREENS ── */
+  .screen { min-height: 100vh; }
+  .hidden { display: none !important; }
 
-/* TIME-BASED COLORS */
-.sky-dawn    {background:linear-gradient(to bottom,#0d1b2a 0%,#1a2744 30%,#2d4a6b 60%,#c17a3a 85%,#e8955a 100%)}
-.sky-morning {background:linear-gradient(to bottom,#1a3a5c 0%,#2d6b9e 30%,#4a9fd4 65%,#7ec8e8 100%)}
-.sky-noon    {background:linear-gradient(to bottom,#1565a0 0%,#1e7fc1 35%,#3da0dc 70%,#87ceeb 100%)}
-.sky-afternoon{background:linear-gradient(to bottom,#1a4a7a 0%,#2563a8 35%,#3d8fd4 70%,#6ab4e0 100%)}
-.sky-sunset  {background:linear-gradient(to bottom,#0d1b2a 0%,#1a2d4a 25%,#8b3a2a 55%,#d4652a 75%,#e8924a 100%)}
-.sky-dusk    {background:linear-gradient(to bottom,#080d14 0%,#0f1e2e 30%,#1a2d3d 60%,#2a3d52 100%)}
-.sky-night   {background:linear-gradient(to bottom,#020408 0%,#060c14 30%,#0a1220 60%,#0d1828 100%)}
+  /* ── LANDING ── */
+  #landing {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 40px 24px; text-align: center;
+    background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transparent 70%);
+  }
+  .land-badge { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); background: rgba(124,106,247,0.1); border: 1px solid var(--border); padding: 5px 14px; border-radius: 99px; margin-bottom: 32px; }
+  .land-title { font-size: clamp(2.4rem, 8vw, 4.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 20px; }
+  .land-title span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .land-sub { font-size: clamp(1rem, 2.5vw, 1.15rem); color: var(--text2); max-width: 480px; line-height: 1.7; margin-bottom: 40px; }
+  .land-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
+  .btn-primary { background: var(--accent); color: #fff; border: none; padding: 13px 28px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: opacity 0.15s; }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-ghost { background: none; color: var(--text2); border: 1px solid var(--border); padding: 13px 28px; border-radius: 10px; font-size: 15px; cursor: pointer; font-family: var(--font); transition: border-color 0.15s; }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--text); }
+  .land-features { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
+  .land-feat { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 7px; }
+  .land-feat::before { content: '✓'; color: var(--accent); font-weight: 700; }
 
-/* OCEAN LAYER */
-#ocean{position:fixed;bottom:0;left:0;right:0;height:42%;z-index:1;overflow:hidden}
-.ocean-body{position:absolute;bottom:0;left:0;right:0;height:100%;transition:background 120s linear}
-.ocean-day  {background:linear-gradient(to bottom,#1a6fa8 0%,#0d4a7a 40%,#083560 100%)}
-.ocean-night{background:linear-gradient(to bottom,#0a1828 0%,#060f1a 40%,#030810 100%)}
+  /* ── AUTH ── */
+  #auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.1) 0%, transparent 60%); }
+  .auth-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; width: 100%; max-width: 400px; }
+  .auth-logo { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 8px; }
+  .auth-sub { font-size: 14px; color: var(--text2); margin-bottom: 32px; }
+  .auth-tabs { display: flex; gap: 4px; background: var(--bg3); border-radius: 10px; padding: 4px; margin-bottom: 28px; }
+  .auth-tab { flex: 1; padding: 8px; border: none; background: none; color: var(--text2); font-size: 13.5px; font-family: var(--font); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+  .auth-tab.on { background: var(--accent); color: #fff; font-weight: 600; }
+  .auth-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.04em; }
+  .auth-input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 11px 14px; border-radius: 10px; font-size: 14px; font-family: var(--font); margin-bottom: 14px; outline: none; transition: border-color 0.15s; }
+  .auth-input:focus { border-color: var(--accent); }
+  .auth-submit { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); margin-top: 4px; }
+  .auth-err { font-size: 13px; color: #f87171; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; display: none; }
+  .auth-forgot { font-size: 12.5px; color: var(--text2); text-align: center; margin-top: 14px; cursor: pointer; }
+  .auth-forgot:hover { color: var(--accent); }
+  #auth-forgot, #auth-reset { display: none; }
+  .auth-back { font-size: 12.5px; color: var(--text2); cursor: pointer; margin-bottom: 20px; display: inline-block; }
+  .auth-back:hover { color: var(--accent); }
+  .auth-success { font-size: 13px; color: #4ade80; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; display: none; }
 
-/* WAVES */
-.wave{position:absolute;width:200%;height:100%;background-repeat:repeat-x;animation:wave linear infinite;opacity:0.6}
-.w1{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='rgba(255,255,255,0.08)' d='M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z'/%3E%3C/svg%3E");background-size:1440px 60px;top:15%;animation-duration:12s}
-.w2{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='rgba(255,255,255,0.05)' d='M0,20 C360,50 720,0 1080,30 C1260,45 1380,15 1440,20 L1440,60 L0,60 Z'/%3E%3C/svg%3E");background-size:1440px 60px;top:30%;animation-duration:18s;animation-direction:reverse}
-.w3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='rgba(255,255,255,0.04)' d='M0,40 C180,20 360,50 540,30 C720,10 900,50 1080,35 C1260,20 1380,40 1440,35 L1440,60 L0,60 Z'/%3E%3C/svg%3E");background-size:1440px 60px;top:50%;animation-duration:22s}
-@keyframes wave{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  /* ── APP ── */
+  #app-screen { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  #bar { display: flex; align-items: center; gap: 4px; padding: 10px 16px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0; overflow-x: auto; }
+  .blogo { font-size: 16px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-right: 8px; white-space: nowrap; }
+  .blogo-dot { color: var(--accent2); }
+  .tab { background: none; border: none; color: var(--text2); font-size: 13px; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-family: var(--font); white-space: nowrap; transition: all 0.15s; }
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .tab.on { background: rgba(124,106,247,0.15); color: var(--accent); font-weight: 600; }
+  #tr { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  #ab { display: none; background: var(--accent); color: #fff; border: none; padding: 6px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: var(--font); white-space: nowrap; }
+  .ubadge { display: flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 99px; cursor: pointer; font-size: 12.5px; color: var(--text2); white-space: nowrap; }
+  .udot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  #con { flex: 1; overflow: hidden; display: flex; }
 
-/* STARS (night only) */
-#stars{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity 60s}
-.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle ease-in-out infinite}
-@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:1}}
+  /* ── BUILD PANE ── */
+  #build-pane { display: flex; flex-direction: column; width: 100%; height: 100%; overflow: hidden; }
+  .bhero { padding: 28px 20px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .bht { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .bhs { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .ub { margin-top: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .ub-t { font-size: 12.5px; color: var(--text2); }
+  .ub-btn { font-size: 12px; padding: 4px 12px; background: rgba(124,106,247,0.15); color: var(--accent); border: 1px solid var(--border); border-radius: 99px; cursor: pointer; font-family: var(--font); }
+  .tsec { padding: 14px 20px 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .tlab { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text2); margin-bottom: 10px; }
+  .trow { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tmpl { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); font-size: 12px; padding: 5px 12px; border-radius: 99px; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+  .tmpl:hover { border-color: var(--accent); color: var(--accent); }
+  #msgs { flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+  #thinking { display: none; padding: 0 20px 16px; }
+  .tbub { display: flex; align-items: flex-start; gap: 10px; }
+  .av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .av.ai { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+  .av.u { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); }
+  .ttext { font-size: 14px; color: var(--text2); padding-top: 6px; display: flex; align-items: center; gap: 8px; }
+  .da { display: flex; gap: 4px; }
+  .da span { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; animation: bounce 1.2s infinite; }
+  .da span:nth-child(2) { animation-delay: 0.2s; }
+  .da span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+  .msg { display: flex; align-items: flex-start; gap: 10px; }
+  .msg.u { flex-direction: row-reverse; }
+  .bub { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px 14px 14px 14px; padding: 10px 14px; font-size: 14px; line-height: 1.6; max-width: 82%; white-space: pre-wrap; }
+  .msg.u .bub { background: rgba(124,106,247,0.12); border-color: rgba(124,106,247,0.25); border-radius: 14px 4px 14px 14px; }
+  .cb { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-size: 12px; max-width: 90%; position: relative; overflow: hidden; }
+  .cpb { position: absolute; top: 8px; right: 8px; background: var(--bg2); border: 1px solid var(--border); color: var(--text2); font-size: 11px; padding: 3px 8px; border-radius: 6px; cursor: pointer; font-family: var(--font); }
+  .cb pre { color: var(--text2); overflow-x: auto; white-space: pre-wrap; word-break: break-all; max-height: 300px; }
 
-/* HORIZON GLOW */
-#horizon{position:fixed;left:0;right:0;z-index:2;pointer-events:none;height:120px;transition:all 120s linear}
+  /* Building animation */
+  #building-preview { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 20px; padding: 40px; }
+  .build-icon { font-size: 48px; animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.7;transform:scale(0.95)} }
+  .build-status { font-size: 15px; color: var(--text2); text-align: center; }
+  .build-bar { width: 240px; height: 3px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
+  .build-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 2s ease; width: 5%; }
 
-/* BREATHING */
-@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.015)}}
-#bg,#ocean{animation:breathe 9s ease-in-out infinite}
+  #ir { padding: 12px 16px 20px; border-top: 1px solid var(--border); flex-shrink: 0; }
+  .irw { display: flex; gap: 8px; background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 8px 8px 8px 16px; align-items: flex-end; }
+  #mi { flex: 1; background: none; border: none; color: var(--text); font-family: var(--font); font-size: 14px; resize: none; max-height: 100px; outline: none; line-height: 1.5; padding: 6px 0; }
+  #mi::placeholder { color: var(--text2); }
+  #sb { background: var(--accent); color: #fff; border: none; border-radius: 10px; width: 38px; height: 38px; font-size: 16px; cursor: pointer; flex-shrink: 0; transition: opacity 0.15s; }
+  #sb:hover { opacity: 0.85; }
+  #sb:disabled { opacity: 0.4; }
+  .ihint { font-size: 11.5px; color: var(--text2); margin-top: 8px; text-align: center; opacity: 0.7; }
 
-/* SCREENS */
-.screen{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
-.screen.hidden{display:none!important}
+  /* ── EDITOR PANE ── */
+  #editor-pane { display: none; flex-direction: column; width: 100%; height: 100%; }
+  .ph { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .phl .pt { font-size: 14px; font-weight: 600; }
+  .phl .ps { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .phr { display: flex; gap: 8px; }
+  .pb { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); font-size: 12.5px; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+  .pb:hover { border-color: var(--accent); color: var(--accent); }
+  .pb.p { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .pb.p:hover { opacity: 0.85; }
+  #ca { flex: 1; background: var(--bg); color: #a8ff78; font-family: 'Fira Code', 'Courier New', monospace; font-size: 12.5px; border: none; outline: none; padding: 20px; resize: none; line-height: 1.6; overflow-y: auto; }
 
-/* GLASS */
-.glass{background:rgba(0,0,0,0.3);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.12);border-radius:18px}
-.glass-sm{background:rgba(0,0,0,0.2);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.1);border-radius:14px}
+  /* ── PREVIEW PANE ── */
+  #preview-pane { display: none; flex-direction: column; width: 100%; height: 100%; }
+  .ptb { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .d3 { display: flex; gap: 5px; }
+  .dd { width: 11px; height: 11px; border-radius: 50%; }
+  .urlb { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; font-size: 12px; color: var(--text2); text-align: center; }
+  #pf { flex: 1; border: none; background: #fff; }
 
-/* LANDING */
-.land-inner{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:460px;text-align:center;position:relative;z-index:12}
+  /* ── OWN IT PANE ── */
+  #fix-pane { display: none; overflow-y: auto; width: 100%; }
+  .fiw { max-width: 600px; margin: 0 auto; padding: 32px 20px 60px; }
+  .fhero { margin-bottom: 28px; }
+  .fht { font-size: 22px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.02em; }
+  .fhs { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .pchips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .pc { font-size: 12px; padding: 5px 12px; border-radius: 99px; border: 1px solid; background: transparent; }
+  .exp { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 24px; }
+  .expt { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 16px; }
+  .expr { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+  .expr:last-child { margin-bottom: 0; }
+  .expic { width: 26px; height: 26px; border-radius: 8px; background: rgba(124,106,247,0.15); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+  .exptx { font-size: 13.5px; color: var(--text2); line-height: 1.5; padding-top: 4px; }
+  .exptx strong { color: var(--text); }
+  #rebuild-desc { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 14px 16px; border-radius: 12px; font-family: var(--font); font-size: 14px; resize: none; outline: none; line-height: 1.6; transition: border-color 0.15s; }
+  #rebuild-desc:focus { border-color: var(--accent); }
+  #rebuild-desc::placeholder { color: var(--text2); }
+  .rebuild-btn { width: 100%; margin-top: 12px; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: opacity 0.15s; }
+  .rebuild-btn:hover { opacity: 0.88; }
 
-.time-chip{display:inline-flex;align-items:center;gap:7px;background:rgba(0,0,0,0.3);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,0.6);letter-spacing:.3px}
-.time-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:tp 3s ease-in-out infinite}
-@keyframes tp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+  /* ── UPGRADE MODAL ── */
+  #upgrade-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(4px); }
+  #upgrade-modal.show { display: flex; }
+  .ucard { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 380px; text-align: center; }
+  .ucard-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+  .ucard-sub { font-size: 14px; color: var(--text2); margin-bottom: 28px; line-height: 1.6; }
+  .plan-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+  .plan-name { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .plan-price { font-size: 36px; font-weight: 800; margin-bottom: 16px; }
+  .plan-price span { font-size: 16px; color: var(--text2); font-weight: 400; }
+  .plan-feats { text-align: left; display: flex; flex-direction: column; gap: 8px; }
+  .plan-feat { font-size: 13.5px; color: var(--text2); display: flex; gap: 8px; }
+  .fc { color: var(--accent); font-weight: 700; }
+  .upgrade-btn { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); margin-bottom: 10px; }
+  .upgrade-close { background: none; border: none; color: var(--text2); font-size: 13.5px; cursor: pointer; font-family: var(--font); padding: 6px; }
+  .upgrade-close:hover { color: var(--text); }
 
-.logo{font-size:52px;font-weight:600;letter-spacing:-2.5px;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,0.4);line-height:1}
-.logo-dot{color:var(--accent)}
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-.headline{font-size:clamp(1.3rem,3.5vw,2rem);font-weight:300;color:rgba(255,255,255,0.88);letter-spacing:-.3px;line-height:1.3;text-shadow:0 1px 12px rgba(0,0,0,0.5)}
-.headline strong{font-weight:600;color:#fff}
-
-.desc{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:340px;text-shadow:0 1px 8px rgba(0,0,0,0.6)}
-
-/* STEPS */
-.steps{display:flex;gap:7px;width:100%}
-.step{flex:1;padding:13px 8px;text-align:center;background:rgba(0,0,0,0.25);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:14px}
-.snum{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#000;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 6px}
-.stit{font-size:11px;font-weight:600;color:#fff;margin-bottom:2px}
-.sdesc{font-size:9.5px;color:rgba(255,255,255,0.45);line-height:1.3}
-
-/* TRAP */
-.trap-wrap{width:100%}
-.trap-label{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:10px}
-.trap-cards{display:flex;flex-direction:column;gap:5px}
-.tc{display:flex;gap:11px;align-items:flex-start;padding:10px 13px;border-radius:11px}
-.tc-line{width:2px;height:100%;border-radius:2px;flex-shrink:0;margin-top:3px;min-height:28px}
-.tc-t{font-size:12.5px;font-weight:500;margin-bottom:2px}
-.tc-d{font-size:11px;line-height:1.4;opacity:.65}
-.tc-arr{text-align:center;font-size:13px;color:rgba(255,255,255,0.2);padding:1px 0}
-
-/* BUTTONS */
-.btns{display:flex;gap:9px;width:100%}
-.btn-main{flex:1;padding:14px;background:#fff;border:none;border-radius:12px;color:#000;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all .2s;letter-spacing:-.1px}
-.btn-main:hover{background:rgba(255,255,255,0.9);transform:translateY(-1px)}
-.btn-ghost{flex:1;padding:14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:12px;color:rgba(255,255,255,0.85);font-size:14px;font-weight:400;cursor:pointer;font-family:var(--font);backdrop-filter:blur(10px);transition:all .2s}
-.btn-ghost:hover{background:rgba(255,255,255,0.13)}
-.fine-print{font-size:11px;color:rgba(255,255,255,0.25)}
-
-/* AUTH */
-.auth-card{width:100%;max-width:390px;padding:26px;position:relative;z-index:12}
-.auth-logo{font-size:26px;font-weight:600;letter-spacing:-1px;text-align:center;margin-bottom:4px;color:#fff}
-.auth-sub{font-size:13px;color:rgba(255,255,255,0.45);text-align:center;margin-bottom:18px}
-.auth-tabs{display:flex;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:3px;margin-bottom:16px}
-.auth-tab{flex:1;padding:8px;border-radius:7px;border:none;background:transparent;color:rgba(255,255,255,0.45);font-size:13px;cursor:pointer;font-family:var(--font);font-weight:500;transition:all .2s}
-.auth-tab.on{background:rgba(255,255,255,0.12);color:#fff}
-.field{margin-bottom:12px}
-.field label{font-size:11.5px;color:rgba(255,255,255,0.4);display:block;margin-bottom:5px;font-weight:500}
-.field input{width:100%;padding:12px 14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;font-size:14px;outline:none;font-family:var(--font);transition:border-color .2s}
-.field input:focus{border-color:rgba(255,255,255,0.4)}
-.field input::placeholder{color:rgba(255,255,255,0.2)}
-.auth-btn{width:100%;padding:13px;background:#fff;border:none;border-radius:11px;color:#000;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);margin-top:4px;transition:all .2s}
-.auth-btn:hover{background:rgba(255,255,255,0.9)}
-.auth-btn:disabled{opacity:.5;cursor:not-allowed}
-.auth-err{font-size:12px;color:#fca5a5;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:9px 12px;margin-bottom:11px;display:none}
-.auth-note{font-size:11px;color:rgba(255,255,255,0.25);text-align:center;margin-top:12px;line-height:1.6}
-
-/* APP */
-#app-screen{padding:0;align-items:stretch}
-.app-inner{width:100%;height:100%;display:flex;flex-direction:column;position:relative;z-index:12}
-#bar{height:50px;background:rgba(0,0,0,0.45);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;padding:0 14px;gap:3px;flex-shrink:0}
-.blogo{font-size:15px;font-weight:600;letter-spacing:-.5px;margin-right:10px;color:#fff;flex-shrink:0}
-.blogo-dot{color:var(--accent)}
-.tab{padding:5px 11px;border-radius:8px;border:1px solid transparent;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;background:transparent;font-family:var(--font);transition:all .2s;white-space:nowrap;font-weight:500}
-.tab.on{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.15);color:#fff}
-.tab:hover:not(.on){background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7)}
-#tr{margin-left:auto;display:flex;gap:6px;align-items:center}
-#ab{padding:5px 13px;background:#fff;border:none;border-radius:8px;color:#000;font-size:12px;cursor:pointer;font-weight:600;display:none;font-family:var(--font);animation:ag 2s ease-in-out infinite}
-@keyframes ag{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}50%{box-shadow:0 0 16px 2px rgba(255,255,255,0.25)}}
-.ubadge{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:4px 11px;font-size:11px;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .2s}
-.ubadge:hover{background:rgba(255,255,255,0.11);color:rgba(255,255,255,0.8)}
-.udot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block}
-#con{flex:1;overflow:hidden;display:flex;flex-direction:column}
-
-/* PANES */
-#build-pane{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.bhero{background:rgba(0,0,0,0.35);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,0.07);padding:12px 15px;flex-shrink:0}
-.bht{font-size:13.5px;font-weight:500;color:#fff;margin-bottom:2px}
-.bhs{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5}
-.ub{display:flex;align-items:center;gap:9px;margin-top:7px;padding:6px 11px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px}
-.ub-t{font-size:11.5px;color:rgba(255,255,255,0.45);flex:1}
-.ub-t strong{color:#fff}
-.ub-btn{padding:3px 11px;background:#fff;border:none;border-radius:6px;color:#000;font-size:10.5px;font-weight:600;cursor:pointer;font-family:var(--font)}
-.tsec{padding:9px 13px 7px;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0;background:rgba(0,0,0,0.25);backdrop-filter:blur(10px)}
-.tlab{font-size:9.5px;color:rgba(255,255,255,0.25);font-weight:500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
-.trow{display:flex;gap:5px;flex-wrap:wrap}
-.tmpl{padding:4px 12px;border-radius:100px;font-size:11.5px;font-weight:400;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.55);cursor:pointer;font-family:var(--font);transition:all .2s}
-.tmpl:hover{background:rgba(255,255,255,0.12);color:#fff;transform:translateY(-1px)}
-#msgs{flex:1;overflow-y:auto;padding:13px}
-.msg{display:flex;gap:8px;margin-bottom:13px;align-items:flex-start}
-.msg.u{flex-direction:row-reverse}
-.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
-.av.ai{background:var(--accent);color:#000}
-.av.u{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:9px}
-.bub{max-width:82%;background:rgba(0,0,0,0.3);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.08);border-radius:3px 13px 13px 13px;padding:9px 13px;font-size:13px;line-height:1.7;color:rgba(255,255,255,0.82);white-space:pre-wrap;word-break:break-word}
-.msg.u .bub{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.12);border-radius:13px 3px 13px 13px;color:#fff}
-.cb{background:rgba(0,0,0,0.55);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 12px;font-size:11px;color:#7dd3fc;font-family:monospace;line-height:1.6;overflow-x:auto;max-height:170px;overflow-y:auto;position:relative;white-space:pre-wrap;word-break:break-word;max-width:82%}
-.cpb{position:absolute;top:6px;right:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:5px;padding:2px 8px;font-size:9.5px;color:#7dd3fc;cursor:pointer;font-family:var(--font)}
-#thinking{display:none;padding:0 13px 7px}
-.tbub{display:flex;gap:8px;align-items:flex-start}
-.ttext{background:rgba(0,0,0,0.28);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.07);border-radius:3px 13px 13px 13px;padding:9px 13px;font-size:13px;color:rgba(255,255,255,0.4);display:flex;align-items:center;gap:9px}
-.da{display:flex;gap:3px}
-.da span{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:db 1.4s ease-in-out infinite}
-.da span:nth-child(2){animation-delay:.2s;opacity:.7}
-.da span:nth-child(3){animation-delay:.4s;opacity:.4}
-@keyframes db{0%,80%,100%{transform:scale(.7)}40%{transform:scale(1.2)}}
-#ir{padding:9px 13px 13px;flex-shrink:0;border-top:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.3);backdrop-filter:blur(12px)}
-.irw{display:flex;gap:8px;align-items:flex-end;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:13px;padding:10px 11px;transition:border-color .2s}
-.irw:focus-within{border-color:rgba(255,255,255,0.3)}
-#mi{flex:1;background:transparent;border:none;color:#fff;font-size:13px;resize:none;outline:none;font-family:var(--font);line-height:1.55;max-height:90px}
-#mi::placeholder{color:rgba(255,255,255,0.2)}
-#sb{padding:8px 15px;background:#fff;border:none;border-radius:9px;color:#000;font-size:12.5px;cursor:pointer;font-weight:600;font-family:var(--font);white-space:nowrap;flex-shrink:0;transition:all .2s}
-#sb:hover{background:rgba(255,255,255,0.88)}
-#sb:disabled{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.3);cursor:not-allowed}
-.ihint{font-size:9.5px;color:rgba(255,255,255,0.2);margin-top:4px;padding-left:2px}
-
-/* EDITOR */
-#editor-pane{flex:1;display:none;flex-direction:column;overflow:hidden}
-.ph{background:rgba(0,0,0,0.4);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.07);padding:9px 13px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.phl .pt{font-size:13px;font-weight:500;color:#fff}.phl .ps{font-size:10.5px;color:rgba(255,255,255,0.35)}
-.phr{display:flex;gap:5px}
-.pb{padding:5px 11px;border-radius:7px;font-size:11px;cursor:pointer;font-family:var(--font);border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.45);font-weight:500;transition:all .2s}
-.pb:hover{background:rgba(255,255,255,0.08);color:#fff}
-.pb.p{background:#fff;border-color:#fff;color:#000;font-weight:600}
-#ca{flex:1;width:100%;background:rgba(0,0,0,0.75);color:#7dd3fc;border:none;outline:none;padding:16px 20px;font-size:12px;font-family:'Fira Code',monospace;line-height:1.75;resize:none}
-
-/* PREVIEW */
-#preview-pane{flex:1;display:none;flex-direction:column;overflow:hidden}
-.ptb{background:rgba(0,0,0,0.4);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.07);padding:7px 13px;display:flex;align-items:center;gap:8px;flex-shrink:0}
-.d3{display:flex;gap:4px}.dd{width:10px;height:10px;border-radius:50%}
-.urlb{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:3px 10px;font-size:11px;color:rgba(255,255,255,0.35);font-family:monospace}
-#pf{flex:1;border:none;background:#fff}
-
-/* FIX */
-#fix-pane{flex:1;display:none;overflow-y:auto}
-.fiw{padding:18px;max-width:680px;margin:0 auto}
-.fhero{background:rgba(0,0,0,0.35);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:18px;margin-bottom:14px}
-.fht{font-size:16px;font-weight:500;color:#fff;margin-bottom:5px;letter-spacing:-.2px}
-.fhs{font-size:12.5px;color:rgba(255,255,255,0.45);line-height:1.65}
-.pchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.pc{padding:4px 13px;border-radius:100px;font-size:11.5px;font-weight:400;border:1px solid;background:rgba(0,0,0,0.2);backdrop-filter:blur(8px)}
-.exp{background:rgba(0,0,0,0.28);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:14px 16px;margin-bottom:13px}
-.expt{font-size:12.5px;font-weight:500;color:#fff;margin-bottom:9px}
-.expr{display:flex;gap:9px;align-items:flex-start;margin-bottom:7px}
-.expic{font-size:11px;color:rgba(255,255,255,0.3);width:22px;flex-shrink:0;font-family:monospace;margin-top:2px}
-.exptx{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5}.exptx strong{color:rgba(255,255,255,0.8)}
-#dz{border:1px dashed rgba(255,255,255,0.18);border-radius:14px;padding:40px 18px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(0,0,0,0.18);backdrop-filter:blur(8px)}
-#dz:hover{border-color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.04)}
-#dz input{display:none}
-#er{display:none}
-.rc{background:rgba(0,0,0,0.3);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:14px 16px;margin-bottom:11px}
-.rh{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.rf{font-size:13.5px;font-weight:500;color:#fff}
-.rp{font-size:11px;border-radius:7px;padding:3px 10px;font-weight:500}
-.rn{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.65;border-top:1px solid rgba(255,255,255,0.07);padding-top:9px}
-.cpr{background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:9px;padding:11px;font-size:10.5px;color:#7dd3fc;font-family:monospace;line-height:1.6;overflow-x:auto;max-height:150px;overflow-y:auto;margin-bottom:11px;white-space:pre-wrap;word-break:break-word}
-.ract{display:flex;gap:7px;flex-wrap:wrap}
-.rb{padding:8px 16px;border-radius:9px;font-size:12px;cursor:pointer;font-weight:500;font-family:var(--font);border:1px solid;transition:all .2s}
-.nxt{background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.15);border-radius:11px;padding:13px 15px;margin-top:11px}
-.nxtt{font-size:12px;font-weight:500;color:#fff;margin-bottom:7px}
-.nxts{display:flex;gap:7px;align-items:flex-start;margin-bottom:6px}
-.nxtn{width:17px;height:17px;border-radius:50%;background:var(--accent);color:#000;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.nxttx{font-size:11.5px;color:rgba(255,255,255,0.45);line-height:1.5}.nxttx strong{color:var(--accent)}
-
-/* UPGRADE */
-#upgrade-modal{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
-#upgrade-modal.show{display:flex}
-.ucard{width:100%;max-width:350px;padding:26px;text-align:center}
-.ucard-title{font-size:19px;font-weight:500;color:#fff;margin-bottom:5px;letter-spacing:-.3px}
-.ucard-sub{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:18px;line-height:1.65}
-.plan-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:13px;padding:16px;margin-bottom:14px}
-.plan-name{font-size:10px;color:var(--accent);font-weight:600;margin-bottom:4px;letter-spacing:2px;text-transform:uppercase}
-.plan-price{font-size:40px;font-weight:300;color:#fff;letter-spacing:-2px;margin-bottom:2px}
-.plan-price span{font-size:13px;color:rgba(255,255,255,0.4);font-weight:400}
-.plan-feats{margin:12px 0 0;text-align:left}
-.plan-feat{display:flex;gap:8px;align-items:center;margin-bottom:7px;font-size:12.5px;color:rgba(255,255,255,0.7)}
-.fc{color:var(--accent);font-size:11px}
-.upgrade-btn{width:100%;padding:13px;background:#fff;border:none;border-radius:11px;color:#000;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);margin-bottom:9px;transition:all .2s}
-.upgrade-btn:hover{background:rgba(255,255,255,0.9)}
-.upgrade-close{background:transparent;border:none;color:rgba(255,255,255,0.25);font-size:12.5px;cursor:pointer;font-family:var(--font)}
-
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-@keyframes skel{0%,100%{opacity:.4}50%{opacity:.8}}
-.skel{background:rgba(255,255,255,0.08);animation:skel 1.5s ease-in-out infinite}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:4px}
-::-webkit-scrollbar-track{background:transparent}
+  @media (max-width: 480px) {
+    .auth-card { padding: 28px 22px; }
+    .land-title { font-size: 2.2rem; }
+  }
 </style>
 </head>
 <body>
 
-  <script>
-// Barry handoff from thejudgy.com
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('source') === 'barry') {
-    try {
-      const html = sessionStorage.getItem('barry_handoff');
-      if (html) {
-        // Wait for app to init then inject
-        window.barryHandoff = html;
-        window.__barryReady = true;
-      }
-    } catch(e) {}
-  }
-})();
-</script>
-
-<!-- SKY BACKGROUND -->
-<div id="bg"></div>
-
-<!-- OCEAN -->
-<div id="ocean">
-  <div id="ocean-body" class="ocean-body"></div>
-  <div class="wave w1"></div>
-  <div class="wave w2"></div>
-  <div class="wave w3"></div>
-</div>
-
-<!-- STARS -->
-<div id="stars"></div>
-
-<!-- HORIZON GLOW -->
-<div id="horizon"></div>
-
 <!-- LANDING -->
 <div id="landing" class="screen">
-  <div class="land-inner">
-    <div class="time-chip">
-      <div class="time-dot"></div>
-      <span id="time-display">—</span>
-    </div>
-
-    <div class="logo">Own<span class="logo-dot">.</span>Site</div>
-
-    <div class="headline">Build any website.<br/><strong>Own it forever.</strong></div>
-
-    <p class="desc">Describe what you need. AI builds it in seconds — real design, working code. No coding. No monthly fees. No shutdowns.</p>
-
-    <div class="steps">
-      <div class="step"><div class="snum">1</div><div class="stit">Describe</div><div class="sdesc">Tell us what you need</div></div>
-      <div class="step"><div class="snum">2</div><div class="stit">AI builds</div><div class="sdesc">Full site in 20 seconds</div></div>
-      <div class="step"><div class="snum">3</div><div class="stit">Preview</div><div class="sdesc">See it live instantly</div></div>
-      <div class="step"><div class="snum">4</div><div class="stit">Own it</div><div class="sdesc">Download, deploy free</div></div>
-    </div>
-
-    <div class="trap-wrap">
-      <div class="trap-label">Escaping Lovable or Emergent?</div>
-      <div class="trap-cards">
-        <div class="tc" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.18)">
-          <div class="tc-line" style="background:#ef4444"></div>
-          <div><div class="tc-t" style="color:#fca5a5">You need a simple fix</div><div class="tc-d" style="color:rgba(252,165,165,0.6)">Change a color. Update text. Should take seconds.</div></div>
-        </div>
-        <div class="tc-arr">↓</div>
-        <div class="tc" style="background:rgba(234,179,8,0.07);border:1px solid rgba(234,179,8,0.18)">
-          <div class="tc-line" style="background:#eab308"></div>
-          <div><div class="tc-t" style="color:#fde047">They demand more credits</div><div class="tc-d" style="color:rgba(253,224,71,0.55)">Every small change burns credits. Every time.</div></div>
-        </div>
-        <div class="tc-arr">↓</div>
-        <div class="tc" style="background:rgba(139,92,246,0.07);border:1px solid rgba(139,92,246,0.18)">
-          <div class="tc-line" style="background:#8b5cf6"></div>
-          <div><div class="tc-t" style="color:#c4b5fd">Don't pay — site goes down</div><div class="tc-d" style="color:rgba(196,181,253,0.55)">Your business held hostage until you pay again.</div></div>
-        </div>
-        <div class="tc-arr">↓</div>
-        <div class="tc" style="background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.18)">
-          <div class="tc-line" style="background:#4ade80"></div>
-          <div><div class="tc-t" style="color:#86efac">OwnSite frees it</div><div class="tc-d" style="color:rgba(134,239,172,0.55)">Upload your site. We clean it. You own it forever.</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="btns">
-      <button class="btn-main" onclick="goAuth('signup')">Start building free</button>
-      <button class="btn-ghost" onclick="goAuth('signin')">Sign in</button>
-    </div>
-    <div class="fine-print">1 free build included — no credit card required</div>
+  <div class="land-badge">✦ Powered by Barry-X</div>
+  <h1 class="land-title">Build any website.<br><span>Own it forever.</span></h1>
+  <p class="land-sub">Describe what you need. Barry-X builds it clean, fast, and yours. No platform. No monthly fees. No hostage situations.</p>
+  <div class="land-btns">
+    <button class="btn-primary" onclick="goAuth('signup')">Start building free</button>
+    <button class="btn-ghost" onclick="goAuth('signin')">Sign in</button>
+  </div>
+  <div class="land-features">
+    <div class="land-feat">Full HTML in seconds</div>
+    <div class="land-feat">Deploy anywhere free</div>
+    <div class="land-feat">You own the code</div>
+    <div class="land-feat">No subscriptions</div>
   </div>
 </div>
 
 <!-- AUTH -->
 <div id="auth-screen" class="screen hidden">
-  <div class="auth-card glass">
-    <div class="auth-logo">Own<span class="logo-dot">.</span>Site</div>
+  <div class="auth-card">
+    <div class="auth-logo">Own<span style="color:var(--accent2)">.</span>Site</div>
     <div class="auth-sub" id="auth-sub">Create your free account</div>
 
-    <!-- MODE: signup/signin -->
     <div id="auth-main">
       <div class="auth-tabs">
-        <button class="auth-tab on" id="tab-signup" onclick="switchAuth('signup')">Sign up free</button>
+        <button class="auth-tab on" id="tab-signup" onclick="switchAuth('signup')">Sign up</button>
         <button class="auth-tab" id="tab-signin" onclick="switchAuth('signin')">Sign in</button>
       </div>
-      <div id="auth-err" class="auth-err"></div>
-      <div class="field"><label>Email address</label><input id="auth-email" type="email" placeholder="you@example.com"/></div>
-      <div class="field"><label>Password</label><input id="auth-password" type="password" placeholder="At least 6 characters"/></div>
-      <button class="auth-btn" id="auth-submit" onclick="submitAuth('signup')">Create free account</button>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-        <button onclick="showForgot()" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:12px;cursor:pointer;font-family:var(--font)">Forgot password?</button>
-        <button onclick="showScreen('landing')" style="background:none;border:none;color:rgba(255,255,255,0.2);font-size:12px;cursor:pointer;font-family:var(--font)">Back</button>
-      </div>
-      <p class="auth-note">1 free build. No credit card needed.</p>
+      <div class="auth-err" id="auth-err"></div>
+      <div class="auth-label">EMAIL</div>
+      <input class="auth-input" id="auth-email" type="email" placeholder="you@example.com" autocomplete="email">
+      <div class="auth-label">PASSWORD</div>
+      <input class="auth-input" id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password">
+      <button class="auth-submit" id="auth-submit" onclick="submitAuth('signup')">Create free account</button>
+      <div class="auth-forgot" onclick="showForgot()">Forgot password?</div>
     </div>
 
-    <!-- MODE: forgot password -->
-    <div id="auth-forgot" style="display:none">
-      <div id="forgot-err" class="auth-err"></div>
-      <div id="forgot-success" style="display:none;font-size:13px;color:#86efac;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:10px 12px;margin-bottom:12px;line-height:1.5"></div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:14px;line-height:1.55">Enter your email and we will send you a link to reset your password.</p>
-      <div class="field"><label>Email address</label><input id="forgot-email" type="email" placeholder="you@example.com"/></div>
-      <button class="auth-btn" id="forgot-submit" onclick="submitForgot()">Send reset link</button>
-      <div style="text-align:center;margin-top:12px">
-        <button onclick="showMain()" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:12px;cursor:pointer;font-family:var(--font)">Back to sign in</button>
-      </div>
+    <div id="auth-forgot">
+      <div class="auth-back" onclick="showMain()">← Back to sign in</div>
+      <div class="auth-err" id="forgot-err"></div>
+      <div class="auth-success" id="forgot-success"></div>
+      <div class="auth-label">YOUR EMAIL</div>
+      <input class="auth-input" id="forgot-email" type="email" placeholder="you@example.com">
+      <button class="auth-submit" id="forgot-submit" onclick="submitForgot()">Send reset link</button>
     </div>
 
-    <!-- MODE: reset password (after clicking email link) -->
-    <div id="auth-reset" style="display:none">
-      <div id="reset-err" class="auth-err"></div>
-      <div id="reset-success" style="display:none;font-size:13px;color:#86efac;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:10px 12px;margin-bottom:12px;line-height:1.5"></div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:14px;line-height:1.55">Enter your new password below.</p>
-      <div class="field"><label>New password</label><input id="reset-password" type="password" placeholder="At least 6 characters"/></div>
-      <div class="field"><label>Confirm new password</label><input id="reset-confirm" type="password" placeholder="Repeat your password"/></div>
-      <button class="auth-btn" id="reset-submit" onclick="submitReset()">Update password</button>
+    <div id="auth-reset">
+      <div class="auth-err" id="reset-err"></div>
+      <div class="auth-success" id="reset-success"></div>
+      <div class="auth-label">NEW PASSWORD</div>
+      <input class="auth-input" id="reset-password" type="password" placeholder="At least 6 characters">
+      <div class="auth-label">CONFIRM PASSWORD</div>
+      <input class="auth-input" id="reset-confirm" type="password" placeholder="Repeat password">
+      <button class="auth-submit" id="reset-submit" onclick="submitReset()">Update password</button>
     </div>
-
   </div>
 </div>
 
 <!-- APP -->
 <div id="app-screen" class="screen hidden" style="padding:0">
-  <div class="app-inner">
+  <div id="app-inner" style="display:flex;flex-direction:column;height:100vh;">
     <div id="bar">
       <div class="blogo">Own<span class="blogo-dot">.</span>Site</div>
       <button class="tab on" id="t-build" onclick="show('build')">Build</button>
       <button class="tab" id="t-editor" onclick="show('editor')">Editor</button>
       <button class="tab" id="t-preview" onclick="show('preview')">Preview</button>
-      <button class="tab" id="t-fix" onclick="show('fix')">Fix Site</button>
+      <button class="tab" id="t-fix" onclick="show('fix')">Own It</button>
       <div id="tr">
-        <button id="ab" onclick="applyFix()">Apply fix</button>
+        <button id="ab" onclick="applyFix()">Apply</button>
         <div class="ubadge" onclick="signOut()"><div class="udot"></div><span id="user-display">Account</span></div>
       </div>
     </div>
     <div id="con">
 
+      <!-- BUILD -->
       <div id="build-pane">
         <div class="bhero">
-          <div class="bht">Describe any website — AI builds it for you</div>
-          <div class="bhs">No coding needed. Full working website in seconds. You own it forever.</div>
+          <div class="bht">Barry-X builds. You own it.</div>
+          <div class="bhs">Describe any website. He'll have opinions. The code will be flawless.</div>
           <div class="ub" id="usage-bar"><div class="ub-t">Loading...</div></div>
         </div>
         <div class="tsec">
-          <div class="tlab">Templates</div>
+          <div class="tlab">Quick start</div>
           <div class="trow">
-            <button class="tmpl" onclick="qs('Build me a modern SaaS landing page for a project management tool called Spark. Dark theme with purple and blue gradients. Hero with email signup, 3 key features, how it works in 3 steps, pricing with Free and Pro at $29/month, testimonials, footer.')">SaaS</button>
-            <button class="tmpl" onclick="qs('Build me a portfolio for freelance UI/UX designer Alex Rivera. Light minimal theme. Hero, about, services, portfolio grid 6 projects, testimonials, contact form.')">Portfolio</button>
-            <button class="tmpl" onclick="qs('Build a restaurant website for Italian place La Stella. Warm dark theme gold accents. Hero with reservation button, our story, menu with categories, gallery, hours, reservation form, footer.')">Restaurant</button>
-            <button class="tmpl" onclick="qs('Build an e-commerce landing page for skincare brand Glow. Clean white and pink. Hero with promo banner, products grid 6 items with prices, bestsellers, testimonials, newsletter signup.')">Store</button>
-            <button class="tmpl" onclick="qs('Build a mobile app landing page for fitness app FitPulse. Dark energetic theme orange gradients. Hero with screenshots, 4 features, how it works, testimonials, pricing, App Store and Google Play buttons.')">App</button>
-            <button class="tmpl" onclick="qs('Build a coming soon page for AI startup Nova. Dark space theme purple. Countdown timer 30 days, what we are building, email waitlist, 3 early access benefits, social links.')">Coming Soon</button>
-            <button class="tmpl" onclick="qs('Build a personal brand site for business coach Sarah Chen. Professional clean theme teal. Hero, about, 3 service packages with prices, client wins, free resource signup, booking form.')">Coach</button>
-            <button class="tmpl" onclick="qs('Build a digital agency website for Pixel Studio. Bold dark theme neon green. Animated hero, services, portfolio 4 case studies, process steps, team section, client logos, contact form.')">Agency</button>
+            <button class="tmpl" onclick="qs('Build me a modern SaaS landing page for a project management tool called Spark. Dark theme with purple gradients. Hero with email signup, 3 key features, pricing with Free and Pro at $29/month, footer.')">SaaS</button>
+            <button class="tmpl" onclick="qs('Build a portfolio for freelance UI/UX designer Alex Rivera. Light minimal theme. Hero, about, services, portfolio grid, contact form.')">Portfolio</button>
+            <button class="tmpl" onclick="qs('Build a restaurant website for Italian place La Stella. Warm dark theme gold accents. Hero with reservation button, menu, gallery, hours, footer.')">Restaurant</button>
+            <button class="tmpl" onclick="qs('Build an e-commerce landing page for skincare brand Glow. Clean white and pink. Hero, products grid, testimonials, newsletter signup.')">Store</button>
+            <button class="tmpl" onclick="qs('Build a mobile app landing page for fitness app FitPulse. Dark energetic theme. Hero with screenshots, features, pricing, App Store and Google Play buttons.')">App</button>
+            <button class="tmpl" onclick="qs('Build a coming soon page for AI startup Nova. Dark space theme. Countdown timer, what we are building, email waitlist, early access benefits.')">Coming Soon</button>
+            <button class="tmpl" onclick="qs('Build a personal brand site for business coach Sarah Chen. Professional clean teal theme. Hero, about, 3 service packages with prices, client wins, booking form.')">Coach</button>
+            <button class="tmpl" onclick="qs('Build a digital agency website for Pixel Studio. Bold dark theme neon green. Hero, services, portfolio, process, team, contact form.')">Agency</button>
           </div>
         </div>
         <div id="msgs"></div>
         <div id="thinking">
-          <div class="tbub" style="padding:2px 13px 6px">
-            <div class="av ai">AI</div>
-            <div class="ttext">Building your website <div class="da"><span></span><span></span><span></span></div></div>
+          <div class="tbub">
+            <div class="av ai">BX</div>
+            <div class="ttext">Barry-X is building... <div class="da"><span></span><span></span><span></span></div></div>
           </div>
+        </div>
+        <div id="building-preview">
+          <div class="build-icon">🔨</div>
+          <div class="build-status" id="build-status">Analyzing your description...</div>
+          <div class="build-bar"><div class="build-bar-fill" id="build-progress"></div></div>
         </div>
         <div id="ir">
           <div class="irw">
-            <textarea id="mi" rows="2" placeholder="Describe your website — business name, what it does, sections needed, style..."></textarea>
-            <button id="sb" onclick="send()">Build</button>
+            <textarea id="mi" rows="2" placeholder="Tell Barry-X what you need. Be specific. He hates vague."></textarea>
+            <button id="sb" onclick="send()">➤</button>
           </div>
-          <div class="ihint">More detail = better result. Press Enter to build.</div>
+          <div class="ihint">More detail = better result. He'll still comment either way.</div>
         </div>
       </div>
 
+      <!-- EDITOR -->
       <div id="editor-pane">
         <div class="ph">
           <div class="phl"><div class="pt">Code Editor</div><div class="ps">Edit your website directly</div></div>
@@ -451,46 +338,40 @@ html,body{height:100%;font-family:var(--font);overflow:hidden}
         <textarea id="ca" spellcheck="false"></textarea>
       </div>
 
+      <!-- PREVIEW -->
       <div id="preview-pane">
         <div class="ptb">
           <div class="d3"><div class="dd" style="background:#ff5f57"></div><div class="dd" style="background:#ffbd2e"></div><div class="dd" style="background:#28c840"></div></div>
           <div class="urlb">ownsite — live preview</div>
-          <button class="pb" onclick="show('editor')" style="padding:4px 10px;font-size:10.5px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;font-family:var(--font)">Edit</button>
-          <button class="pb p" onclick="dlCode()" style="padding:4px 10px;font-size:10.5px;border-radius:6px;cursor:pointer;font-family:var(--font)">Download</button>
+          <button class="pb" onclick="show('editor')" style="padding:4px 10px;font-size:11px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font)">Edit</button>
+          <button class="pb p" onclick="dlCode()" style="padding:4px 10px;font-size:11px;border-radius:6px;cursor:pointer;font-family:var(--font)">Download</button>
         </div>
         <iframe id="pf" sandbox="allow-scripts allow-same-origin"></iframe>
       </div>
 
+      <!-- OWN IT -->
       <div id="fix-pane">
         <div class="fiw">
           <div class="fhero">
-            <div class="fht">Free your site from any builder</div>
-            <div class="fhs">Trapped on Lovable, Emergent, Wix, Framer or Bolt? Upload your exported HTML. We strip all platform lock-in and return code you own forever. No more credit threats. No more shutdowns.</div>
+            <div class="fht">Don't rescue it. Rebuild it.</div>
+            <div class="fhs">Tired of Lovable, Wix, Framer or Bolt holding your site hostage? Don't bother exporting. Just tell Barry-X what your site does — he'll rebuild it clean, fast, and yours forever. No platform. No monthly fees. No shutdowns.</div>
           </div>
           <div class="pchips">
-            <div class="pc" style="color:#fbbf24;border-color:#fbbf2440">Wix</div>
-            <div class="pc" style="color:#60a5fa;border-color:#60a5fa40">Framer</div>
-            <div class="pc" style="color:#c084fc;border-color:#c084fc40">Lovable</div>
-            <div class="pc" style="color:#fb923c;border-color:#fb923c40">Emergent</div>
-            <div class="pc" style="color:#fb923c;border-color:#fb923c40">Bolt</div>
-            <div class="pc" style="color:#818cf8;border-color:#818cf840">Webflow</div>
-            <div class="pc" style="color:#94a3b8;border-color:#94a3b840">Squarespace</div>
+            <div class="pc" style="color:#fbbf24;border-color:#fbbf2440">Leaving Wix</div>
+            <div class="pc" style="color:#60a5fa;border-color:#60a5fa40">Leaving Framer</div>
+            <div class="pc" style="color:#c084fc;border-color:#c084fc40">Leaving Lovable</div>
+            <div class="pc" style="color:#fb923c;border-color:#fb923c40">Leaving Bolt</div>
+            <div class="pc" style="color:#818cf8;border-color:#818cf840">Leaving Webflow</div>
+            <div class="pc" style="color:#94a3b8;border-color:#94a3b840">Leaving Squarespace</div>
           </div>
           <div class="exp">
-            <div class="expt">What happens to your file</div>
-            <div class="expr"><div class="expic">01</div><div class="exptx"><strong>Platform detected</strong> — identifies which builder your site came from</div></div>
-            <div class="expr"><div class="expic">02</div><div class="exptx"><strong>Lock-in removed</strong> — strips platform scripts, CDN links, shutdown triggers</div></div>
-            <div class="expr"><div class="expic">03</div><div class="exptx"><strong>Code cleaned</strong> — rewritten as pure portable HTML, CSS and JavaScript</div></div>
-            <div class="expr"><div class="expic">04</div><div class="exptx"><strong>File returned</strong> — deploy anywhere, forever, for free</div></div>
+            <div class="expt">How it works</div>
+            <div class="expr"><div class="expic">01</div><div class="exptx"><strong>Describe your old site</strong> — what it did, what sections it had, what you hated about it</div></div>
+            <div class="expr"><div class="expic">02</div><div class="exptx"><strong>Barry-X rebuilds it</strong> — clean HTML, embedded CSS, no external dependencies, no lock-in</div></div>
+            <div class="expr"><div class="expic">03</div><div class="exptx"><strong>You own it forever</strong> — deploy anywhere free, no subscriptions, no hostage situations</div></div>
           </div>
-          <div id="dz" onclick="document.getElementById('fi').click()" ondragover="event.preventDefault();this.style.borderColor='rgba(255,255,255,0.4)'" ondragleave="this.style.borderColor='rgba(255,255,255,0.18)'" ondrop="dropFile(event)">
-            <input id="fi" type="file" accept=".html,.htm,.txt" onchange="readFile(this.files[0])"/>
-            <div style="font-size:28px;margin-bottom:11px;color:rgba(255,255,255,0.3)">↑</div>
-            <div style="font-size:14px;color:#fff;font-weight:500;margin-bottom:4px">Drop your HTML export here</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:14px">or click to choose from your computer</div>
-            <div style="display:inline-block;padding:8px 20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:9px;color:rgba(255,255,255,0.7);font-size:12.5px">Choose file</div>
-          </div>
-          <div id="er"></div>
+          <textarea id="rebuild-desc" rows="5" placeholder="Describe your old site — business name, what it did, sections you want, style you liked, what platform you're leaving..."></textarea>
+          <button class="rebuild-btn" onclick="rebuildSite()">🔨 Barry-X, I want to own it</button>
         </div>
       </div>
 
@@ -498,17 +379,17 @@ html,body{height:100%;font-family:var(--font);overflow:hidden}
   </div>
 </div>
 
-<!-- UPGRADE -->
+<!-- UPGRADE MODAL -->
 <div id="upgrade-modal">
-  <div class="ucard glass">
+  <div class="ucard">
     <div class="ucard-title">Upgrade to Pro</div>
-    <div class="ucard-sub">You've used your 1 free build. Upgrade for unlimited websites and fixes.</div>
+    <div class="ucard-sub">You've used your free build. Barry-X has more to say. Upgrade for unlimited builds.</div>
     <div class="plan-box">
-      <div class="plan-name">Pro</div>
+      <div class="plan-name">Pro — Barry-X Unlimited</div>
       <div class="plan-price">$12<span>/month</span></div>
       <div class="plan-feats">
         <div class="plan-feat"><span class="fc">+</span>Unlimited website builds</div>
-        <div class="plan-feat"><span class="fc">+</span>Unlimited site fixes</div>
+        <div class="plan-feat"><span class="fc">+</span>Unlimited Own It rebuilds</div>
         <div class="plan-feat"><span class="fc">+</span>Download all your sites</div>
         <div class="plan-feat"><span class="fc">+</span>No API key ever needed</div>
         <div class="plan-feat"><span class="fc">+</span>Cancel anytime</div>
@@ -521,321 +402,228 @@ html,body{height:100%;font-family:var(--font);overflow:hidden}
 
 <script>
 const WORKER_URL  = 'https://ownsite-api.infomomtelo.workers.dev';
-const SUPA_URL    = 'https://dmemzljerldzeiwqfxzp.supabase.co';
-const SUPA_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtZW16bGplcmxkemVpd3FmeHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NDMxNzgsImV4cCI6MjA5NDIxOTE3OH0.u4FL1mk555dUesVNjF58pXwkQlvvQYQgR5JpcxRtB40';
+const SUPA_URL    = 'https://nwlhsshvqmbhemhxcran.supabase.co';
+const SUPA_ANON   = 'YOUR_NWLHSSHVQMBHEMHXCRAN_ANON_KEY';
 const STRIPE_LINK = 'https://buy.stripe.com/9B64gBdbTgMAdBb9H59Ve01';
 
 const { createClient } = supabase;
 const sb = createClient(SUPA_URL, SUPA_ANON);
-let currentUser=null,userPlan='free',buildsUsed=0,fixCode=null,busy=false,allMsgs=[];
+let currentUser=null, userPlan='free', buildsUsed=0, fixCode=null, busy=false, allMsgs=[];
 
-// ── SKY & OCEAN ─────────────────────────────────────
-const SKIES = {
-  night:     {bg:'sky-night',    ocean:'ocean-night', stars:true,  horizon:'none'},
-  dawn:      {bg:'sky-dawn',     ocean:'ocean-night', stars:false, horizon:'linear-gradient(to top,rgba(193,122,58,0.4),transparent)'},
-  morning:   {bg:'sky-morning',  ocean:'ocean-day',   stars:false, horizon:'linear-gradient(to top,rgba(126,200,232,0.15),transparent)'},
-  noon:      {bg:'sky-noon',     ocean:'ocean-day',   stars:false, horizon:'none'},
-  afternoon: {bg:'sky-afternoon',ocean:'ocean-day',   stars:false, horizon:'none'},
-  sunset:    {bg:'sky-sunset',   ocean:'ocean-night', stars:false, horizon:'linear-gradient(to top,rgba(212,101,42,0.5),transparent)'},
-  dusk:      {bg:'sky-dusk',     ocean:'ocean-night', stars:true,  horizon:'linear-gradient(to top,rgba(42,61,82,0.6),transparent)'},
-};
+// ── SCREENS ──
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
+function goAuth(mode){ switchAuth(mode); showScreen('auth-screen'); }
 
-function getSkyPeriod(h){
-  if(h>=22||h<4)  return 'night';
-  if(h>=4&&h<6)   return 'dawn';
-  if(h>=6&&h<10)  return 'morning';
-  if(h>=10&&h<14) return 'noon';
-  if(h>=14&&h<17) return 'afternoon';
-  if(h>=17&&h<20) return 'sunset';
-  return 'dusk';
-}
-
-function makeStars(){
-  const c=document.getElementById('stars');
-  c.innerHTML='';
-  for(let i=0;i<120;i++){
-    const s=document.createElement('div');
-    s.className='star';
-    const size=Math.random()*2+0.5;
-    s.style.cssText=`width:${size}px;height:${size}px;top:${Math.random()*70}%;left:${Math.random()*100}%;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;
-    c.appendChild(s);
-  }
-}
-
-function applySky(h){
-  const period=getSkyPeriod(h);
-  const sky=SKIES[period];
-  const bg=document.getElementById('bg');
-  const ob=document.getElementById('ocean-body');
-  const stars=document.getElementById('stars');
-  const horizon=document.getElementById('horizon');
-
-  bg.className=sky.bg;
-  ob.className='ocean-body '+sky.ocean;
-  stars.style.opacity=sky.stars?'1':'0';
-  horizon.style.background=sky.horizon;
-  if(sky.horizon!=='none'){
-    horizon.style.bottom='38%';
-    horizon.style.top='auto';
-  }
-  if(sky.stars&&stars.children.length===0) makeStars();
-}
-
-function updateTime(){
-  const now=new Date();
-  const h=now.getHours(),m=now.getMinutes().toString().padStart(2,'0');
-  const ampm=h>=12?'PM':'AM',h12=h%12||12;
-  const el=document.getElementById('time-display');
-  if(el) el.textContent=`${h12}:${m} ${ampm}`;
-  applySky(h);
-}
-updateTime();
-setInterval(updateTime,30000);
-
-// ── CORE ─────────────────────────────────────────────
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
-function goAuth(mode){switchAuth(mode);showScreen('auth-screen');}
-
+// ── AUTH ──
 function switchAuth(mode){
-  document.getElementById('tab-signup').classList.toggle('on',mode==='signup');
-  document.getElementById('tab-signin').classList.toggle('on',mode==='signin');
-  document.getElementById('auth-sub').textContent=mode==='signup'?'Create your free account':'Welcome back';
-  document.getElementById('auth-submit').textContent=mode==='signup'?'Create free account':'Sign in';
-  document.getElementById('auth-submit').onclick=()=>submitAuth(mode);
-  document.getElementById('auth-err').style.display='none';
+  document.getElementById('tab-signup').classList.toggle('on', mode==='signup');
+  document.getElementById('tab-signin').classList.toggle('on', mode==='signin');
+  document.getElementById('auth-sub').textContent = mode==='signup' ? 'Create your free account' : 'Welcome back';
+  document.getElementById('auth-submit').textContent = mode==='signup' ? 'Create free account' : 'Sign in';
+  document.getElementById('auth-submit').onclick = ()=>submitAuth(mode);
+  document.getElementById('auth-err').style.display = 'none';
 }
 
 async function submitAuth(mode){
-  const email=document.getElementById('auth-email').value.trim();
-  const password=document.getElementById('auth-password').value;
-  const btn=document.getElementById('auth-submit');
-  document.getElementById('auth-err').style.display='none';
-  if(!email||!password){showAuthErr('Please enter your email and password.');return;}
-  if(password.length<6){showAuthErr('Password must be at least 6 characters.');return;}
-  btn.disabled=true;btn.textContent=mode==='signup'?'Creating...':'Signing in...';
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const btn = document.getElementById('auth-submit');
+  document.getElementById('auth-err').style.display = 'none';
+  if(!email||!password){ showAuthErr('Please enter your email and password.'); return; }
+  if(password.length<6){ showAuthErr('Password must be at least 6 characters.'); return; }
+  btn.disabled=true; btn.textContent = mode==='signup' ? 'Creating...' : 'Signing in...';
   try{
-    const r=mode==='signup'
-      ?await sb.auth.signUp({email,password})
-      :await sb.auth.signInWithPassword({email,password});
-    if(r.error)throw r.error;
-    currentUser=r.data.user;await loadUserData();launchApp();
-  }catch(e){showAuthErr(e.message||'Something went wrong.');}
-  btn.disabled=false;btn.textContent=mode==='signup'?'Create free account':'Sign in';
+    const r = mode==='signup'
+      ? await sb.auth.signUp({email,password})
+      : await sb.auth.signInWithPassword({email,password});
+    if(r.error) throw r.error;
+    currentUser = r.data.user;
+    await loadUserData();
+    launchApp();
+  }catch(e){ showAuthErr(e.message||'Something went wrong.'); }
+  btn.disabled=false;
+  btn.textContent = mode==='signup' ? 'Create free account' : 'Sign in';
 }
-function showAuthErr(m){const e=document.getElementById('auth-err');e.textContent=m;e.style.display='block';}
-async function signOut(){if(!confirm('Sign out?'))return;await sb.auth.signOut();currentUser=null;showScreen('landing');}
+
+function showAuthErr(m){ const e=document.getElementById('auth-err'); e.textContent=m; e.style.display='block'; }
+
+async function signOut(){ if(!confirm('Sign out?')) return; await sb.auth.signOut(); currentUser=null; showScreen('landing'); }
 
 async function loadUserData(){
-  if(!currentUser)return;
-  const{data}=await sb.from('profiles').select('plan,builds_used').eq('id',currentUser.id).single();
-  if(data){userPlan=data.plan||'free';buildsUsed=data.builds_used||0;}
+  if(!currentUser) return;
+  const {data} = await sb.from('profiles').select('plan,builds_used').eq('id',currentUser.id).single();
+  if(data){ userPlan=data.plan||'free'; buildsUsed=data.builds_used||0; }
   updateUsageBar();
 }
+
 function updateUsageBar(){
-  const bar=document.getElementById('usage-bar');if(!bar)return;
+  const bar = document.getElementById('usage-bar'); if(!bar) return;
   if(userPlan==='pro'){
-    bar.innerHTML=`<div class="ub-t"><strong>Pro</strong> — Unlimited builds and fixes</div>`;
+    bar.innerHTML = `<div class="ub-t"><strong>Pro</strong> — Unlimited builds</div>`;
   } else {
-    const rem=Math.max(0,1-buildsUsed);
-    bar.innerHTML=`<div class="ub-t">${rem>0?`<strong>${rem} free build</strong> remaining`:'Free build used — upgrade for unlimited'}</div><button class="ub-btn" onclick="showUpgrade()">Upgrade</button>`;
+    const rem = Math.max(0,1-buildsUsed);
+    bar.innerHTML = `<div class="ub-t">${rem>0?`<strong>${rem} free build</strong> remaining`:'Free build used — upgrade for unlimited'}</div><button class="ub-btn" onclick="showUpgrade()">Upgrade</button>`;
   }
-  const el=document.getElementById('user-display');
-  if(el&&currentUser)el.textContent=currentUser.email?.split('@')[0]||'Account';
+  const el = document.getElementById('user-display');
+  if(el&&currentUser) el.textContent = currentUser.email?.split('@')[0]||'Account';
 }
-  function launchApp(){
+
+function launchApp(){
   showScreen('app-screen');
   allMsgs=[];
 
   // Barry handoff from thejudgy.com
-  const params=new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(window.location.search);
   if(params.get('source')==='barry'){
     try{
-      const html=sessionStorage.getItem('barry_handoff');
+      const html = sessionStorage.getItem('barry_handoff');
       if(html){
-        document.getElementById('ca').value=html;
-        addMsg('ai','Barry sent this over from The Judgy. Your landing page is loaded — click Preview to see it, Editor to tweak it, or Download to save it.');
+        document.getElementById('ca').value = html;
+        addMsg('ai', "Barry sent this over from The Judgy.\n\nYour landing page is loaded. Click Preview to see it, Editor to tweak it, or Download to save it.\n\nYou're welcome, by the way.");
         show('preview');
         return;
       }
     }catch(e){}
   }
 
-  addMsg('ai','Welcome to OwnSite.\n\nBuild — Describe any website. AI builds it for you in seconds.\nFix Site — Upload HTML from Lovable, Emergent, Wix or any builder. We free it.\nEditor — View and edit your code.\nPreview — See your site live.\n\nSelect a template above or describe your website below to get started.');
+  addMsg('ai', "Barry-X here. Ex-husband of The Judgy. Yes, really.\n\nDescribe what you want built. I'll make it perfect. I always do.\n\nOr use the Own It tab if you're escaping Lovable, Wix, or whatever mess you're in. I've seen things.");
 }
 
-}
-
+// ── TABS ──
 function show(t){
   ['build','editor','preview','fix'].forEach(id=>{
-    const p=document.getElementById(id+'-pane');if(p)p.style.display='none';
-    const b=document.getElementById('t-'+id);if(b)b.classList.remove('on');
+    const p = document.getElementById(id+'-pane'); if(p) p.style.display='none';
+    const b = document.getElementById('t-'+id); if(b) b.classList.remove('on');
   });
-  const pane=document.getElementById(t+'-pane');if(!pane)return;
-  pane.style.display=(t==='build'||t==='editor'||t==='preview')?'flex':'block';
-  if(t==='preview')document.getElementById('pf').srcdoc=document.getElementById('ca').value;
-  const b=document.getElementById('t-'+t);if(b)b.classList.add('on');
-  if(t==='build'){setTimeout(()=>{const m=document.getElementById('msgs');if(m)m.scrollTop=m.scrollHeight;},50);}
+  const pane = document.getElementById(t+'-pane'); if(!pane) return;
+  pane.style.display = (t==='build'||t==='editor'||t==='preview') ? 'flex' : 'block';
+  if(t==='preview') document.getElementById('pf').srcdoc = document.getElementById('ca').value;
+  const b = document.getElementById('t-'+t); if(b) b.classList.add('on');
+  if(t==='build'){ setTimeout(()=>{ const m=document.getElementById('msgs'); if(m) m.scrollTop=m.scrollHeight; },50); }
 }
 
-function addMsg(r,t,c){allMsgs.push({role:r,text:t,code:c});renderMsgs();}
+// ── MESSAGES ──
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function addMsg(r,t,c){ allMsgs.push({role:r,text:t,code:c}); renderMsgs(); }
 function renderMsgs(){
-  const el=document.getElementById('msgs');
-  el.innerHTML=allMsgs.map(m=>{
-    const u=m.role==='user';
-    let inner=m.code
-      ?`<div class="cb"><button class="cpb" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('pre').textContent)">copy</button><pre style="margin:0">${esc(m.code)}</pre></div>`
-      :`<div class="bub">${esc(m.text)}</div>`;
-    return `<div class="msg ${u?'u':''}"><div class="av ${u?'u':'ai'}">${u?'You':'AI'}</div><div style="max-width:82%;display:flex;flex-direction:column;gap:5px">${inner}</div></div>`;
+  const el = document.getElementById('msgs');
+  el.innerHTML = allMsgs.map(m=>{
+    const u = m.role==='user';
+    let inner = m.code
+      ? `<div class="cb"><button class="cpb" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('pre').textContent)">copy</button><pre>${esc(m.code)}</pre></div>`
+      : `<div class="bub">${esc(m.text)}</div>`;
+    return `<div class="msg ${u?'u':''}"><div class="av ${u?'u':'ai'}">${u?'You':'BX'}</div><div style="max-width:82%;display:flex;flex-direction:column;gap:5px">${inner}</div></div>`;
   }).join('');
-  el.scrollTop=el.scrollHeight;
+  el.scrollTop = el.scrollHeight;
 }
+
+// ── BUILD ANIMATION ──
+let buildTimer=null;
+const BUILD_STEPS=[
+  {msg:'Fine. Analyzing your description...',pct:10},
+  {msg:'Designing the layout. Obviously.',pct:22},
+  {msg:'Writing the HTML structure...',pct:38},
+  {msg:'Styling with CSS. This part I enjoy.',pct:52},
+  {msg:'Adding the finishing touches...',pct:68},
+  {msg:'Polishing. You\'re welcome in advance.',pct:82},
+  {msg:'Almost done. As one does.',pct:93},
+];
+let buildStep=0;
+
 function setBusy(on){
   busy=on;
-  const msgs=document.getElementById('msgs');
-  const preview=document.getElementById('building-preview');
-  const s=document.getElementById('sb');
+  const msgs = document.getElementById('msgs');
+  const preview = document.getElementById('building-preview');
+  const s = document.getElementById('sb');
   s.disabled=on;
-  s.textContent=on?'Building...':'Build';
   if(on){
     msgs.style.display='none';
     preview.style.display='flex';
-    animateBuild();
+    buildStep=0;
+    const status = document.getElementById('build-status');
+    const progress = document.getElementById('build-progress');
+    if(status) status.textContent = BUILD_STEPS[0].msg;
+    if(progress) progress.style.width = BUILD_STEPS[0].pct+'%';
+    buildTimer = setInterval(()=>{
+      buildStep++;
+      if(buildStep>=BUILD_STEPS.length){ clearInterval(buildTimer); return; }
+      if(status) status.textContent = BUILD_STEPS[buildStep].msg;
+      if(progress) progress.style.width = BUILD_STEPS[buildStep].pct+'%';
+    }, 2400);
   } else {
-    msgs.style.display='block';
+    msgs.style.display='flex';
     preview.style.display='none';
     if(buildTimer) clearInterval(buildTimer);
   }
 }
 
-let buildTimer=null;
-const BUILD_STEPS=[
-  {msg:'Analyzing your description...',pct:10},
-  {msg:'Designing the layout...',pct:22},
-  {msg:'Writing the HTML structure...',pct:38},
-  {msg:'Styling with CSS...',pct:52},
-  {msg:'Adding animations...',pct:65},
-  {msg:'Building sections...',pct:75},
-  {msg:'Polishing the design...',pct:85},
-  {msg:'Almost ready...',pct:95},
-];
-let buildStep=0;
-
-function animateBuild(){
-  buildStep=0;
-  const status=document.getElementById('build-status');
-  const progress=document.getElementById('build-progress');
-  if(status) status.textContent=BUILD_STEPS[0].msg;
-  if(progress) progress.style.width=BUILD_STEPS[0].pct+'%';
-  buildTimer=setInterval(()=>{
-    buildStep++;
-    if(buildStep>=BUILD_STEPS.length){clearInterval(buildTimer);return;}
-    const step=BUILD_STEPS[buildStep];
-    if(status) status.textContent=step.msg;
-    if(progress) progress.style.width=step.pct+'%';
-  },2200);
-}
-
+// ── SEND ──
 async function send(){
-  if(busy)return;
-  const inp=document.getElementById('mi');const txt=inp.value.trim();if(!txt)return;
-  if(userPlan==='free'&&buildsUsed>=1){showUpgrade();return;}
-  inp.value='';addMsg('user',txt);setBusy(true);
+  if(busy) return;
+  const inp = document.getElementById('mi');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  if(userPlan==='free'&&buildsUsed>=1){ showUpgrade(); return; }
+  inp.value='';
+  addMsg('user',txt);
+  setBusy(true);
   try{
-    // Refresh session first to ensure valid token
-    const{data:{session},error:sessionError}=await sb.auth.getSession();
+    const {data:{session},error:sessionError} = await sb.auth.getSession();
+    let token = session?.access_token;
     if(sessionError||!session){
-      // Try to refresh
-      const{data:refreshData,error:refreshError}=await sb.auth.refreshSession();
-      if(refreshError||!refreshData.session){
-        addMsg('ai','Your session expired. Please sign out and sign back in.');
-        setBusy(false);return;
-      }
-      const token=refreshData.session.access_token;
-      const res=await fetch(`${WORKER_URL}/build`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({description:txt,token})});
-      const data=await res.json();
-      if(data.error==='upgrade_required'){addMsg('ai','You have used your 1 free build. Upgrade to Pro for unlimited.');showUpgrade();setBusy(false);return;}
-      if(data.error)throw new Error(data.error);
-      addMsg('ai',null,data.html);fixCode=data.html;
-      document.getElementById('ab').style.display='block';
-      buildsUsed=data.buildsUsed||buildsUsed+1;updateUsageBar();
-      addMsg('ai','Your website is ready.\n\nClick "Apply fix" above to see it live in Preview.\nUse Editor to change any text or colors.\nClick Download to save it.\nGo to netlify.com/drop for a free live URL in 60 seconds.');
-      setBusy(false);return;
+      const {data:r} = await sb.auth.refreshSession();
+      token = r?.session?.access_token;
+      if(!token){ addMsg('ai','Session expired. Please sign out and back in.'); setBusy(false); return; }
     }
-    const res=await fetch(`${WORKER_URL}/build`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({description:txt,token:session.access_token})});
-    const data=await res.json();
-    if(data.error==='upgrade_required'){addMsg('ai','You have used your 1 free build. Upgrade to Pro for unlimited.');showUpgrade();setBusy(false);return;}
-    if(data.error)throw new Error(data.error);
-    addMsg('ai',null,data.html);fixCode=data.html;
+    const res = await fetch(`${WORKER_URL}/build`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({description:txt, token})
+    });
+    const data = await res.json();
+    if(data.error==='upgrade_required'){ addMsg('ai','You\'ve used your free build. Upgrade for unlimited.'); showUpgrade(); setBusy(false); return; }
+    if(data.error) throw new Error(data.error);
+    addMsg('ai', null, data.html);
+    fixCode = data.html;
     document.getElementById('ab').style.display='block';
-    buildsUsed=data.buildsUsed||buildsUsed+1;updateUsageBar();
-    addMsg('ai','Your website is ready.\n\nClick "Apply fix" above to see it live in Preview.\nUse Editor to change any text or colors.\nClick Download to save it.\nGo to netlify.com/drop for a free live URL in 60 seconds.');
-  }catch(e){addMsg('ai','Something went wrong: '+e.message);}
+    buildsUsed = data.buildsUsed||buildsUsed+1;
+    updateUsageBar();
+    addMsg('ai', "Done. Click Apply above to preview it.\nEditor to change anything.\nDownload to save it.\nDeploy free at netlify.com/drop.\n\nYou're welcome.");
+  }catch(e){ addMsg('ai','Something went wrong: '+e.message); }
   setBusy(false);
 }
-function qs(t){document.getElementById('mi').value=t;send();}
-function applyFix(){if(!fixCode)return;document.getElementById('ca').value=fixCode;fixCode=null;document.getElementById('ab').style.display='none';show('preview');}
-document.getElementById('mi').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}};
 
-function dropFile(e){e.preventDefault();document.getElementById('dz').style.borderColor='rgba(255,255,255,0.18)';readFile(e.dataTransfer.files[0]);}
-async function readFile(file){
-  if(!file)return;
-  if(userPlan==='free'&&buildsUsed>=1){showUpgrade();return;}
-  const res=document.getElementById('er');res.style.display='block';
-  res.innerHTML=`<div style="text-align:center;padding:36px;background:rgba(0,0,0,0.3);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:13px;margin-top:13px"><div style="font-size:24px;display:inline-block;animation:spin 1.2s linear infinite;margin-bottom:11px;color:rgba(255,255,255,0.4)">↻</div><div style="font-size:14px;color:#fff;font-weight:500;margin-bottom:3px">Analyzing ${esc(file.name)}</div><div style="font-size:11.5px;color:rgba(255,255,255,0.4)">Detecting platform — removing lock-in — cleaning code</div></div>`;
-  const reader=new FileReader();
-  reader.onload=async e=>{
-    const html=e.target.result;
-    try{
-      const{data:{session}}=await sb.auth.getSession();
-      const response=await fetch(`${WORKER_URL}/fix`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({html:html.slice(0,12000),filename:file.name,token:session?.access_token})});
-      const data=await response.json();
-      if(data.error==='upgrade_required'){showUpgrade();return;}
-      if(data.error)throw new Error(data.error);
-      const clean=data.html;
-      const low=html.toLowerCase();
-      let platform='Unknown',pc='rgba(255,255,255,0.5)';
-      if(low.includes('wix.com')||low.includes('_wixcdn')){platform='Wix';pc='#fbbf24';}
-      else if(low.includes('framer.com')){platform='Framer';pc='#60a5fa';}
-      else if(low.includes('lovable')){platform='Lovable';pc='#c084fc';}
-      else if(low.includes('emergent')){platform='Emergent';pc='#fb923c';}
-      else if(low.includes('bolt.new')){platform='Bolt';pc='#fb923c';}
-      else if(low.includes('squarespace')){platform='Squarespace';pc='#94a3b8';}
-      else if(low.includes('webflow')){platform='Webflow';pc='#818cf8';}
-      window._clean=clean;buildsUsed++;updateUsageBar();
-      res.innerHTML=`
-        <div class="rc" style="margin-top:13px">
-          <div class="rh"><div class="rf">${esc(file.name)}</div><span class="rp" style="color:${pc};background:${pc}18;border:1px solid ${pc}44">${esc(platform)}</span></div>
-          <div class="rn">Cleaned and freed from ${esc(platform)}. All platform lock-in removed.</div>
-        </div>
-        ${clean?`<div class="cpr">${esc(clean.slice(0,1200))}${clean.length>1200?'\n// ...':''}</div>`:''}
-        <div class="ract">
-          ${clean?`<button onclick="dlClean()" class="rb" style="background:#fff;border-color:#fff;color:#000">Download clean site</button>
-          <button onclick="toEditor()" class="rb" style="background:transparent;border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.7)">Open in editor</button>`:''}
-          <button onclick="resetEx()" class="rb" style="background:transparent;border-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.4)">Fix another</button>
-        </div>
-        <div class="nxt">
-          <div class="nxtt">Go live in 60 seconds</div>
-          <div class="nxts"><div class="nxtn">1</div><div class="nxttx">Click <strong>Download clean site</strong></div></div>
-          <div class="nxts"><div class="nxtn">2</div><div class="nxttx">Go to <strong>netlify.com/drop</strong></div></div>
-          <div class="nxts"><div class="nxtn">3</div><div class="nxttx">Drag file — <strong>free live URL instantly</strong></div></div>
-        </div>`;
-    }catch(err){
-      res.innerHTML=`<div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:20px;text-align:center;margin-top:13px"><div style="color:#fca5a5;font-size:13.5px;font-weight:500;margin-bottom:6px">Something went wrong</div><div style="color:rgba(255,255,255,0.4);font-size:12px;margin-bottom:12px">${esc(err.message)}</div><button onclick="resetEx()" class="rb" style="background:transparent;border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.4)">Try again</button></div>`;
-    }
-  };
-  reader.readAsText(file);
+function qs(t){ document.getElementById('mi').value=t; send(); }
+function applyFix(){ if(!fixCode) return; document.getElementById('ca').value=fixCode; fixCode=null; document.getElementById('ab').style.display='none'; show('preview'); }
+document.getElementById('mi').onkeydown = e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); send(); } };
+
+// ── OWN IT / REBUILD ──
+function rebuildSite(){
+  const desc = document.getElementById('rebuild-desc').value.trim();
+  if(!desc){ alert('Tell Barry-X what to rebuild first.'); return; }
+  document.getElementById('mi').value = `Rebuild this site clean with no platform dependencies, no external CDN lock-in, fully self-contained HTML/CSS/JS: ${desc}`;
+  show('build');
+  send();
 }
-function dlClean(){const c=window._clean;if(!c)return;const b=new Blob([c],{type:'text/html'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='ownsite-clean.html';a.click();URL.revokeObjectURL(u);}
-function toEditor(){if(window._clean){document.getElementById('ca').value=window._clean;show('editor');}}
-function resetEx(){document.getElementById('er').style.display='none';document.getElementById('er').innerHTML='';window._clean=null;}
-function copyCode(){navigator.clipboard.writeText(document.getElementById('ca').value).then(()=>alert('Copied!')).catch(()=>alert('Press Cmd+A then Cmd+C'));}
-function dlCode(){const c=document.getElementById('ca').value;if(!c.trim()){alert('Build a website first.');return;}const b=new Blob([c],{type:'text/html'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='ownsite.html';a.click();URL.revokeObjectURL(u);}
-function showUpgrade(){document.getElementById('upgrade-modal').classList.add('show');}
-function closeUpgrade(){document.getElementById('upgrade-modal').classList.remove('show');}
-function goUpgrade(){window.open(STRIPE_LINK,'_blank');closeUpgrade();}
 
-// ── AUTH FLOW ─────────────────────────────────────────
+// ── EDITOR / DOWNLOAD ──
+function copyCode(){ navigator.clipboard.writeText(document.getElementById('ca').value).then(()=>alert('Copied!')).catch(()=>alert('Press Cmd+A then Cmd+C')); }
+function dlCode(){
+  const c = document.getElementById('ca').value;
+  if(!c.trim()){ alert('Build a website first.'); return; }
+  const b = new Blob([c],{type:'text/html'});
+  const u = URL.createObjectURL(b);
+  const a = document.createElement('a');
+  a.href=u; a.download='ownsite.html'; a.click();
+  URL.revokeObjectURL(u);
+}
+
+// ── UPGRADE ──
+function showUpgrade(){ document.getElementById('upgrade-modal').classList.add('show'); }
+function closeUpgrade(){ document.getElementById('upgrade-modal').classList.remove('show'); }
+function goUpgrade(){ window.open(STRIPE_LINK,'_blank'); closeUpgrade(); }
+
+// ── AUTH FLOWS ──
 function showForgot(){
   document.getElementById('auth-main').style.display='none';
   document.getElementById('auth-forgot').style.display='block';
@@ -849,7 +637,6 @@ function showMain(){
   document.getElementById('auth-main').style.display='block';
   document.getElementById('auth-forgot').style.display='none';
   document.getElementById('auth-reset').style.display='none';
-  document.getElementById('auth-sub').textContent='Welcome back';
   switchAuth('signin');
 }
 
@@ -862,92 +649,81 @@ function showReset(){
 }
 
 async function submitForgot(){
-  const email=document.getElementById('forgot-email').value.trim();
-  const btn=document.getElementById('forgot-submit');
-  const err=document.getElementById('forgot-err');
-  const success=document.getElementById('forgot-success');
-  err.style.display='none';success.style.display='none';
-  if(!email){err.textContent='Please enter your email address.';err.style.display='block';return;}
-  btn.disabled=true;btn.textContent='Sending...';
+  const email = document.getElementById('forgot-email').value.trim();
+  const btn = document.getElementById('forgot-submit');
+  const err = document.getElementById('forgot-err');
+  const success = document.getElementById('forgot-success');
+  err.style.display='none'; success.style.display='none';
+  if(!email){ err.textContent='Please enter your email.'; err.style.display='block'; return; }
+  btn.disabled=true; btn.textContent='Sending...';
   try{
-    const{error}=await sb.auth.resetPasswordForEmail(email,{
-      redirectTo:window.location.origin+'?reset=true'
-    });
-    if(error)throw error;
-    success.textContent='Check your email — we sent you a reset link. It may take a minute to arrive.';
+    const {error} = await sb.auth.resetPasswordForEmail(email,{ redirectTo: window.location.origin+'?reset=true' });
+    if(error) throw error;
+    success.textContent='Check your email — reset link sent.';
     success.style.display='block';
     btn.textContent='Email sent';
   }catch(e){
-    err.textContent=e.message||'Something went wrong. Please try again.';
+    err.textContent = e.message||'Something went wrong.';
     err.style.display='block';
-    btn.disabled=false;btn.textContent='Send reset link';
+    btn.disabled=false; btn.textContent='Send reset link';
   }
 }
 
 async function submitReset(){
-  const password=document.getElementById('reset-password').value;
-  const confirm=document.getElementById('reset-confirm').value;
-  const btn=document.getElementById('reset-submit');
-  const err=document.getElementById('reset-err');
-  const success=document.getElementById('reset-success');
-  err.style.display='none';success.style.display='none';
-  if(!password||password.length<6){err.textContent='Password must be at least 6 characters.';err.style.display='block';return;}
-  if(password!==confirm){err.textContent='Passwords do not match.';err.style.display='block';return;}
-  btn.disabled=true;btn.textContent='Updating...';
+  const password = document.getElementById('reset-password').value;
+  const confirm = document.getElementById('reset-confirm').value;
+  const btn = document.getElementById('reset-submit');
+  const err = document.getElementById('reset-err');
+  const success = document.getElementById('reset-success');
+  err.style.display='none'; success.style.display='none';
+  if(!password||password.length<6){ err.textContent='Password must be at least 6 characters.'; err.style.display='block'; return; }
+  if(password!==confirm){ err.textContent='Passwords do not match.'; err.style.display='block'; return; }
+  btn.disabled=true; btn.textContent='Updating...';
   try{
-    const{error}=await sb.auth.updateUser({password});
-    if(error)throw error;
-    success.textContent='Password updated successfully. Signing you in...';
+    const {error} = await sb.auth.updateUser({password});
+    if(error) throw error;
+    success.textContent='Password updated. Signing you in...';
     success.style.display='block';
     setTimeout(async()=>{
-      const{data:{session}}=await sb.auth.getSession();
-      if(session?.user){currentUser=session.user;await loadUserData();launchApp();}
-    },1500);
+      const {data:{session}} = await sb.auth.getSession();
+      if(session?.user){ currentUser=session.user; await loadUserData(); launchApp(); }
+    }, 1500);
   }catch(e){
-    err.textContent=e.message||'Something went wrong. Please try again.';
+    err.textContent = e.message||'Something went wrong.';
     err.style.display='block';
-    btn.disabled=false;btn.textContent='Update password';
+    btn.disabled=false; btn.textContent='Update password';
   }
 }
 
+// ── INIT ──
 async function init(){
-  const params=new URLSearchParams(window.location.search);
-  const hash=window.location.hash;
+  const params = new URLSearchParams(window.location.search);
+  const hash = window.location.hash;
 
   if(hash.includes('type=recovery')||params.get('reset')==='true'){
-    const{data:{session}}=await sb.auth.getSession();
-    if(session){showReset();return;}
+    const {data:{session}} = await sb.auth.getSession();
+    if(session){ showReset(); return; }
   }
 
-  // Try to get existing session, refresh if needed
-  let{data:{session}}=await sb.auth.getSession();
-
+  let {data:{session}} = await sb.auth.getSession();
   if(!session){
-    // Try refreshing
-    const{data:r}=await sb.auth.refreshSession();
-    session=r?.session;
+    const {data:r} = await sb.auth.refreshSession();
+    session = r?.session;
   }
 
   if(session?.user){
-    currentUser=session.user;
+    currentUser = session.user;
     await loadUserData();
     launchApp();
+  } else {
+    showScreen('landing');
   }
 
   sb.auth.onAuthStateChange(async(event,session)=>{
-    if(event==='PASSWORD_RECOVERY'){showReset();}
-    if(event==='SIGNED_IN'&&session){
-      currentUser=session.user;
-      await loadUserData();
-      launchApp();
-    }
-    if(event==='SIGNED_OUT'){
-      currentUser=null;
-      showScreen('landing');
-    }
-    if(event==='TOKEN_REFRESHED'&&session){
-      currentUser=session.user;
-    }
+    if(event==='PASSWORD_RECOVERY'){ showReset(); }
+    if(event==='SIGNED_IN'&&session){ currentUser=session.user; await loadUserData(); launchApp(); }
+    if(event==='SIGNED_OUT'){ currentUser=null; showScreen('landing'); }
+    if(event==='TOKEN_REFRESHED'&&session){ currentUser=session.user; }
   });
 }
 init();
