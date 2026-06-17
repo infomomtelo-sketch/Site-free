@@ -560,24 +560,22 @@ async function send(){
   addMsg('user',txt);
   setBusy(true);
   try{
-    let token;
-    // Try to refresh the session first
-    const { data: refreshData, error: refreshError } = await sb.auth.refreshSession();
-    if(refreshData?.session?.access_token){
-      token = refreshData.session.access_token;
-      currentUser = refreshData.session.user;
+ let token;
+    // Get current session first (most reliable)
+    const { data: { session: currentSession } } = await sb.auth.getSession();
+    if(currentSession?.access_token){
+      token = currentSession.access_token;
+      currentUser = currentSession.user;
     } else {
-      // Fall back to existing session
-      const { data: { session } } = await sb.auth.getSession();
-      token = session?.access_token;
-    }
-
-    if(!token){
-      // Session is truly dead — sign out cleanly and redirect to landing
+      // Only refresh if no current session exists
+      const { data: refreshData } = await sb.auth.refreshSession();
+      if(refreshData?.session?.access_token){
+        token = refreshData.session.access_token;
+        currentUser = refreshData.session.user;
+      }
+      if(!token){
       setBusy(false);
-      await sb.auth.signOut();
-      currentUser = null;
-      showScreen('landing');
+      addMsg('ai', 'Your session expired. Please sign out and sign back in.');
       return;
     }
 
