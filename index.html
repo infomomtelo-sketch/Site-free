@@ -561,7 +561,9 @@ async function send(){
   addMsg('user',txt);
   setBusy(true);
   try{
-    let token;
+   let token;
+    // Wait for Supabase to hydrate session from storage
+    await new Promise(resolve => setTimeout(resolve, 100));
     // Get current session first (most reliable)
     const { data: { session: currentSession } } = await sb.auth.getSession();
     if(currentSession?.access_token){
