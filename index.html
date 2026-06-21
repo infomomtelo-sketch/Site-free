@@ -713,8 +713,12 @@ async function init(){
 
   let {data:{session}} = await sb.auth.getSession();
   if(!session){
-    const {data:r} = await sb.auth.refreshSession();
-    session = r?.session;
+    try {
+      const {data:r} = await sb.auth.refreshSession();
+      session = r?.session;
+    } catch(e) {
+      session = null;
+    }
   }
 
   if(session?.user){
