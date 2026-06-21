@@ -532,64 +532,79 @@ function setBusy(on) {
 }
 
 // ── SEND ──
+// ── REPLACE the entire send() function and related vars in ownsite index.html ──
+// Also add chatHistory var near the top with other let declarations:
+// let currentUser = null, userPlan = 'free', buildsUsed = 0, fixCode = null, busy = false, allMsgs = [];
+// ADD: let chatHistory = [];
+
+let chatHistory = [];  // ADD THIS near other variable declarations
+
 async function send() {
   if (busy) return;
   const inp = document.getElementById('mi');
   const txt = inp.value.trim();
   if (!txt) return;
-  if (userPlan === 'free' && buildsUsed >= 1) { showUpgrade(); return; }
   inp.value = '';
   addMsg('user', txt);
+  chatHistory.push({ role: 'user', content: txt });
   setBusy(true);
+
   try {
     const { data: { session } } = await sb.auth.getSession();
     const token = session?.access_token;
-    if (!token) { setBusy(false); addMsg('ai', 'Session expired. Please sign out and sign back in.'); return; }
+    if (!token) {
+      setBusy(false);
+      addMsg('ai', 'Session expired. Please sign out and sign back in.');
+      return;
+    }
 
-    const res = await fetch(`${WORKER_URL}/build`, {
+    const res = await fetch(`${WORKER_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ description: txt, token })
+      body: JSON.stringify({
+        message: txt,
+        history: chatHistory.slice(-10),  // last 10 messages for context
+        token,
+      })
     });
+
     const data = await res.json();
-    if (data.error === 'upgrade_required') { addMsg('ai','You\'ve used your free build. Upgrade for unlimited.'); showUpgrade(); setBusy(false); return; }
+
+    if (data.error === 'upgrade_required') {
+      addMsg('ai', "You've used your free build. Upgrade for unlimited. The work was worth it.");
+      showUpgrade();
+      setBusy(false);
+      return;
+    }
     if (data.error) throw new Error(data.error);
-    addMsg('ai', null, data.html);
-    fixCode = data.html;
-    document.getElementById('ab').style.display = 'block';
-    buildsUsed = data.buildsUsed || buildsUsed + 1;
-    updateUsageBar();
-    addMsg('ai', "Done. Click Apply above to preview it.\nEditor to change anything.\nDownload to save it.\nDeploy free at netlify.com/drop.\n\nYou're welcome.");
-  } catch(e) { addMsg('ai', 'Something went wrong: ' + e.message); }
+
+    if (data.type === 'build') {
+      // Barry built something
+      if (data.reply) addMsg('ai', data.reply);
+      addMsg('ai', null, data.html);
+      fixCode = data.html;
+      document.getElementById('ab').style.display = 'block';
+      buildsUsed = data.buildsUsed || buildsUsed + 1;
+      updateUsageBar();
+      addMsg('ai', "Done. Click Apply above to preview it.\nEditor to change anything.\nDownload to save it.\nDeploy free at netlify.com/drop.\n\nYou're welcome.");
+      chatHistory.push({ role: 'assistant', content: (data.reply || '') + '\n[Built website]' });
+    } else {
+      // Barry chatted
+      addMsg('ai', data.reply);
+      chatHistory.push({ role: 'assistant', content: data.reply });
+    }
+
+    // Keep history manageable
+    if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+
+  } catch(e) {
+    addMsg('ai', 'Something went wrong: ' + e.message);
+  }
   setBusy(false);
 }
 
+// Also update qs() to use the same send() flow
 function qs(t) { document.getElementById('mi').value = t; send(); }
-function applyFix() { if (!fixCode) return; document.getElementById('ca').value = fixCode; fixCode = null; document.getElementById('ab').style.display = 'none'; show('preview'); }
-document.getElementById('mi').onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
-
-function rebuildSite() {
-  const desc = document.getElementById('rebuild-desc').value.trim();
-  if (!desc) { alert('Tell Barry-X what to rebuild first.'); return; }
-  document.getElementById('mi').value = `Rebuild this site clean with no platform dependencies, no external CDN lock-in, fully self-contained HTML/CSS/JS: ${desc}`;
-  show('build');
-  send();
-}
-
-function copyCode() { navigator.clipboard.writeText(document.getElementById('ca').value).then(()=>alert('Copied!')).catch(()=>alert('Press Cmd+A then Cmd+C')); }
-function dlCode() {
-  const c = document.getElementById('ca').value;
-  if (!c.trim()) { alert('Build a website first.'); return; }
-  const b = new Blob([c], {type:'text/html'});
-  const u = URL.createObjectURL(b);
-  const a = document.createElement('a');
-  a.href = u; a.download = 'ownsite.html'; a.click();
-  URL.revokeObjectURL(u);
-}
-
-function showUpgrade() { document.getElementById('upgrade-modal').classList.add('show'); }
-function closeUpgrade() { document.getElementById('upgrade-modal').classList.remove('show'); }
-function goUpgrade() { window.open(STRIPE_LINK, '_blank'); closeUpgrade(); }
 
 // ── INIT ──
 async function init() {
