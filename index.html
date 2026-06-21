@@ -22,7 +22,6 @@
 --bg3: #1a1a24;
 --accent: #7c6af7;
 --accent2: #a855f7;
---gold: #f4c430;
 --text: #f0eeff;
 --text2: #9896b8;
 --border: rgba(124,106,247,0.18);
@@ -31,14 +30,14 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; -webkit-font-smoothing: antialiased; min-height: 100vh; }
-/* ── SCREENS ── */
 .screen { min-height: 100vh; }
 .hidden { display: none !important; }
-/* ── LANDING ── */
+
+/* LANDING */
 #landing {
-display: flex; flex-direction: column; align-items: center; justify-content: center;
-min-height: 100vh; padding: 40px 24px; text-align: center;
-background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transparent 70%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 40px 24px; text-align: center;
+  background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transparent 70%);
 }
 .land-badge { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); background: rgba(124,106,247,0.1); border: 1px solid var(--border); padding: 5px 14px; border-radius: 99px; margin-bottom: 32px; }
 .land-title { font-size: clamp(2.4rem, 8vw, 4.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 20px; }
@@ -52,26 +51,26 @@ background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transp
 .land-features { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
 .land-feat { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 7px; }
 .land-feat::before { content: '✓'; color: var(--accent); font-weight: 700; }
-/* ── AUTH ── */
+
+/* AUTH */
 #auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.1) 0%, transparent 60%); }
-.auth-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; width: 100%; max-width: 400px; }
-.auth-logo { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 8px; }
-.auth-sub { font-size: 14px; color: var(--text2); margin-bottom: 32px; }
-.auth-tabs { display: flex; gap: 4px; background: var(--bg3); border-radius: 10px; padding: 4px; margin-bottom: 28px; }
-.auth-tab { flex: 1; padding: 8px; border: none; background: none; color: var(--text2); font-size: 13.5px; font-family: var(--font); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
-.auth-tab.on { background: var(--accent); color: #fff; font-weight: 600; }
-.auth-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.04em; }
-.auth-input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 11px 14px; border-radius: 10px; font-size: 14px; font-family: var(--font); margin-bottom: 14px; outline: none; transition: border-color 0.15s; }
-.auth-input:focus { border-color: var(--accent); }
-.auth-submit { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); margin-top: 4px; }
-.auth-err { font-size: 13px; color: #f87171; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; display: none; }
-.auth-forgot { font-size: 12.5px; color: var(--text2); text-align: center; margin-top: 14px; cursor: pointer; }
-.auth-forgot:hover { color: var(--accent); }
-#auth-forgot, #auth-reset { display: none; }
-.auth-back { font-size: 12.5px; color: var(--text2); cursor: pointer; margin-bottom: 20px; display: inline-block; }
+.auth-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; width: 100%; max-width: 380px; text-align: center; }
+.auth-logo { font-size: 24px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 8px; }
+.auth-sub { font-size: 14px; color: var(--text2); margin-bottom: 32px; line-height: 1.6; }
+.auth-err { font-size: 13px; color: #f87171; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; display: none; text-align: left; }
+.google-btn {
+  width: 100%; padding: 13px 18px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: #fff; color: #111; border: none; border-radius: 10px;
+  font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font);
+  margin-bottom: 16px; transition: opacity 0.15s;
+}
+.google-btn:hover { opacity: 0.92; }
+.auth-back { font-size: 13px; color: var(--text2); cursor: pointer; margin-top: 8px; display: inline-block; }
 .auth-back:hover { color: var(--accent); }
-.auth-success { font-size: 13px; color: #4ade80; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; display: none; }
-/* ── APP ── */
+.auth-loading { font-size: 13px; color: var(--text2); margin-top: 12px; display: none; }
+
+/* APP */
 #app-screen { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 #bar { display: flex; align-items: center; gap: 4px; padding: 10px 16px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0; overflow-x: auto; }
 .blogo { font-size: 16px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-right: 8px; white-space: nowrap; }
@@ -84,7 +83,8 @@ background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transp
 .ubadge { display: flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 99px; cursor: pointer; font-size: 12.5px; color: var(--text2); white-space: nowrap; }
 .udot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 #con { flex: 1; overflow: hidden; display: flex; }
-/* ── BUILD PANE ── */
+
+/* BUILD PANE */
 #build-pane { display: flex; flex-direction: column; width: 100%; height: 100%; overflow: hidden; }
 .bhero { padding: 28px 20px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .bht { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
@@ -98,7 +98,6 @@ background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transp
 .tmpl { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); font-size: 12px; padding: 5px 12px; border-radius: 99px; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
 .tmpl:hover { border-color: var(--accent); color: var(--accent); }
 #msgs { flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
-#thinking { display: none; padding: 0 20px 16px; }
 .tbub { display: flex; align-items: flex-start; gap: 10px; }
 .av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
 .av.ai { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
@@ -116,7 +115,6 @@ background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transp
 .cb { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-size: 12px; max-width: 90%; position: relative; overflow: hidden; }
 .cpb { position: absolute; top: 8px; right: 8px; background: var(--bg2); border: 1px solid var(--border); color: var(--text2); font-size: 11px; padding: 3px 8px; border-radius: 6px; cursor: pointer; font-family: var(--font); }
 .cb pre { color: var(--text2); overflow-x: auto; white-space: pre-wrap; word-break: break-all; max-height: 300px; }
-/* Building animation */
 #building-preview { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 20px; padding: 40px; }
 .build-icon { font-size: 48px; animation: pulse 1.5s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.7;transform:scale(0.95)} }
@@ -131,7 +129,8 @@ background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transp
 #sb:hover { opacity: 0.85; }
 #sb:disabled { opacity: 0.4; }
 .ihint { font-size: 11.5px; color: var(--text2); margin-top: 8px; text-align: center; opacity: 0.7; }
-/* ── EDITOR PANE ── */
+
+/* EDITOR PANE */
 #editor-pane { display: none; flex-direction: column; width: 100%; height: 100%; }
 .ph { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .phl .pt { font-size: 14px; font-weight: 600; }
@@ -142,14 +141,16 @@ background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transp
 .pb.p { background: var(--accent); color: #fff; border-color: var(--accent); }
 .pb.p:hover { opacity: 0.85; }
 #ca { flex: 1; background: var(--bg); color: #a8ff78; font-family: 'Fira Code', 'Courier New', monospace; font-size: 12.5px; border: none; outline: none; padding: 20px; resize: none; line-height: 1.6; overflow-y: auto; }
-/* ── PREVIEW PANE ── */
+
+/* PREVIEW PANE */
 #preview-pane { display: none; flex-direction: column; width: 100%; height: 100%; }
 .ptb { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .d3 { display: flex; gap: 5px; }
 .dd { width: 11px; height: 11px; border-radius: 50%; }
 .urlb { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; font-size: 12px; color: var(--text2); text-align: center; }
 #pf { flex: 1; border: none; background: #fff; }
-/* ── OWN IT PANE ── */
+
+/* OWN IT PANE */
 #fix-pane { display: none; overflow-y: auto; width: 100%; }
 .fiw { max-width: 600px; margin: 0 auto; padding: 32px 20px 60px; }
 .fhero { margin-bottom: 28px; }
@@ -169,7 +170,8 @@ background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transp
 #rebuild-desc::placeholder { color: var(--text2); }
 .rebuild-btn { width: 100%; margin-top: 12px; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: opacity 0.15s; }
 .rebuild-btn:hover { opacity: 0.88; }
-/* ── UPGRADE MODAL ── */
+
+/* UPGRADE MODAL */
 #upgrade-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(4px); }
 #upgrade-modal.show { display: flex; }
 .ucard { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 380px; text-align: center; }
@@ -185,321 +187,303 @@ background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transp
 .upgrade-btn { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); margin-bottom: 10px; }
 .upgrade-close { background: none; border: none; color: var(--text2); font-size: 13.5px; cursor: pointer; font-family: var(--font); padding: 6px; }
 .upgrade-close:hover { color: var(--text); }
-/* ── SCROLLBAR ── */
+
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-@media (max-width: 480px) {
-.auth-card { padding: 28px 22px; }
-.land-title { font-size: 2.2rem; }
-}
+@media (max-width: 480px) { .auth-card { padding: 28px 22px; } .land-title { font-size: 2.2rem; } }
 </style>
 </head>
 <body>
 
 <!-- LANDING -->
 <div id="landing" class="screen">
-<div class="land-badge">✦ Powered by Barry-X</div>
-<h1 class="land-title">Build any website.<br><span>Own it forever.</span></h1>
-<p class="land-sub">Describe what you need. Barry-X builds it clean, fast, and yours. No platform. No monthly fees. No hostage situations.</p>
-<div class="land-btns">
-<button class="btn-primary" onclick="goAuth('signup')">Start building free</button>
-<button class="btn-ghost" onclick="goAuth('signin')">Sign in</button>
-</div>
-<div class="land-features">
-<div class="land-feat">Full HTML in seconds</div>
-<div class="land-feat">Deploy anywhere free</div>
-<div class="land-feat">You own the code</div>
-<div class="land-feat">No subscriptions</div>
-</div>
+  <div class="land-badge">✦ Powered by Barry-X</div>
+  <h1 class="land-title">Build any website.<br><span>Own it forever.</span></h1>
+  <p class="land-sub">Describe what you need. Barry-X builds it clean, fast, and yours. No platform. No monthly fees. No hostage situations.</p>
+  <div class="land-btns">
+    <button class="btn-primary" onclick="goAuth()">Start building free</button>
+    <button class="btn-ghost" onclick="goAuth()">Sign in</button>
+  </div>
+  <div class="land-features">
+    <div class="land-feat">Full HTML in seconds</div>
+    <div class="land-feat">Deploy anywhere free</div>
+    <div class="land-feat">You own the code</div>
+    <div class="land-feat">No subscriptions</div>
+  </div>
 </div>
 
 <!-- AUTH -->
 <div id="auth-screen" class="screen hidden">
-<div class="auth-card">
-<div class="auth-logo">Own<span style="color:var(--accent2)">.</span>Site</div>
-<div class="auth-sub" id="auth-sub">Create your free account</div>
-<div id="auth-main">
-<div class="auth-tabs">
-<button class="auth-tab on" id="tab-signup" onclick="switchAuth('signup')">Sign up</button>
-<button class="auth-tab" id="tab-signin" onclick="switchAuth('signin')">Sign in</button>
-</div>
-<div class="auth-err" id="auth-err"></div>
-<div class="auth-label">EMAIL</div>
-<input class="auth-input" id="auth-email" type="email" placeholder="you@example.com" autocomplete="email">
-<div class="auth-label">PASSWORD</div>
-<input class="auth-input" id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password">
-<button class="auth-submit" id="auth-submit" onclick="submitAuth('signup')">Create free account</button>
-<div class="auth-forgot" onclick="showForgot()">Forgot password?</div>
-</div>
-<div id="auth-forgot">
-<div class="auth-back" onclick="showMain()">← Back to sign in</div>
-<div class="auth-err" id="forgot-err"></div>
-<div class="auth-success" id="forgot-success"></div>
-<div class="auth-label">YOUR EMAIL</div>
-<input class="auth-input" id="forgot-email" type="email" placeholder="you@example.com">
-<button class="auth-submit" id="forgot-submit" onclick="submitForgot()">Send reset link</button>
-</div>
-<div id="auth-reset">
-<div class="auth-err" id="reset-err"></div>
-<div class="auth-success" id="reset-success"></div>
-<div class="auth-label">NEW PASSWORD</div>
-<input class="auth-input" id="reset-password" type="password" placeholder="At least 6 characters">
-<div class="auth-label">CONFIRM PASSWORD</div>
-<input class="auth-input" id="reset-confirm" type="password" placeholder="Repeat password">
-<button class="auth-submit" id="reset-submit" onclick="submitReset()">Update password</button>
-</div>
-</div>
+  <div class="auth-card">
+    <div class="auth-logo">Own<span style="color:var(--accent2)">.</span>Site</div>
+    <div class="auth-sub">Sign in with Google to start building.<br>Free to use — no card required.</div>
+    <div class="auth-err" id="auth-err"></div>
+    <button class="google-btn" id="google-btn" onclick="signInGoogle()">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.14 0 5.95 1.08 8.17 2.84l6.09-6.09C34.46 3.39 29.5 1.5 24 1.5 14.82 1.5 7.07 7.07 3.87 14.94l7.08 5.5C12.6 13.38 17.85 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.1 24.5c0-1.64-.15-3.22-.42-4.74H24v9h12.42c-.54 2.9-2.18 5.36-4.64 7.02l7.18 5.58C43.08 37.28 46.1 31.32 46.1 24.5z"/>
+        <path fill="#FBBC05" d="M10.95 28.44A14.5 14.5 0 0 1 9.5 24c0-1.55.27-3.05.74-4.44l-7.08-5.5A22.47 22.47 0 0 0 1.5 24c0 3.61.87 7.02 2.4 10.03l7.05-5.59z"/>
+        <path fill="#34A853" d="M24 46.5c5.5 0 10.12-1.82 13.5-4.94l-7.18-5.58C28.6 37.7 26.42 38.5 24 38.5c-6.15 0-11.4-3.88-13.05-9.44l-7.05 5.59C7.07 42.43 14.82 46.5 24 46.5z"/>
+      </svg>
+      Continue with Google
+    </button>
+    <div class="auth-loading" id="auth-loading">Redirecting to Google...</div>
+    <div style="font-size:12px;color:var(--text2);opacity:0.6;margin-top:4px;line-height:1.6;">
+      By continuing you agree to our Terms and Privacy Policy.
+    </div>
+    <div style="margin-top:16px;">
+      <span class="auth-back" onclick="showScreen('landing')">← Back</span>
+    </div>
+  </div>
 </div>
 
 <!-- APP -->
 <div id="app-screen" class="screen hidden" style="padding:0">
-<div id="app-inner" style="display:flex;flex-direction:column;height:100vh;">
-<div id="bar">
-<div class="blogo">Own<span class="blogo-dot">.</span>Site</div>
-<button class="tab on" id="t-build" onclick="show('build')">Build</button>
-<button class="tab" id="t-editor" onclick="show('editor')">Editor</button>
-<button class="tab" id="t-preview" onclick="show('preview')">Preview</button>
-<button class="tab" id="t-fix" onclick="show('fix')">Own It</button>
-<div id="tr">
-<button id="ab" onclick="applyFix()">Apply</button>
-<div class="ubadge" onclick="signOut()"><div class="udot"></div><span id="user-display">Account</span></div>
-</div>
-</div>
-<div id="con">
+  <div id="app-inner" style="display:flex;flex-direction:column;height:100vh;">
+    <div id="bar">
+      <div class="blogo">Own<span class="blogo-dot">.</span>Site</div>
+      <button class="tab on" id="t-build" onclick="show('build')">Build</button>
+      <button class="tab" id="t-editor" onclick="show('editor')">Editor</button>
+      <button class="tab" id="t-preview" onclick="show('preview')">Preview</button>
+      <button class="tab" id="t-fix" onclick="show('fix')">Own It</button>
+      <div id="tr">
+        <button id="ab" onclick="applyFix()">Apply</button>
+        <div class="ubadge" onclick="signOut()"><div class="udot"></div><span id="user-display">Account</span></div>
+      </div>
+    </div>
+    <div id="con">
 
-<!-- BUILD -->
-<div id="build-pane">
-<div class="bhero">
-<div class="bht">Barry-X builds. You own it.</div>
-<div class="bhs">Describe any website. He'll have opinions. The code will be flawless.</div>
-<div class="ub" id="usage-bar"><div class="ub-t">Loading...</div></div>
-</div>
-<div class="tsec">
-<div class="tlab">Quick start</div>
-<div class="trow">
-<button class="tmpl" onclick="qs('Build me a modern SaaS landing page for a project management tool called Spark. Dark theme with purple gradients. Hero with email signup, 3 key features, pricing with Free and Pro at $29/month, footer.')">SaaS</button>
-<button class="tmpl" onclick="qs('Build a portfolio for freelance UI/UX designer Alex Rivera. Light minimal theme. Hero, about, services, portfolio grid, contact form.')">Portfolio</button>
-<button class="tmpl" onclick="qs('Build a restaurant website for Italian place La Stella. Warm dark theme gold accents. Hero with reservation button, menu, gallery, hours, footer.')">Restaurant</button>
-<button class="tmpl" onclick="qs('Build an e-commerce landing page for skincare brand Glow. Clean white and pink. Hero, products grid, testimonials, newsletter signup.')">Store</button>
-<button class="tmpl" onclick="qs('Build a mobile app landing page for fitness app FitPulse. Dark energetic theme. Hero with screenshots, features, pricing, App Store and Google Play buttons.')">App</button>
-<button class="tmpl" onclick="qs('Build a coming soon page for AI startup Nova. Dark space theme. Countdown timer, what we are building, email waitlist, early access benefits.')">Coming Soon</button>
-<button class="tmpl" onclick="qs('Build a personal brand site for business coach Sarah Chen. Professional clean teal theme. Hero, about, 3 service packages with prices, client wins, booking form.')">Coach</button>
-<button class="tmpl" onclick="qs('Build a digital agency website for Pixel Studio. Bold dark theme neon green. Hero, services, portfolio, process, team, contact form.')">Agency</button>
-</div>
-</div>
-<div id="msgs"></div>
-<div id="thinking">
-<div class="tbub">
-<div class="av ai">BX</div>
-<div class="ttext">Barry-X is building... <div class="da"><span></span><span></span><span></span></div></div>
-</div>
-</div>
-<div id="building-preview">
-<div class="build-icon">🔨</div>
-<div class="build-status" id="build-status">Analyzing your description...</div>
-<div class="build-bar"><div class="build-bar-fill" id="build-progress"></div></div>
-</div>
-<div id="ir">
-<div class="irw">
-<textarea id="mi" rows="2" placeholder="Tell Barry-X what you need. Be specific. He hates vague."></textarea>
-<button id="sb" onclick="send()">➤</button>
-</div>
-<div class="ihint">More detail = better result. He'll still comment either way.</div>
-</div>
-</div>
+      <!-- BUILD -->
+      <div id="build-pane">
+        <div class="bhero">
+          <div class="bht">Barry-X builds. You own it.</div>
+          <div class="bhs">Describe any website. He'll have opinions. The code will be flawless.</div>
+          <div class="ub" id="usage-bar"><div class="ub-t">Loading...</div></div>
+        </div>
+        <div class="tsec">
+          <div class="tlab">Quick start</div>
+          <div class="trow">
+            <button class="tmpl" onclick="qs('Build me a modern SaaS landing page for a project management tool called Spark. Dark theme with purple gradients. Hero with email signup, 3 key features, pricing with Free and Pro at $29/month, footer.')">SaaS</button>
+            <button class="tmpl" onclick="qs('Build a portfolio for freelance UI/UX designer Alex Rivera. Light minimal theme. Hero, about, services, portfolio grid, contact form.')">Portfolio</button>
+            <button class="tmpl" onclick="qs('Build a restaurant website for Italian place La Stella. Warm dark theme gold accents. Hero with reservation button, menu, gallery, hours, footer.')">Restaurant</button>
+            <button class="tmpl" onclick="qs('Build an e-commerce landing page for skincare brand Glow. Clean white and pink. Hero, products grid, testimonials, newsletter signup.')">Store</button>
+            <button class="tmpl" onclick="qs('Build a mobile app landing page for fitness app FitPulse. Dark energetic theme. Hero with screenshots, features, pricing, App Store and Google Play buttons.')">App</button>
+            <button class="tmpl" onclick="qs('Build a coming soon page for AI startup Nova. Dark space theme. Countdown timer, what we are building, email waitlist, early access benefits.')">Coming Soon</button>
+            <button class="tmpl" onclick="qs('Build a personal brand site for business coach Sarah Chen. Professional clean teal theme. Hero, about, 3 service packages with prices, client wins, booking form.')">Coach</button>
+            <button class="tmpl" onclick="qs('Build a digital agency website for Pixel Studio. Bold dark theme neon green. Hero, services, portfolio, process, team, contact form.')">Agency</button>
+          </div>
+        </div>
+        <div id="msgs"></div>
+        <div id="building-preview">
+          <div class="build-icon">🔨</div>
+          <div class="build-status" id="build-status">Analyzing your description...</div>
+          <div class="build-bar"><div class="build-bar-fill" id="build-progress"></div></div>
+        </div>
+        <div id="ir">
+          <div class="irw">
+            <textarea id="mi" rows="2" placeholder="Tell Barry-X what you need. Be specific. He hates vague."></textarea>
+            <button id="sb" onclick="send()">➤</button>
+          </div>
+          <div class="ihint">More detail = better result. He'll still comment either way.</div>
+        </div>
+      </div>
 
-<!-- EDITOR -->
-<div id="editor-pane">
-<div class="ph">
-<div class="phl"><div class="pt">Code Editor</div><div class="ps">Edit your website directly</div></div>
-<div class="phr">
-<button class="pb" onclick="copyCode()">Copy</button>
-<button class="pb" onclick="dlCode()">Download</button>
-<button class="pb p" onclick="show('preview')">Preview</button>
-</div>
-</div>
-<textarea id="ca" spellcheck="false"></textarea>
-</div>
+      <!-- EDITOR -->
+      <div id="editor-pane">
+        <div class="ph">
+          <div class="phl"><div class="pt">Code Editor</div><div class="ps">Edit your website directly</div></div>
+          <div class="phr">
+            <button class="pb" onclick="copyCode()">Copy</button>
+            <button class="pb" onclick="dlCode()">Download</button>
+            <button class="pb p" onclick="show('preview')">Preview</button>
+          </div>
+        </div>
+        <textarea id="ca" spellcheck="false"></textarea>
+      </div>
 
-<!-- PREVIEW -->
-<div id="preview-pane">
-<div class="ptb">
-<div class="d3"><div class="dd" style="background:#ff5f57"></div><div class="dd" style="background:#ffbd2e"></div><div class="dd" style="background:#28c840"></div></div>
-<div class="urlb">ownsite — live preview</div>
-<button class="pb" onclick="show('editor')" style="padding:4px 10px;font-size:11px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font)">Edit</button>
-<button class="pb p" onclick="dlCode()" style="padding:4px 10px;font-size:11px;border-radius:6px;cursor:pointer;font-family:var(--font)">Download</button>
-</div>
-<iframe id="pf" sandbox="allow-scripts allow-same-origin"></iframe>
-</div>
+      <!-- PREVIEW -->
+      <div id="preview-pane">
+        <div class="ptb">
+          <div class="d3"><div class="dd" style="background:#ff5f57"></div><div class="dd" style="background:#ffbd2e"></div><div class="dd" style="background:#28c840"></div></div>
+          <div class="urlb">ownsite — live preview</div>
+          <button class="pb" onclick="show('editor')" style="padding:4px 10px;font-size:11px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font)">Edit</button>
+          <button class="pb p" onclick="dlCode()" style="padding:4px 10px;font-size:11px;border-radius:6px;cursor:pointer;font-family:var(--font)">Download</button>
+        </div>
+        <iframe id="pf" sandbox="allow-scripts allow-same-origin"></iframe>
+      </div>
 
-<!-- OWN IT -->
-<div id="fix-pane">
-<div class="fiw">
-<div class="fhero">
-<div class="fht">Don't rescue it. Rebuild it.</div>
-<div class="fhs">Tired of Lovable, Wix, Framer or Bolt holding your site hostage? Don't bother exporting. Just tell Barry-X what your site does — he'll rebuild it clean, fast, and yours forever. No platform. No monthly fees. No shutdowns.</div>
-</div>
-<div class="pchips">
-<div class="pc" style="color:#fbbf24;border-color:#fbbf2440">Leaving Wix</div>
-<div class="pc" style="color:#60a5fa;border-color:#60a5fa40">Leaving Framer</div>
-<div class="pc" style="color:#c084fc;border-color:#c084fc40">Leaving Lovable</div>
-<div class="pc" style="color:#fb923c;border-color:#fb923c40">Leaving Bolt</div>
-<div class="pc" style="color:#818cf8;border-color:#818cf840">Leaving Webflow</div>
-<div class="pc" style="color:#94a3b8;border-color:#94a3b840">Leaving Squarespace</div>
-</div>
-<div class="exp">
-<div class="expt">How it works</div>
-<div class="expr"><div class="expic">01</div><div class="exptx"><strong>Describe your old site</strong> — what it did, what sections it had, what you hated about it</div></div>
-<div class="expr"><div class="expic">02</div><div class="exptx"><strong>Barry-X rebuilds it</strong> — clean HTML, embedded CSS, no external dependencies, no lock-in</div></div>
-<div class="expr"><div class="expic">03</div><div class="exptx"><strong>You own it forever</strong> — deploy anywhere free, no subscriptions, no hostage situations</div></div>
-</div>
-<textarea id="rebuild-desc" rows="5" placeholder="Describe your old site — business name, what it did, sections you want, style you liked, what platform you're leaving..."></textarea>
-<button class="rebuild-btn" onclick="rebuildSite()">🔨 Barry-X, I want to own it</button>
-</div>
-</div>
+      <!-- OWN IT -->
+      <div id="fix-pane">
+        <div class="fiw">
+          <div class="fhero">
+            <div class="fht">Don't rescue it. Rebuild it.</div>
+            <div class="fhs">Tired of Lovable, Wix, Framer or Bolt holding your site hostage? Don't bother exporting. Just tell Barry-X what your site does — he'll rebuild it clean, fast, and yours forever.</div>
+          </div>
+          <div class="pchips">
+            <div class="pc" style="color:#fbbf24;border-color:#fbbf2440">Leaving Wix</div>
+            <div class="pc" style="color:#60a5fa;border-color:#60a5fa40">Leaving Framer</div>
+            <div class="pc" style="color:#c084fc;border-color:#c084fc40">Leaving Lovable</div>
+            <div class="pc" style="color:#fb923c;border-color:#fb923c40">Leaving Bolt</div>
+            <div class="pc" style="color:#818cf8;border-color:#818cf840">Leaving Webflow</div>
+            <div class="pc" style="color:#94a3b8;border-color:#94a3b840">Leaving Squarespace</div>
+          </div>
+          <div class="exp">
+            <div class="expt">How it works</div>
+            <div class="expr"><div class="expic">01</div><div class="exptx"><strong>Describe your old site</strong> — what it did, what sections it had, what you hated about it</div></div>
+            <div class="expr"><div class="expic">02</div><div class="exptx"><strong>Barry-X rebuilds it</strong> — clean HTML, embedded CSS, no external dependencies, no lock-in</div></div>
+            <div class="expr"><div class="expic">03</div><div class="exptx"><strong>You own it forever</strong> — deploy anywhere free, no subscriptions, no hostage situations</div></div>
+          </div>
+          <textarea id="rebuild-desc" rows="5" placeholder="Describe your old site — business name, what it did, sections you want, style you liked, what platform you're leaving..."></textarea>
+          <button class="rebuild-btn" onclick="rebuildSite()">🔨 Barry-X, I want to own it</button>
+        </div>
+      </div>
 
-</div>
-</div>
+    </div>
+  </div>
 </div>
 
 <!-- UPGRADE MODAL -->
 <div id="upgrade-modal">
-<div class="ucard">
-<div class="ucard-title">Upgrade to Pro</div>
-<div class="ucard-sub">You've used your free build. Barry-X has more to say. Upgrade for unlimited builds.</div>
-<div class="plan-box">
-<div class="plan-name">Pro — Barry-X Unlimited</div>
-<div class="plan-price">$12<span>/month</span></div>
-<div class="plan-feats">
-<div class="plan-feat"><span class="fc">+</span>Unlimited website builds</div>
-<div class="plan-feat"><span class="fc">+</span>Unlimited Own It rebuilds</div>
-<div class="plan-feat"><span class="fc">+</span>Download all your sites</div>
-<div class="plan-feat"><span class="fc">+</span>No API key ever needed</div>
-<div class="plan-feat"><span class="fc">+</span>Cancel anytime</div>
-</div>
-</div>
-<button class="upgrade-btn" onclick="goUpgrade()">Upgrade — $12/month</button>
-<button class="upgrade-close" onclick="closeUpgrade()">Maybe later</button>
-</div>
+  <div class="ucard">
+    <div class="ucard-title">Upgrade to Pro</div>
+    <div class="ucard-sub">You've used your free build. Barry-X has more to say. Upgrade for unlimited builds.</div>
+    <div class="plan-box">
+      <div class="plan-name">Pro — Barry-X Unlimited</div>
+      <div class="plan-price">$12<span>/month</span></div>
+      <div class="plan-feats">
+        <div class="plan-feat"><span class="fc">+</span>Unlimited website builds</div>
+        <div class="plan-feat"><span class="fc">+</span>Unlimited Own It rebuilds</div>
+        <div class="plan-feat"><span class="fc">+</span>Download all your sites</div>
+        <div class="plan-feat"><span class="fc">+</span>No API key ever needed</div>
+        <div class="plan-feat"><span class="fc">+</span>Cancel anytime</div>
+      </div>
+    </div>
+    <button class="upgrade-btn" onclick="goUpgrade()">Upgrade — $12/month</button>
+    <button class="upgrade-close" onclick="closeUpgrade()">Maybe later</button>
+  </div>
 </div>
 
 <script>
 const WORKER_URL = 'https://ownsite-barry-x.infomomtelo.workers.dev';
-const SUPA_URL = 'https://nwlhsshvqmbhemhxcran.supabase.co';
-const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bGhzc2h2cW1iaGVtaHhjcmFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTEzOTIsImV4cCI6MjA5NTU2NzM5Mn0.2yASMx57IUNjEW8bMs8FwXnIz4cLsE1ftqD35QAOqE8';
+const SUPA_URL   = 'https://nwlhsshvqmbhemhxcran.supabase.co';
+const SUPA_ANON  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bGhzc2h2cW1iaGVtaHhjcmFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTEzOTIsImV4cCI6MjA5NTU2NzM5Mn0.2yASMx57IUNjEW8bMs8FwXnIz4cLsE1ftqD35QAOqE8';
 const STRIPE_LINK = '#';
 
 const { createClient } = supabase;
-
-// FIX 1: Added autoRefreshToken, persistSession, detectSessionInUrl
 const sb = createClient(SUPA_URL, SUPA_ANON, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: true
+    detectSessionInUrl: true  // handles Google OAuth redirect automatically
   }
 });
 
-let currentUser=null, userPlan='free', buildsUsed=0, fixCode=null, busy=false, allMsgs=[];
+let currentUser = null, userPlan = 'free', buildsUsed = 0, fixCode = null, busy = false, allMsgs = [];
 
 // ── SCREENS ──
-function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
-function goAuth(mode){ switchAuth(mode); showScreen('auth-screen'); }
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('hidden');
+}
+function goAuth() { showScreen('auth-screen'); }
 
-// ── AUTH ──
-function switchAuth(mode){
-  document.getElementById('tab-signup').classList.toggle('on', mode==='signup');
-  document.getElementById('tab-signin').classList.toggle('on', mode==='signin');
-  document.getElementById('auth-sub').textContent = mode==='signup' ? 'Create your free account' : 'Welcome back';
-  document.getElementById('auth-submit').textContent = mode==='signup' ? 'Create free account' : 'Sign in';
-  document.getElementById('auth-submit').onclick = ()=>submitAuth(mode);
-  document.getElementById('auth-err').style.display = 'none';
+// ── GOOGLE AUTH ──
+async function signInGoogle() {
+  const btn = document.getElementById('google-btn');
+  const loading = document.getElementById('auth-loading');
+  const err = document.getElementById('auth-err');
+  err.style.display = 'none';
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  loading.style.display = 'block';
+  try {
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'https://ownsite.app'  // must match Supabase allowed redirect URLs
+      }
+    });
+    if (error) throw error;
+    // Browser will redirect — no further action needed here
+  } catch (e) {
+    err.textContent = e.message || 'Could not connect to Google. Try again.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    loading.style.display = 'none';
+  }
 }
 
-async function submitAuth(mode){
-  const email = document.getElementById('auth-email').value.trim();
-  const password = document.getElementById('auth-password').value;
-  const btn = document.getElementById('auth-submit');
-  document.getElementById('auth-err').style.display = 'none';
-  if(!email||!password){ showAuthErr('Please enter your email and password.'); return; }
-  if(password.length<6){ showAuthErr('Password must be at least 6 characters.'); return; }
-  btn.disabled=true; btn.textContent = mode==='signup' ? 'Creating...' : 'Signing in...';
-  try{
-    const r = mode==='signup'
-      ? await sb.auth.signUp({email,password})
-      : await sb.auth.signInWithPassword({email,password});
-    if(r.error) throw r.error;
-    currentUser = r.data.user;
-    await loadUserData();
-    launchApp();
-  }catch(e){ showAuthErr(e.message||'Something went wrong.'); }
-  btn.disabled=false;
-  btn.textContent = mode==='signup' ? 'Create free account' : 'Sign in';
+async function signOut() {
+  if (!confirm('Sign out?')) return;
+  await sb.auth.signOut();
+  currentUser = null;
+  showScreen('landing');
 }
 
-function showAuthErr(m){ const e=document.getElementById('auth-err'); e.textContent=m; e.style.display='block'; }
-
-async function signOut(){ if(!confirm('Sign out?')) return; await sb.auth.signOut(); currentUser=null; showScreen('landing'); }
-
-async function loadUserData(){
-  if(!currentUser) return;
-  const {data} = await sb.from('profiles').select('plan,builds_used').eq('id',currentUser.id).single();
-  if(data){ userPlan=data.plan||'free'; buildsUsed=data.builds_used||0; }
+// ── USER DATA ──
+async function loadUserData() {
+  if (!currentUser) return;
+  try {
+    const { data } = await sb.from('profiles').select('plan,builds_used').eq('id', currentUser.id).single();
+    if (data) { userPlan = data.plan || 'free'; buildsUsed = data.builds_used || 0; }
+  } catch(e) {}
   updateUsageBar();
 }
 
-function updateUsageBar(){
-  const bar = document.getElementById('usage-bar'); if(!bar) return;
-  if(userPlan==='pro'){
+function updateUsageBar() {
+  const bar = document.getElementById('usage-bar'); if (!bar) return;
+  if (userPlan === 'pro') {
     bar.innerHTML = `<div class="ub-t"><strong>Pro</strong> — Unlimited builds</div>`;
   } else {
-    const rem = Math.max(0,1-buildsUsed);
-    bar.innerHTML = `<div class="ub-t">${rem>0?`<strong>${rem} free build</strong> remaining`:'Free build used — upgrade for unlimited'}</div><button class="ub-btn" onclick="showUpgrade()">Upgrade</button>`;
+    const rem = Math.max(0, 1 - buildsUsed);
+    bar.innerHTML = `<div class="ub-t">${rem > 0 ? `<strong>${rem} free build</strong> remaining` : 'Free build used — upgrade for unlimited'}</div><button class="ub-btn" onclick="showUpgrade()">Upgrade</button>`;
   }
   const el = document.getElementById('user-display');
-  if(el&&currentUser) el.textContent = currentUser.email?.split('@')[0]||'Account';
+  if (el && currentUser) el.textContent = currentUser.user_metadata?.full_name?.split(' ')[0] || currentUser.email?.split('@')[0] || 'Account';
 }
 
-function launchApp(){
+function launchApp() {
   showScreen('app-screen');
-  allMsgs=[];
+  allMsgs = [];
   // Barry handoff from thejudgy.com
   const params = new URLSearchParams(window.location.search);
-  if(params.get('source')==='barry'){
-    try{
+  if (params.get('source') === 'barry') {
+    try {
       const html = sessionStorage.getItem('barry_handoff');
-      if(html){
+      if (html) {
         document.getElementById('ca').value = html;
         addMsg('ai', "Barry sent this over from The Judgy.\n\nYour landing page is loaded. Click Preview to see it, Editor to tweak it, or Download to save it.\n\nYou're welcome, by the way.");
         show('preview');
         return;
       }
-    }catch(e){}
+    } catch(e) {}
   }
   addMsg('ai', "Barry-X here. Ex-husband of The Judgy. Yes, really.\n\nDescribe what you want built. I'll make it perfect. I always do.\n\nOr use the Own It tab if you're escaping Lovable, Wix, or whatever mess you're in. I've seen things.");
 }
 
 // ── TABS ──
-function show(t){
-  ['build','editor','preview','fix'].forEach(id=>{
-    const p = document.getElementById(id+'-pane'); if(p) p.style.display='none';
-    const b = document.getElementById('t-'+id); if(b) b.classList.remove('on');
+function show(t) {
+  ['build','editor','preview','fix'].forEach(id => {
+    const p = document.getElementById(id+'-pane'); if (p) p.style.display = 'none';
+    const b = document.getElementById('t-'+id); if (b) b.classList.remove('on');
   });
-  const pane = document.getElementById(t+'-pane'); if(!pane) return;
-  pane.style.display = (t==='build'||t==='editor'||t==='preview') ? 'flex' : 'block';
-  if(t==='preview') document.getElementById('pf').srcdoc = document.getElementById('ca').value;
-  const b = document.getElementById('t-'+t); if(b) b.classList.add('on');
-  if(t==='build'){ setTimeout(()=>{ const m=document.getElementById('msgs'); if(m) m.scrollTop=m.scrollHeight; },50); }
+  const pane = document.getElementById(t+'-pane'); if (!pane) return;
+  pane.style.display = (t === 'build' || t === 'editor' || t === 'preview') ? 'flex' : 'block';
+  if (t === 'preview') document.getElementById('pf').srcdoc = document.getElementById('ca').value;
+  const b = document.getElementById('t-'+t); if (b) b.classList.add('on');
+  if (t === 'build') { setTimeout(() => { const m = document.getElementById('msgs'); if (m) m.scrollTop = m.scrollHeight; }, 50); }
 }
 
 // ── MESSAGES ──
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function addMsg(r,t,c){ allMsgs.push({role:r,text:t,code:c}); renderMsgs(); }
-function renderMsgs(){
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function addMsg(r, t, c) { allMsgs.push({role:r, text:t, code:c}); renderMsgs(); }
+function renderMsgs() {
   const el = document.getElementById('msgs');
-  el.innerHTML = allMsgs.map(m=>{
-    const u = m.role==='user';
+  el.innerHTML = allMsgs.map(m => {
+    const u = m.role === 'user';
     let inner = m.code
       ? `<div class="cb"><button class="cpb" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('pre').textContent)">copy</button><pre>${esc(m.code)}</pre></div>`
       : `<div class="bub">${esc(m.text)}</div>`;
@@ -509,8 +493,8 @@ function renderMsgs(){
 }
 
 // ── BUILD ANIMATION ──
-let buildTimer=null;
-const BUILD_STEPS=[
+let buildTimer = null;
+const BUILD_STEPS = [
   {msg:'Fine. Analyzing your description...',pct:10},
   {msg:'Designing the layout. Obviously.',pct:22},
   {msg:'Writing the HTML structure...',pct:38},
@@ -519,229 +503,130 @@ const BUILD_STEPS=[
   {msg:'Polishing. You\'re welcome in advance.',pct:82},
   {msg:'Almost done. As one does.',pct:93},
 ];
-let buildStep=0;
-function setBusy(on){
-  busy=on;
+let buildStep = 0;
+function setBusy(on) {
+  busy = on;
   const msgs = document.getElementById('msgs');
   const preview = document.getElementById('building-preview');
   const s = document.getElementById('sb');
-  s.disabled=on;
-  if(on){
-    msgs.style.display='none';
-    preview.style.display='flex';
-    buildStep=0;
+  s.disabled = on;
+  if (on) {
+    msgs.style.display = 'none';
+    preview.style.display = 'flex';
+    buildStep = 0;
     const status = document.getElementById('build-status');
     const progress = document.getElementById('build-progress');
-    if(status) status.textContent = BUILD_STEPS[0].msg;
-    if(progress) progress.style.width = BUILD_STEPS[0].pct+'%';
-    buildTimer = setInterval(()=>{
+    if (status) status.textContent = BUILD_STEPS[0].msg;
+    if (progress) progress.style.width = BUILD_STEPS[0].pct + '%';
+    buildTimer = setInterval(() => {
       buildStep++;
-      if(buildStep>=BUILD_STEPS.length){ clearInterval(buildTimer); return; }
-      if(status) status.textContent = BUILD_STEPS[buildStep].msg;
-      if(progress) progress.style.width = BUILD_STEPS[buildStep].pct+'%';
+      if (buildStep >= BUILD_STEPS.length) { clearInterval(buildTimer); return; }
+      if (status) status.textContent = BUILD_STEPS[buildStep].msg;
+      if (progress) progress.style.width = BUILD_STEPS[buildStep].pct + '%';
     }, 2400);
   } else {
-    msgs.style.display='flex';
-    preview.style.display='none';
-    if(buildTimer) clearInterval(buildTimer);
+    msgs.style.display = 'flex';
+    preview.style.display = 'none';
+    if (buildTimer) clearInterval(buildTimer);
   }
 }
 
 // ── SEND ──
-// FIX 2: Robust token retrieval — try refresh first, fall back to current session,
-// and silently redirect to landing instead of showing confusing error message
-// ── SEND ──
-async function send(){
-  if(busy) return;
+async function send() {
+  if (busy) return;
   const inp = document.getElementById('mi');
   const txt = inp.value.trim();
-  if(!txt) return;
-  if(userPlan==='free'&&buildsUsed>=1){ showUpgrade(); return; }
-  inp.value='';
-  addMsg('user',txt);
+  if (!txt) return;
+  if (userPlan === 'free' && buildsUsed >= 1) { showUpgrade(); return; }
+  inp.value = '';
+  addMsg('user', txt);
   setBusy(true);
-  try{
-   let token;
-    // Wait for Supabase to hydrate session from storage
-    await new Promise(resolve => setTimeout(resolve, 100));
-    // Get current session first (most reliable)
-    const { data: { session: currentSession } } = await sb.auth.getSession();
-    if(currentSession?.access_token){
-      token = currentSession.access_token;
-      currentUser = currentSession.user;
-    } else {
-      // Only refresh if no current session exists
-      const { data: refreshData } = await sb.auth.refreshSession();
-      if(refreshData?.session?.access_token){
-        token = refreshData.session.access_token;
-        currentUser = refreshData.session.user;
-      }
-    }
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const token = session?.access_token;
+    if (!token) { setBusy(false); addMsg('ai', 'Session expired. Please sign out and sign back in.'); return; }
 
-    if(!token){
-      setBusy(false);
-      addMsg('ai', 'Your session expired. Please sign out and sign back in.');
-      return;
-    }
-
-    const res = await fetch(`${WORKER_URL}/build`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({description:txt, token})
+    const res = await fetch(`${WORKER_URL}/build`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ description: txt, token })
     });
     const data = await res.json();
-    if(data.error==='upgrade_required'){ addMsg('ai','You\'ve used your free build. Upgrade for unlimited.'); showUpgrade(); setBusy(false); return; }
-    if(data.error) throw new Error(data.error);
+    if (data.error === 'upgrade_required') { addMsg('ai','You\'ve used your free build. Upgrade for unlimited.'); showUpgrade(); setBusy(false); return; }
+    if (data.error) throw new Error(data.error);
     addMsg('ai', null, data.html);
     fixCode = data.html;
-    document.getElementById('ab').style.display='block';
-    buildsUsed = data.buildsUsed||buildsUsed+1;
+    document.getElementById('ab').style.display = 'block';
+    buildsUsed = data.buildsUsed || buildsUsed + 1;
     updateUsageBar();
     addMsg('ai', "Done. Click Apply above to preview it.\nEditor to change anything.\nDownload to save it.\nDeploy free at netlify.com/drop.\n\nYou're welcome.");
-  }catch(e){ addMsg('ai','Something went wrong: '+e.message); }
+  } catch(e) { addMsg('ai', 'Something went wrong: ' + e.message); }
   setBusy(false);
 }
 
-function qs(t){ document.getElementById('mi').value=t; send(); }
-function applyFix(){ if(!fixCode) return; document.getElementById('ca').value=fixCode; fixCode=null; document.getElementById('ab').style.display='none'; show('preview'); }
-document.getElementById('mi').onkeydown = e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); send(); } };
+function qs(t) { document.getElementById('mi').value = t; send(); }
+function applyFix() { if (!fixCode) return; document.getElementById('ca').value = fixCode; fixCode = null; document.getElementById('ab').style.display = 'none'; show('preview'); }
+document.getElementById('mi').onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
 
-// ── OWN IT / REBUILD ──
-function rebuildSite(){
+function rebuildSite() {
   const desc = document.getElementById('rebuild-desc').value.trim();
-  if(!desc){ alert('Tell Barry-X what to rebuild first.'); return; }
+  if (!desc) { alert('Tell Barry-X what to rebuild first.'); return; }
   document.getElementById('mi').value = `Rebuild this site clean with no platform dependencies, no external CDN lock-in, fully self-contained HTML/CSS/JS: ${desc}`;
   show('build');
   send();
 }
 
-// ── EDITOR / DOWNLOAD ──
-function copyCode(){ navigator.clipboard.writeText(document.getElementById('ca').value).then(()=>alert('Copied!')).catch(()=>alert('Press Cmd+A then Cmd+C')); }
-function dlCode(){
+function copyCode() { navigator.clipboard.writeText(document.getElementById('ca').value).then(()=>alert('Copied!')).catch(()=>alert('Press Cmd+A then Cmd+C')); }
+function dlCode() {
   const c = document.getElementById('ca').value;
-  if(!c.trim()){ alert('Build a website first.'); return; }
-  const b = new Blob([c],{type:'text/html'});
+  if (!c.trim()) { alert('Build a website first.'); return; }
+  const b = new Blob([c], {type:'text/html'});
   const u = URL.createObjectURL(b);
   const a = document.createElement('a');
-  a.href=u; a.download='ownsite.html'; a.click();
+  a.href = u; a.download = 'ownsite.html'; a.click();
   URL.revokeObjectURL(u);
 }
 
-// ── UPGRADE ──
-function showUpgrade(){ document.getElementById('upgrade-modal').classList.add('show'); }
-function closeUpgrade(){ document.getElementById('upgrade-modal').classList.remove('show'); }
-function goUpgrade(){ window.open(STRIPE_LINK,'_blank'); closeUpgrade(); }
-
-// ── AUTH FLOWS ──
-function showForgot(){
-  document.getElementById('auth-main').style.display='none';
-  document.getElementById('auth-forgot').style.display='block';
-  document.getElementById('auth-reset').style.display='none';
-  document.getElementById('auth-sub').textContent='Reset your password';
-  document.getElementById('forgot-err').style.display='none';
-  document.getElementById('forgot-success').style.display='none';
-}
-function showMain(){
-  document.getElementById('auth-main').style.display='block';
-  document.getElementById('auth-forgot').style.display='none';
-  document.getElementById('auth-reset').style.display='none';
-  switchAuth('signin');
-}
-function showReset(){
-  document.getElementById('auth-main').style.display='none';
-  document.getElementById('auth-forgot').style.display='none';
-  document.getElementById('auth-reset').style.display='block';
-  document.getElementById('auth-sub').textContent='Set a new password';
-  showScreen('auth-screen');
-}
-async function submitForgot(){
-  const email = document.getElementById('forgot-email').value.trim();
-  const btn = document.getElementById('forgot-submit');
-  const err = document.getElementById('forgot-err');
-  const success = document.getElementById('forgot-success');
-  err.style.display='none'; success.style.display='none';
-  if(!email){ err.textContent='Please enter your email.'; err.style.display='block'; return; }
-  btn.disabled=true; btn.textContent='Sending...';
-  try{
-    const {error} = await sb.auth.resetPasswordForEmail(email,{ redirectTo: window.location.origin+'?reset=true' });
-    if(error) throw error;
-    success.textContent='Check your email — reset link sent.';
-    success.style.display='block';
-    btn.textContent='Email sent';
-  }catch(e){
-    err.textContent = e.message||'Something went wrong.';
-    err.style.display='block';
-    btn.disabled=false; btn.textContent='Send reset link';
-  }
-}
-async function submitReset(){
-  const password = document.getElementById('reset-password').value;
-  const confirm = document.getElementById('reset-confirm').value;
-  const btn = document.getElementById('reset-submit');
-  const err = document.getElementById('reset-err');
-  const success = document.getElementById('reset-success');
-  err.style.display='none'; success.style.display='none';
-  if(!password||password.length<6){ err.textContent='Password must be at least 6 characters.'; err.style.display='block'; return; }
-  if(password!==confirm){ err.textContent='Passwords do not match.'; err.style.display='block'; return; }
-  btn.disabled=true; btn.textContent='Updating...';
-  try{
-    const {error} = await sb.auth.updateUser({password});
-    if(error) throw error;
-    success.textContent='Password updated. Signing you in...';
-    success.style.display='block';
-    setTimeout(async()=>{
-      const {data:{session}} = await sb.auth.getSession();
-      if(session?.user){ currentUser=session.user; await loadUserData(); launchApp(); }
-    }, 1500);
-  }catch(e){
-    err.textContent = e.message||'Something went wrong.';
-    err.style.display='block';
-    btn.disabled=false; btn.textContent='Update password';
-  }
-}
+function showUpgrade() { document.getElementById('upgrade-modal').classList.add('show'); }
+function closeUpgrade() { document.getElementById('upgrade-modal').classList.remove('show'); }
+function goUpgrade() { window.open(STRIPE_LINK, '_blank'); closeUpgrade(); }
 
 // ── INIT ──
-// FIX 3: detectSessionInUrl handles password reset hash automatically via the client config above
-async function init(){
-  const params = new URLSearchParams(window.location.search);
-  const hash = window.location.hash;
-
-  if(hash.includes('type=recovery')||params.get('reset')==='true'){
-    const {data:{session}} = await sb.auth.getSession();
-    if(session){ showReset(); return; }
-  }
-
-  let {data:{session}} = await sb.auth.getSession();
-  if(!session){
-    try {
-      const {data:r} = await sb.auth.refreshSession();
-      session = r?.session;
-    } catch(e) {
-      session = null;
+async function init() {
+  // onAuthStateChange handles the Google OAuth redirect callback automatically
+  // because detectSessionInUrl: true is set in the client config
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      currentUser = session.user;
+      await loadUserData();
+      launchApp();
     }
-  }
+    if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      showScreen('landing');
+    }
+    if (event === 'TOKEN_REFRESHED' && session) {
+      currentUser = session.user;
+    }
+  });
 
-  if(session?.user){
-    currentUser = session.user;
-    await loadUserData();
-    launchApp();
-  } else {
+  // Check for existing session on page load
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session?.user) {
+      currentUser = session.user;
+      await loadUserData();
+      launchApp();
+    } else {
+      showScreen('landing');
+    }
+  } catch(e) {
     showScreen('landing');
   }
-
-  sb.auth.onAuthStateChange(async(event,session)=>{
-    if(event==='PASSWORD_RECOVERY'){ showReset(); }
-    if(event==='SIGNED_IN'&&session){ currentUser=session.user; await loadUserData(); launchApp(); }
-    if(event==='SIGNED_OUT'){ currentUser=null; showScreen('landing'); }
-    if(event==='TOKEN_REFRESHED'&&session){ currentUser=session.user; }
-  });
 }
 
 init();
 </script>
-<!-- ================================================ -->
-<!-- PASTE THIS REPLACING THE LAST </body></html> IN OWNSITE.HTML -->
-<!-- ================================================ -->
 
 <!-- RunP8 App Bar -->
 <style>
@@ -752,6 +637,14 @@ init();
 .runp8-bar a span.lbl{font-size:8.5px;color:rgba(255,255,255,0.45);font-family:-apple-system,sans-serif;white-space:nowrap;}
 .runp8-bar .sep{width:1px;height:22px;background:rgba(255,255,255,0.1);margin:0 2px;}
 </style>
-<div class="runp8-bar"><a href="https://skillupapp.app" target="_blank" rel="noopener"><span class="ico">🎓</span><span class="lbl">SkillUp</span></a><div class="sep"></div><a href="https://postpilots.xyz" target="_blank" rel="noopener"><span class="ico">📣</span><span class="lbl">PostPilots</span></a><div class="sep"></div><a href="https://thedigitalledger.net" target="_blank" rel="noopener"><span class="ico">💰</span><span class="lbl">Ledger</span></a><div class="sep"></div><a href="https://rentyapp.net" target="_blank" rel="noopener"><span class="ico">🏠</span><span class="lbl">RentyApp</span></a></div>
+<div class="runp8-bar">
+  <a href="https://skillupapp.app" target="_blank" rel="noopener"><span class="ico">🎓</span><span class="lbl">SkillUp</span></a>
+  <div class="sep"></div>
+  <a href="https://postpilots.xyz" target="_blank" rel="noopener"><span class="ico">📣</span><span class="lbl">PostPilots</span></a>
+  <div class="sep"></div>
+  <a href="https://thedigitalledger.net" target="_blank" rel="noopener"><span class="ico">💰</span><span class="lbl">Ledger</span></a>
+  <div class="sep"></div>
+  <a href="https://rentyapp.net" target="_blank" rel="noopener"><span class="ico">🏠</span><span class="lbl">RentyApp</span></a>
+</div>
 </body>
 </html>
