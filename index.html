@@ -578,11 +578,12 @@ async function send() {
     }
     if (data.error) throw new Error(data.error);
 
-    if (data.type === 'build') {
+   if (data.type === 'build') {
       // Barry built something
       if (data.reply) addMsg('ai', data.reply);
       addMsg('ai', null, data.html);
       fixCode = data.html;
+      document.getElementById('ca').value = data.html;  // ← AUTO-APPLY to editor
       document.getElementById('ab').style.display = 'block';
       buildsUsed = data.buildsUsed || buildsUsed + 1;
       updateUsageBar();
@@ -605,6 +606,39 @@ async function send() {
 
 // Also update qs() to use the same send() flow
 function qs(t) { document.getElementById('mi').value = t; send(); }
+  // ── HELPERS ──
+function applyFix() {
+  if (!fixCode) return;
+  document.getElementById('ca').value = fixCode;
+  show('preview');
+}
+
+function copyCode() {
+  const code = document.getElementById('ca').value;
+  if (!code) return;
+  navigator.clipboard.writeText(code);
+}
+
+function dlCode() {
+  const code = document.getElementById('ca').value;
+  if (!code) return;
+  const a = document.createElement('a');
+  a.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(code);
+  a.download = 'my-site.html';
+  a.click();
+}
+
+function rebuildSite() {
+  const desc = document.getElementById('rebuild-desc').value.trim();
+  if (!desc) return;
+  document.getElementById('mi').value = 'Rebuild my old site: ' + desc;
+  show('build');
+  send();
+}
+
+function showUpgrade() { document.getElementById('upgrade-modal').classList.add('show'); }
+function closeUpgrade() { document.getElementById('upgrade-modal').classList.remove('show'); }
+function goUpgrade() { window.open(STRIPE_LINK, '_blank'); closeUpgrade(); }
 
 // ── INIT ──
 async function init() {
