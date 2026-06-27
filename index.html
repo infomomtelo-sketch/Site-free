@@ -310,7 +310,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
           <button class="pb" onclick="show('editor')" style="padding:4px 10px;font-size:11px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font)">Edit</button>
           <button class="pb p" onclick="dlCode()" style="padding:4px 10px;font-size:11px;border-radius:6px;cursor:pointer;font-family:var(--font)">Download</button>
         </div>
-        <iframe id="pf" sandbox="allow-scripts allow-same-origin"></iframe>
+        <iframe id="pf"></iframe>
       </div>
 
       <!-- OWN IT -->
@@ -472,7 +472,7 @@ function show(t) {
   });
   const pane = document.getElementById(t+'-pane'); if (!pane) return;
   pane.style.display = (t === 'build' || t === 'editor' || t === 'preview') ? 'flex' : 'block';
-  if (t === 'preview') document.getElementById('pf').srcdoc = document.getElementById('ca').value;
+  if (t === 'preview') {   const html = document.getElementById('ca').value;   if (html) {     const blob = new Blob([html], { type: 'text/html' });     document.getElementById('pf').src = URL.createObjectURL(blob);   } }
   const b = document.getElementById('t-'+t); if (b) b.classList.add('on');
   if (t === 'build') { setTimeout(() => { const m = document.getElementById('msgs'); if (m) m.scrollTop = m.scrollHeight; }, 50); }
 }
@@ -584,6 +584,9 @@ async function send() {
       addMsg('ai', null, data.html);
       fixCode = data.html;
       document.getElementById('ca').value = data.html;  // ← AUTO-APPLY to editor
+     const pf = document.getElementById('pf');
+const blob = new URL(URL.createObjectURL(new Blob([data.html], {type:'text/html'})));
+pf.src = blob.href;
       document.getElementById('ab').style.display = 'block';
       buildsUsed = data.buildsUsed || buildsUsed + 1;
       updateUsageBar();
