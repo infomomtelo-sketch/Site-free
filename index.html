@@ -58,13 +58,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 .auth-logo { font-size: 24px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 8px; }
 .auth-sub { font-size: 14px; color: var(--text2); margin-bottom: 32px; line-height: 1.6; }
 .auth-err { font-size: 13px; color: #f87171; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; display: none; text-align: left; }
-.google-btn {
-  width: 100%; padding: 13px 18px;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  background: #fff; color: #111; border: none; border-radius: 10px;
-  font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font);
-  margin-bottom: 16px; transition: opacity 0.15s;
-}
+.google-btn { width: 100%; padding: 13px 18px; display: flex; align-items: center; justify-content: center; gap: 10px; background: #fff; color: #111; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); margin-bottom: 16px; transition: opacity 0.15s; }
 .google-btn:hover { opacity: 0.92; }
 .auth-back { font-size: 13px; color: var(--text2); cursor: pointer; margin-top: 8px; display: inline-block; }
 .auth-back:hover { color: var(--accent); }
@@ -188,6 +182,26 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 .upgrade-close { background: none; border: none; color: var(--text2); font-size: 13.5px; cursor: pointer; font-family: var(--font); padding: 6px; }
 .upgrade-close:hover { color: var(--text); }
 
+/* STACK CARD */
+.stack-card { background: var(--bg2); border: 1px solid rgba(124,106,247,0.3); border-left: 3px solid var(--accent); border-radius: 12px; padding: 16px; margin-top: 4px; max-width: 90%; }
+.stack-title { font-size: 10px; font-weight: 700; letter-spacing: .15em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+.stack-intro { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
+.stack-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; text-decoration: none; transition: border-color 0.15s; cursor: pointer; }
+.stack-row:hover { border-color: var(--accent); }
+.stack-row-icon { font-size: 16px; flex-shrink: 0; }
+.stack-row-info { flex: 1; min-width: 0; }
+.stack-row-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.stack-row-desc { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.stack-row-badge { font-size: 10px; color: var(--accent); flex-shrink: 0; }
+.stack-apps-title { font-size: 10px; font-weight: 700; letter-spacing: .15em; color: #a855f7; text-transform: uppercase; margin: 12px 0 8px; }
+.stack-apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.stack-app { padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; transition: border-color 0.15s; display: block; }
+.stack-app:hover { border-color: var(--accent2); }
+.stack-app-icon { font-size: 14px; margin-bottom: 3px; }
+.stack-app-name { font-size: 11px; font-weight: 600; color: var(--text); }
+.stack-app-desc { font-size: 10px; color: var(--text2); margin-top: 1px; }
+.stack-footer { font-size: 11px; color: var(--text2); text-align: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); line-height: 1.5; font-style: italic; }
+
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
@@ -272,6 +286,10 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
             <button class="tmpl" onclick="qs('Build a coming soon page for AI startup Nova. Dark space theme. Countdown timer, what we are building, email waitlist, early access benefits.')">Coming Soon</button>
             <button class="tmpl" onclick="qs('Build a personal brand site for business coach Sarah Chen. Professional clean teal theme. Hero, about, 3 service packages with prices, client wins, booking form.')">Coach</button>
             <button class="tmpl" onclick="qs('Build a digital agency website for Pixel Studio. Bold dark theme neon green. Hero, services, portfolio, process, team, contact form.')">Agency</button>
+            <button class="tmpl" onclick="qs('Build a property management SaaS landing page. Clean professional theme. Hero with dashboard screenshot, features for landlords, pricing tiers, CTA to try free.')">Property SaaS</button>
+            <button class="tmpl" onclick="qs('Build a compliance software landing page for care facilities. Professional medical theme. Hero, key features, pricing, testimonials from administrators.')">Compliance SaaS</button>
+            <button class="tmpl" onclick="qs('Build an AI tools platform landing page. Dark futuristic theme purple accents. Hero, list of AI tools, pricing, get started CTA.')">AI Platform</button>
+            <button class="tmpl" onclick="qs('Build a maker guide app landing page. Dark orange accents. Hero with step by step guide preview, features, free to try CTA.')">Maker App</button>
           </div>
         </div>
         <div id="msgs"></div>
@@ -372,14 +390,77 @@ const STRIPE_LINK = '#';
 
 const { createClient } = supabase;
 const sb = createClient(SUPA_URL, SUPA_ANON, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true  // handles Google OAuth redirect automatically
-  }
+  auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
 });
 
-let currentUser = null, userPlan = 'free', buildsUsed = 0, fixCode = null, busy = false, allMsgs = [];
+let currentUser = null, userPlan = 'free', buildsUsed = 0, fixCode = null, busy = false, allMsgs = [], chatHistory = [];
+
+// ── STACK RECOMMENDATION HTML ──────────────────────────────
+function stackRecommendationHTML() {
+  return `<div class="stack-card">
+  <div class="stack-title">⚡ Own Your Stack — No Platform Lock-In</div>
+  <div class="stack-intro">Barry built it. Now deploy it free and run it on tools you actually own. No Wix. No Webflow. No monthly hostage fees.</div>
+  <a class="stack-row" href="https://pages.cloudflare.com" target="_blank">
+    <span class="stack-row-icon">🌐</span>
+    <div class="stack-row-info"><div class="stack-row-name">Cloudflare Pages</div><div class="stack-row-desc">Deploy your site free in 2 minutes. No server needed.</div></div>
+    <span class="stack-row-badge">Free ↗</span>
+  </a>
+  <a class="stack-row" href="https://supabase.com" target="_blank">
+    <span class="stack-row-icon">🗄️</span>
+    <div class="stack-row-info"><div class="stack-row-name">Supabase — Database & Auth</div><div class="stack-row-desc">Add user accounts, database, file storage. Free tier is generous.</div></div>
+    <span class="stack-row-badge">Free ↗</span>
+  </a>
+  <a class="stack-row" href="https://anthropic.com" target="_blank">
+    <span class="stack-row-icon">🤖</span>
+    <div class="stack-row-info"><div class="stack-row-name">Anthropic API — Add AI</div><div class="stack-row-desc">Power your site with Claude AI. $5 gets you thousands of responses.</div></div>
+    <span class="stack-row-badge">$5 ↗</span>
+  </a>
+  <a class="stack-row" href="https://stripe.com" target="_blank">
+    <span class="stack-row-icon">💳</span>
+    <div class="stack-row-info"><div class="stack-row-name">Stripe — Take Payments</div><div class="stack-row-desc">Accept cards, subscriptions, one-time payments. Free to set up.</div></div>
+    <span class="stack-row-badge">Free ↗</span>
+  </a>
+  <a class="stack-row" href="https://resend.com" target="_blank">
+    <span class="stack-row-icon">📧</span>
+    <div class="stack-row-info"><div class="stack-row-name">Resend — Send Emails</div><div class="stack-row-desc">Transactional email for your users. 3,000 free emails/month.</div></div>
+    <span class="stack-row-badge">Free ↗</span>
+  </a>
+  <div class="stack-apps-title">🔨 Built by RunP8 — Apps Running on This Exact Stack</div>
+  <div class="stack-apps-grid">
+    <a class="stack-app" href="https://rentyapp.net" target="_blank">
+      <div class="stack-app-icon">🏠</div>
+      <div class="stack-app-name">RentyApp</div>
+      <div class="stack-app-desc">Property management</div>
+    </a>
+    <a class="stack-app" href="https://title22.app" target="_blank">
+      <div class="stack-app-icon">📋</div>
+      <div class="stack-app-name">Title22</div>
+      <div class="stack-app-desc">RCFE compliance</div>
+    </a>
+    <a class="stack-app" href="https://thejudgy.com" target="_blank">
+      <div class="stack-app-icon">⚖️</div>
+      <div class="stack-app-name">TheJudgy</div>
+      <div class="stack-app-desc">AI advice & verdicts</div>
+    </a>
+    <a class="stack-app" href="https://iguide-7ln.pages.dev" target="_blank">
+      <div class="stack-app-icon">⚡</div>
+      <div class="stack-app-name">iGuide</div>
+      <div class="stack-app-desc">AI maker guide</div>
+    </a>
+    <a class="stack-app" href="https://postpilots.xyz" target="_blank">
+      <div class="stack-app-icon">✏️</div>
+      <div class="stack-app-name">PostPilots</div>
+      <div class="stack-app-desc">AI caption generator</div>
+    </a>
+    <a class="stack-app" href="https://ownsite.app" target="_blank">
+      <div class="stack-app-icon">🌐</div>
+      <div class="stack-app-name">OwnSite</div>
+      <div class="stack-app-desc">AI website builder</div>
+    </a>
+  </div>
+  <div class="stack-footer">All built on Cloudflare + Supabase + Anthropic + Stripe.<br>No platform fees. You own everything.</div>
+</div>`;
+}
 
 // ── SCREENS ──
 function showScreen(id) {
@@ -401,12 +482,9 @@ async function signInGoogle() {
   try {
     const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: 'https://ownsite.app'  // must match Supabase allowed redirect URLs
-      }
+      options: { redirectTo: 'https://ownsite.app' }
     });
     if (error) throw error;
-    // Browser will redirect — no further action needed here
   } catch (e) {
     err.textContent = e.message || 'Could not connect to Google. Try again.';
     err.style.display = 'block';
@@ -448,14 +526,15 @@ function updateUsageBar() {
 function launchApp() {
   showScreen('app-screen');
   allMsgs = [];
-  // Barry handoff from thejudgy.com
+  chatHistory = [];
   const params = new URLSearchParams(window.location.search);
   if (params.get('source') === 'barry') {
     try {
       const html = sessionStorage.getItem('barry_handoff');
       if (html) {
         document.getElementById('ca').value = html;
-        addMsg('ai', "Barry sent this over from The Judgy.\n\nYour landing page is loaded. Click Preview to see it, Editor to tweak it, or Download to save it.\n\nYou're welcome, by the way.");
+        fixCode = html;
+        addMsg('ai', "Barry sent this over from The Judgy.\n\nYour landing page is loaded. Switching to preview now.\n\nYou're welcome, by the way.");
         show('preview');
         return;
       }
@@ -472,22 +551,38 @@ function show(t) {
   });
   const pane = document.getElementById(t+'-pane'); if (!pane) return;
   pane.style.display = (t === 'build' || t === 'editor' || t === 'preview') ? 'flex' : 'block';
-  if (t === 'preview') {   const html = document.getElementById('ca').value;   if (html) {     const blob = new Blob([html], { type: 'text/html' });     document.getElementById('pf').src = URL.createObjectURL(blob);   } }
+  if (t === 'preview') {
+    const html = document.getElementById('ca').value;
+    if (html) {
+      const blob = new Blob([html], { type: 'text/html' });
+      document.getElementById('pf').src = URL.createObjectURL(blob);
+    }
+  }
   const b = document.getElementById('t-'+t); if (b) b.classList.add('on');
   if (t === 'build') { setTimeout(() => { const m = document.getElementById('msgs'); if (m) m.scrollTop = m.scrollHeight; }, 50); }
 }
 
 // ── MESSAGES ──
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function addMsg(r, t, c) { allMsgs.push({role:r, text:t, code:c}); renderMsgs(); }
+
+function addMsg(r, t, c, rawHtml) {
+  allMsgs.push({role:r, text:t, code:c, rawHtml:rawHtml});
+  renderMsgs();
+}
+
 function renderMsgs() {
   const el = document.getElementById('msgs');
   el.innerHTML = allMsgs.map(m => {
     const u = m.role === 'user';
-    let inner = m.code
-      ? `<div class="cb"><button class="cpb" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('pre').textContent)">copy</button><pre>${esc(m.code)}</pre></div>`
-      : `<div class="bub">${esc(m.text)}</div>`;
-    return `<div class="msg ${u?'u':''}"><div class="av ${u?'u':'ai'}">${u?'You':'BX'}</div><div style="max-width:82%;display:flex;flex-direction:column;gap:5px">${inner}</div></div>`;
+    let inner;
+    if (m.rawHtml) {
+      inner = m.rawHtml;
+    } else if (m.code) {
+      inner = `<div class="cb"><button class="cpb" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('pre').textContent)">copy</button><pre>${esc(m.code)}</pre></div>`;
+    } else {
+      inner = `<div class="bub">${esc(m.text)}</div>`;
+    }
+    return `<div class="msg ${u?'u':''}"><div class="av ${u?'u':'ai'}">${u?'You':'BX'}</div><div style="max-width:92%;display:flex;flex-direction:column;gap:5px">${inner}</div></div>`;
   }).join('');
   el.scrollTop = el.scrollHeight;
 }
@@ -532,13 +627,6 @@ function setBusy(on) {
 }
 
 // ── SEND ──
-// ── REPLACE the entire send() function and related vars in ownsite index.html ──
-// Also add chatHistory var near the top with other let declarations:
-// let currentUser = null, userPlan = 'free', buildsUsed = 0, fixCode = null, busy = false, allMsgs = [];
-// ADD: let chatHistory = [];
-
-let chatHistory = [];  // ADD THIS near other variable declarations
-
 async function send() {
   if (busy) return;
   const inp = document.getElementById('mi');
@@ -546,7 +634,16 @@ async function send() {
   if (!txt) return;
   inp.value = '';
   addMsg('user', txt);
-  chatHistory.push({ role: 'user', content: txt });
+
+  // Detect edit request — send current HTML to Barry
+  const currentHtml = document.getElementById('ca').value;
+  const isEdit = currentHtml && ['change','update','fix','make','edit','modify','add','remove','replace','darker','lighter','bigger','smaller','color','font','move','delete','center','align','bold','italic','background','button','text','heading','section','footer','header','nav','price','image','logo'].some(k => txt.toLowerCase().includes(k));
+
+  const messageToSend = isEdit
+    ? txt + '\n\nHere is the current website HTML to edit:\n' + currentHtml
+    : txt;
+
+  chatHistory.push({ role: 'user', content: messageToSend });
   setBusy(true);
 
   try {
@@ -562,8 +659,8 @@ async function send() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: txt,
-        history: chatHistory.slice(-10),  // last 10 messages for context
+        message: messageToSend,
+        history: chatHistory.slice(-6),
         token,
       })
     });
@@ -578,27 +675,35 @@ async function send() {
     }
     if (data.error) throw new Error(data.error);
 
-   if (data.type === 'build') {
-      // Barry built something
+    if (data.type === 'build') {
       if (data.reply) addMsg('ai', data.reply);
-      addMsg('ai', null, data.html);
+
+      // Apply to editor
+      document.getElementById('ca').value = data.html;
       fixCode = data.html;
-      document.getElementById('ca').value = data.html;  // ← AUTO-APPLY to editor
-     const pf = document.getElementById('pf');
-const blob = new URL(URL.createObjectURL(new Blob([data.html], {type:'text/html'})));
-pf.src = blob.href;
       document.getElementById('ab').style.display = 'block';
       buildsUsed = data.buildsUsed || buildsUsed + 1;
       updateUsageBar();
-      addMsg('ai', "Done. Click Apply above to preview it.\nEditor to change anything.\nDownload to save it.\nDeploy free at netlify.com/drop.\n\nYou're welcome.");
-      chatHistory.push({ role: 'assistant', content: (data.reply || '') + '\n[Built website]' });
+      chatHistory.push({ role: 'assistant', content: (data.reply || '') + '\n[Built/updated website]' });
+
+      // Load preview silently in background
+      const blob = new Blob([data.html], { type: 'text/html' });
+      document.getElementById('pf').src = URL.createObjectURL(blob);
+
+      // Completion message
+      addMsg('ai', isEdit
+        ? 'Updated. Click Preview tab to see changes. Tell me what else to change.'
+        : "Done. Click Preview tab to see it live.\nEditor to tweak the code.\nDownload to save it.\nDeploy free at Cloudflare Pages.\n\nYou're welcome."
+      );
+
+      // RunP8 stack recommendation after every build
+      addMsg('ai', null, null, stackRecommendationHTML());
+
     } else {
-      // Barry chatted
       addMsg('ai', data.reply);
       chatHistory.push({ role: 'assistant', content: data.reply });
     }
 
-    // Keep history manageable
     if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
 
   } catch(e) {
@@ -607,9 +712,9 @@ pf.src = blob.href;
   setBusy(false);
 }
 
-// Also update qs() to use the same send() flow
 function qs(t) { document.getElementById('mi').value = t; send(); }
-  // ── HELPERS ──
+
+// ── HELPERS ──
 function applyFix() {
   if (!fixCode) return;
   document.getElementById('ca').value = fixCode;
@@ -645,8 +750,6 @@ function goUpgrade() { window.open(STRIPE_LINK, '_blank'); closeUpgrade(); }
 
 // ── INIT ──
 async function init() {
-  // onAuthStateChange handles the Google OAuth redirect callback automatically
-  // because detectSessionInUrl: true is set in the client config
   sb.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session) {
       currentUser = session.user;
@@ -662,7 +765,6 @@ async function init() {
     }
   });
 
-  // Check for existing session on page load
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (session?.user) {
