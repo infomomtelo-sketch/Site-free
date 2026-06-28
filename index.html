@@ -17,13 +17,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
---bg: #0a0a0f;
---bg2: #111118;
---bg3: #1a1a24;
---accent: #7c6af7;
---accent2: #a855f7;
---text: #f0eeff;
---text2: #9896b8;
+--bg: #0a0a0f; --bg2: #111118; --bg3: #1a1a24;
+--accent: #7c6af7; --accent2: #a855f7;
+--text: #f0eeff; --text2: #9896b8;
 --border: rgba(124,106,247,0.18);
 --font: 'Inter', -apple-system, sans-serif;
 --radius: 14px;
@@ -32,13 +28,7 @@
 body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; -webkit-font-smoothing: antialiased; min-height: 100vh; }
 .screen { min-height: 100vh; }
 .hidden { display: none !important; }
-
-/* LANDING */
-#landing {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  min-height: 100vh; padding: 40px 24px; text-align: center;
-  background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transparent 70%);
-}
+#landing { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 24px; text-align: center; background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.15) 0%, transparent 70%); }
 .land-badge { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); background: rgba(124,106,247,0.1); border: 1px solid var(--border); padding: 5px 14px; border-radius: 99px; margin-bottom: 32px; }
 .land-title { font-size: clamp(2.4rem, 8vw, 4.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 20px; }
 .land-title span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -51,8 +41,6 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 .land-features { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
 .land-feat { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 7px; }
 .land-feat::before { content: '✓'; color: var(--accent); font-weight: 700; }
-
-/* AUTH */
 #auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; background: radial-gradient(ellipse at 50% 0%, rgba(124,106,247,0.1) 0%, transparent 60%); }
 .auth-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 40px 36px; width: 100%; max-width: 380px; text-align: center; }
 .auth-logo { font-size: 24px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-bottom: 8px; }
@@ -63,8 +51,6 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 .auth-back { font-size: 13px; color: var(--text2); cursor: pointer; margin-top: 8px; display: inline-block; }
 .auth-back:hover { color: var(--accent); }
 .auth-loading { font-size: 13px; color: var(--text2); margin-top: 12px; display: none; }
-
-/* APP */
 #app-screen { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 #bar { display: flex; align-items: center; gap: 4px; padding: 10px 16px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0; overflow-x: auto; }
 .blogo { font-size: 16px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; margin-right: 8px; white-space: nowrap; }
@@ -77,8 +63,6 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 .ubadge { display: flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 99px; cursor: pointer; font-size: 12.5px; color: var(--text2); white-space: nowrap; }
 .udot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 #con { flex: 1; overflow: hidden; display: flex; }
-
-/* BUILD PANE */
 #build-pane { display: flex; flex-direction: column; width: 100%; height: 100%; overflow: hidden; }
 .bhero { padding: 28px 20px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .bht { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
@@ -92,13 +76,10 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 .tmpl { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); font-size: 12px; padding: 5px 12px; border-radius: 99px; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
 .tmpl:hover { border-color: var(--accent); color: var(--accent); }
 #msgs { flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
-.tbub { display: flex; align-items: flex-start; gap: 10px; }
 .av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
 .av.ai { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
 .av.u { background: var(--bg3); border: 1px solid var(--border); color: var(--text2); }
-.ttext { font-size: 14px; color: var(--text2); padding-top: 6px; display: flex; align-items: center; gap: 8px; }
-.da { display: flex; gap: 4px; }
-.da span { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; animation: bounce 1.2s infinite; }
+.da span { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; animation: bounce 1.2s infinite; display: inline-block; }
 .da span:nth-child(2) { animation-delay: 0.2s; }
 .da span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
@@ -123,8 +104,6 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 #sb:hover { opacity: 0.85; }
 #sb:disabled { opacity: 0.4; }
 .ihint { font-size: 11.5px; color: var(--text2); margin-top: 8px; text-align: center; opacity: 0.7; }
-
-/* EDITOR PANE */
 #editor-pane { display: none; flex-direction: column; width: 100%; height: 100%; }
 .ph { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .phl .pt { font-size: 14px; font-weight: 600; }
@@ -135,16 +114,12 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 .pb.p { background: var(--accent); color: #fff; border-color: var(--accent); }
 .pb.p:hover { opacity: 0.85; }
 #ca { flex: 1; background: var(--bg); color: #a8ff78; font-family: 'Fira Code', 'Courier New', monospace; font-size: 12.5px; border: none; outline: none; padding: 20px; resize: none; line-height: 1.6; overflow-y: auto; }
-
-/* PREVIEW PANE */
 #preview-pane { display: none; flex-direction: column; width: 100%; height: 100%; }
 .ptb { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .d3 { display: flex; gap: 5px; }
 .dd { width: 11px; height: 11px; border-radius: 50%; }
 .urlb { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px; font-size: 12px; color: var(--text2); text-align: center; }
 #pf { flex: 1; border: none; background: #fff; }
-
-/* OWN IT PANE */
 #fix-pane { display: none; overflow-y: auto; width: 100%; }
 .fiw { max-width: 600px; margin: 0 auto; padding: 32px 20px 60px; }
 .fhero { margin-bottom: 28px; }
@@ -165,6 +140,57 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 .rebuild-btn { width: 100%; margin-top: 12px; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: opacity 0.15s; }
 .rebuild-btn:hover { opacity: 0.88; }
 
+/* ACCOUNT */
+#account-pane { display: none; overflow-y: auto; width: 100%; }
+.acw { max-width: 560px; margin: 0 auto; padding: 28px 20px 80px; }
+.ac-section { margin-bottom: 28px; }
+.ac-section-title { font-size: 10px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+.ac-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 18px; }
+.ac-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+.ac-row:last-child { border-bottom: none; padding-bottom: 0; }
+.ac-row-label { font-size: 12px; color: var(--text2); flex-shrink: 0; }
+.ac-row-value { font-size: 13px; font-weight: 500; color: var(--text); text-align: right; word-break: break-all; }
+.ac-badge { font-size: 10px; padding: 3px 9px; border-radius: 99px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
+.ac-badge-free { background: rgba(124,106,247,0.15); color: var(--accent); border: 1px solid var(--border); }
+.ac-badge-pro { background: rgba(168,85,247,0.2); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+.ac-btn { font-size: 12.5px; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-family: var(--font); font-weight: 500; transition: all 0.15s; border: none; white-space: nowrap; }
+.ac-btn-primary { background: var(--accent); color: #fff; }
+.ac-btn-primary:hover { opacity: 0.85; }
+.ac-btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+.ac-btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.ac-btn-danger { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+.ac-btn-danger:hover { background: rgba(239,68,68,0.2); }
+.build-grid { display: flex; flex-direction: column; gap: 10px; }
+.build-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.15s; }
+.build-item:hover { border-color: var(--accent); background: rgba(124,106,247,0.06); }
+.build-item-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(124,106,247,0.15); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.build-item-info { flex: 1; min-width: 0; }
+.build-item-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.build-item-date { font-size: 11px; color: var(--text2); }
+.build-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.build-empty { text-align: center; padding: 32px 20px; color: var(--text2); font-size: 14px; line-height: 1.6; background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; }
+.build-empty-icon { font-size: 32px; margin-bottom: 10px; }
+
+/* STACK CARD */
+.stack-card { background: var(--bg2); border: 1px solid rgba(124,106,247,0.3); border-left: 3px solid var(--accent); border-radius: 12px; padding: 16px; margin-top: 4px; max-width: 90%; }
+.stack-title { font-size: 10px; font-weight: 700; letter-spacing: .15em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+.stack-intro { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
+.stack-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; text-decoration: none; transition: border-color 0.15s; }
+.stack-row:hover { border-color: var(--accent); }
+.stack-row-icon { font-size: 16px; flex-shrink: 0; }
+.stack-row-info { flex: 1; min-width: 0; }
+.stack-row-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.stack-row-desc { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.stack-row-badge { font-size: 10px; color: var(--accent); flex-shrink: 0; }
+.stack-apps-title { font-size: 10px; font-weight: 700; letter-spacing: .15em; color: #a855f7; text-transform: uppercase; margin: 12px 0 8px; }
+.stack-apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.stack-app { padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; transition: border-color 0.15s; display: block; }
+.stack-app:hover { border-color: var(--accent2); }
+.stack-app-icon { font-size: 14px; margin-bottom: 3px; }
+.stack-app-name { font-size: 11px; font-weight: 600; color: var(--text); }
+.stack-app-desc { font-size: 10px; color: var(--text2); margin-top: 1px; }
+.stack-footer { font-size: 11px; color: var(--text2); text-align: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); line-height: 1.5; font-style: italic; }
+
 /* UPGRADE MODAL */
 #upgrade-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(4px); }
 #upgrade-modal.show { display: flex; }
@@ -181,27 +207,6 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 .upgrade-btn { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); margin-bottom: 10px; }
 .upgrade-close { background: none; border: none; color: var(--text2); font-size: 13.5px; cursor: pointer; font-family: var(--font); padding: 6px; }
 .upgrade-close:hover { color: var(--text); }
-
-/* STACK CARD */
-.stack-card { background: var(--bg2); border: 1px solid rgba(124,106,247,0.3); border-left: 3px solid var(--accent); border-radius: 12px; padding: 16px; margin-top: 4px; max-width: 90%; }
-.stack-title { font-size: 10px; font-weight: 700; letter-spacing: .15em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
-.stack-intro { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
-.stack-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; text-decoration: none; transition: border-color 0.15s; cursor: pointer; }
-.stack-row:hover { border-color: var(--accent); }
-.stack-row-icon { font-size: 16px; flex-shrink: 0; }
-.stack-row-info { flex: 1; min-width: 0; }
-.stack-row-name { font-size: 12px; font-weight: 600; color: var(--text); }
-.stack-row-desc { font-size: 11px; color: var(--text2); margin-top: 1px; }
-.stack-row-badge { font-size: 10px; color: var(--accent); flex-shrink: 0; }
-.stack-apps-title { font-size: 10px; font-weight: 700; letter-spacing: .15em; color: #a855f7; text-transform: uppercase; margin: 12px 0 8px; }
-.stack-apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.stack-app { padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; transition: border-color 0.15s; display: block; }
-.stack-app:hover { border-color: var(--accent2); }
-.stack-app-icon { font-size: 14px; margin-bottom: 3px; }
-.stack-app-name { font-size: 11px; font-weight: 600; color: var(--text); }
-.stack-app-desc { font-size: 10px; color: var(--text2); margin-top: 1px; }
-.stack-footer { font-size: 11px; color: var(--text2); text-align: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); line-height: 1.5; font-style: italic; }
-
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
@@ -243,12 +248,8 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
       Continue with Google
     </button>
     <div class="auth-loading" id="auth-loading">Redirecting to Google...</div>
-    <div style="font-size:12px;color:var(--text2);opacity:0.6;margin-top:4px;line-height:1.6;">
-      By continuing you agree to our Terms and Privacy Policy.
-    </div>
-    <div style="margin-top:16px;">
-      <span class="auth-back" onclick="showScreen('landing')">← Back</span>
-    </div>
+    <div style="font-size:12px;color:var(--text2);opacity:0.6;margin-top:4px;line-height:1.6;">By continuing you agree to our Terms and Privacy Policy.</div>
+    <div style="margin-top:16px;"><span class="auth-back" onclick="showScreen('landing')">← Back</span></div>
   </div>
 </div>
 
@@ -261,6 +262,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
       <button class="tab" id="t-editor" onclick="show('editor')">Editor</button>
       <button class="tab" id="t-preview" onclick="show('preview')">Preview</button>
       <button class="tab" id="t-fix" onclick="show('fix')">Own It</button>
+      <button class="tab" id="t-account" onclick="show('account')">Account</button>
       <div id="tr">
         <button id="ab" onclick="applyFix()">Apply</button>
         <div class="ubadge" onclick="signOut()"><div class="udot"></div><span id="user-display">Account</span></div>
@@ -286,8 +288,8 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
             <button class="tmpl" onclick="qs('Build a coming soon page for AI startup Nova. Dark space theme. Countdown timer, what we are building, email waitlist, early access benefits.')">Coming Soon</button>
             <button class="tmpl" onclick="qs('Build a personal brand site for business coach Sarah Chen. Professional clean teal theme. Hero, about, 3 service packages with prices, client wins, booking form.')">Coach</button>
             <button class="tmpl" onclick="qs('Build a digital agency website for Pixel Studio. Bold dark theme neon green. Hero, services, portfolio, process, team, contact form.')">Agency</button>
-            <button class="tmpl" onclick="qs('Build a property management SaaS landing page. Clean professional theme. Hero with dashboard screenshot, features for landlords, pricing tiers, CTA to try free.')">Property SaaS</button>
-            <button class="tmpl" onclick="qs('Build a compliance software landing page for care facilities. Professional medical theme. Hero, key features, pricing, testimonials from administrators.')">Compliance SaaS</button>
+            <button class="tmpl" onclick="qs('Build a property management SaaS landing page. Clean professional theme. Hero, features for landlords, pricing tiers, CTA to try free.')">Property SaaS</button>
+            <button class="tmpl" onclick="qs('Build a compliance software landing page for care facilities. Professional medical theme. Hero, key features, pricing, testimonials.')">Compliance SaaS</button>
             <button class="tmpl" onclick="qs('Build an AI tools platform landing page. Dark futuristic theme purple accents. Hero, list of AI tools, pricing, get started CTA.')">AI Platform</button>
             <button class="tmpl" onclick="qs('Build a maker guide app landing page. Dark orange accents. Hero with step by step guide preview, features, free to try CTA.')">Maker App</button>
           </div>
@@ -357,6 +359,63 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
         </div>
       </div>
 
+      <!-- ACCOUNT -->
+      <div id="account-pane">
+        <div class="acw">
+          <div class="ac-section">
+            <div class="ac-section-title">Profile</div>
+            <div class="ac-card">
+              <div class="ac-row">
+                <span class="ac-row-label">Email</span>
+                <span class="ac-row-value" id="ac-email">—</span>
+              </div>
+              <div class="ac-row">
+                <span class="ac-row-label">Plan</span>
+                <span id="ac-plan-badge" class="ac-badge ac-badge-free">Free</span>
+              </div>
+              <div class="ac-row">
+                <span class="ac-row-label">Builds this account</span>
+                <span class="ac-row-value" id="ac-builds-used">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ac-section">
+            <div class="ac-section-title">Billing</div>
+            <div class="ac-card">
+              <div class="ac-row">
+                <div>
+                  <div class="ac-row-value" id="ac-plan-name">Free Plan</div>
+                  <div style="font-size:12px;color:var(--text2);margin-top:3px" id="ac-plan-desc">1 free build · upgrade for unlimited</div>
+                </div>
+                <button class="ac-btn ac-btn-primary" id="ac-upgrade-btn" onclick="showUpgrade()">Upgrade $12/mo</button>
+              </div>
+              <div class="ac-row" id="ac-portal-row" style="display:none">
+                <span class="ac-row-label">Manage subscription</span>
+                <a href="https://billing.stripe.com/p/login/3cItZgbeq6p03ft1Fkg3600" target="_blank" class="ac-btn ac-btn-ghost" style="text-decoration:none">Billing Portal ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="ac-section">
+            <div class="ac-section-title">My Builds</div>
+            <div class="build-grid" id="ac-builds-grid">
+              <div class="build-empty"><div class="build-empty-icon">⏳</div>Loading your builds...</div>
+            </div>
+          </div>
+
+          <div class="ac-section">
+            <div class="ac-section-title">Account</div>
+            <div class="ac-card">
+              <div class="ac-row">
+                <span class="ac-row-label">Sign out of OwnSite</span>
+                <button class="ac-btn ac-btn-danger" onclick="signOut()">Sign out</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -367,13 +426,13 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
     <div class="ucard-title">Upgrade to Pro</div>
     <div class="ucard-sub">You've used your free build. Barry-X has more to say. Upgrade for unlimited builds.</div>
     <div class="plan-box">
-      <div class="plan-name">Pro — Barry-X Unlimited</div>
+      <div class="plan-name">OwnSite BuildPro</div>
       <div class="plan-price">$12<span>/month</span></div>
       <div class="plan-feats">
         <div class="plan-feat"><span class="fc">+</span>Unlimited website builds</div>
         <div class="plan-feat"><span class="fc">+</span>Unlimited Own It rebuilds</div>
-        <div class="plan-feat"><span class="fc">+</span>Download all your sites</div>
-        <div class="plan-feat"><span class="fc">+</span>No API key ever needed</div>
+        <div class="plan-feat"><span class="fc">+</span>All builds saved to your account</div>
+        <div class="plan-feat"><span class="fc">+</span>Return and continue any build</div>
         <div class="plan-feat"><span class="fc">+</span>Cancel anytime</div>
       </div>
     </div>
@@ -383,10 +442,11 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 </div>
 
 <script>
-const WORKER_URL = 'https://ownsite-barry-x.infomomtelo.workers.dev';
-const SUPA_URL   = 'https://nwlhsshvqmbhemhxcran.supabase.co';
-const SUPA_ANON  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bGhzc2h2cW1iaGVtaHhjcmFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTEzOTIsImV4cCI6MjA5NTU2NzM5Mn0.2yASMx57IUNjEW8bMs8FwXnIz4cLsE1ftqD35QAOqE8';
-const STRIPE_LINK = '#';
+const WORKER_URL  = 'https://ownsite-barry-x.infomomtelo.workers.dev';
+const SUPA_URL    = 'https://nwlhsshvqmbhemhxcran.supabase.co';
+const SUPA_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bGhzc2h2cW1iaGVtaHhjcmFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTEzOTIsImV4cCI6MjA5NTU2NzM5Mn0.2yASMx57IUNjEW8bMs8FwXnIz4cLsE1ftqD35QAOqE8';
+const STRIPE_LINK   = 'https://buy.stripe.com/00wfZggyK00C03hdo2g360k';
+const STRIPE_PORTAL = 'https://billing.stripe.com/p/login/3cItZgbeq6p03ft1Fkg3600';
 
 const { createClient } = supabase;
 const sb = createClient(SUPA_URL, SUPA_ANON, {
@@ -395,68 +455,24 @@ const sb = createClient(SUPA_URL, SUPA_ANON, {
 
 let currentUser = null, userPlan = 'free', buildsUsed = 0, fixCode = null, busy = false, allMsgs = [], chatHistory = [];
 
-// ── STACK RECOMMENDATION HTML ──────────────────────────────
+// ── STACK RECOMMENDATION ─────────────────────────────────────
 function stackRecommendationHTML() {
   return `<div class="stack-card">
   <div class="stack-title">⚡ Own Your Stack — No Platform Lock-In</div>
   <div class="stack-intro">Barry built it. Now deploy it free and run it on tools you actually own. No Wix. No Webflow. No monthly hostage fees.</div>
-  <a class="stack-row" href="https://pages.cloudflare.com" target="_blank">
-    <span class="stack-row-icon">🌐</span>
-    <div class="stack-row-info"><div class="stack-row-name">Cloudflare Pages</div><div class="stack-row-desc">Deploy your site free in 2 minutes. No server needed.</div></div>
-    <span class="stack-row-badge">Free ↗</span>
-  </a>
-  <a class="stack-row" href="https://supabase.com" target="_blank">
-    <span class="stack-row-icon">🗄️</span>
-    <div class="stack-row-info"><div class="stack-row-name">Supabase — Database & Auth</div><div class="stack-row-desc">Add user accounts, database, file storage. Free tier is generous.</div></div>
-    <span class="stack-row-badge">Free ↗</span>
-  </a>
-  <a class="stack-row" href="https://anthropic.com" target="_blank">
-    <span class="stack-row-icon">🤖</span>
-    <div class="stack-row-info"><div class="stack-row-name">Anthropic API — Add AI</div><div class="stack-row-desc">Power your site with Claude AI. $5 gets you thousands of responses.</div></div>
-    <span class="stack-row-badge">$5 ↗</span>
-  </a>
-  <a class="stack-row" href="https://stripe.com" target="_blank">
-    <span class="stack-row-icon">💳</span>
-    <div class="stack-row-info"><div class="stack-row-name">Stripe — Take Payments</div><div class="stack-row-desc">Accept cards, subscriptions, one-time payments. Free to set up.</div></div>
-    <span class="stack-row-badge">Free ↗</span>
-  </a>
-  <a class="stack-row" href="https://resend.com" target="_blank">
-    <span class="stack-row-icon">📧</span>
-    <div class="stack-row-info"><div class="stack-row-name">Resend — Send Emails</div><div class="stack-row-desc">Transactional email for your users. 3,000 free emails/month.</div></div>
-    <span class="stack-row-badge">Free ↗</span>
-  </a>
+  <a class="stack-row" href="https://pages.cloudflare.com" target="_blank"><span class="stack-row-icon">🌐</span><div class="stack-row-info"><div class="stack-row-name">Cloudflare Pages</div><div class="stack-row-desc">Deploy your site free in 2 minutes. No server needed.</div></div><span class="stack-row-badge">Free ↗</span></a>
+  <a class="stack-row" href="https://supabase.com" target="_blank"><span class="stack-row-icon">🗄️</span><div class="stack-row-info"><div class="stack-row-name">Supabase — Database & Auth</div><div class="stack-row-desc">Add user accounts, database, file storage. Free tier is generous.</div></div><span class="stack-row-badge">Free ↗</span></a>
+  <a class="stack-row" href="https://anthropic.com" target="_blank"><span class="stack-row-icon">🤖</span><div class="stack-row-info"><div class="stack-row-name">Anthropic API — Add AI</div><div class="stack-row-desc">Power your site with Claude AI. $5 gets you thousands of responses.</div></div><span class="stack-row-badge">$5 ↗</span></a>
+  <a class="stack-row" href="https://stripe.com" target="_blank"><span class="stack-row-icon">💳</span><div class="stack-row-info"><div class="stack-row-name">Stripe — Take Payments</div><div class="stack-row-desc">Accept cards, subscriptions, one-time payments. Free to set up.</div></div><span class="stack-row-badge">Free ↗</span></a>
+  <a class="stack-row" href="https://resend.com" target="_blank"><span class="stack-row-icon">📧</span><div class="stack-row-info"><div class="stack-row-name">Resend — Send Emails</div><div class="stack-row-desc">Transactional email for your users. 3,000 free emails/month.</div></div><span class="stack-row-badge">Free ↗</span></a>
   <div class="stack-apps-title">🔨 Built by RunP8 — Apps Running on This Exact Stack</div>
   <div class="stack-apps-grid">
-    <a class="stack-app" href="https://rentyapp.net" target="_blank">
-      <div class="stack-app-icon">🏠</div>
-      <div class="stack-app-name">RentyApp</div>
-      <div class="stack-app-desc">Property management</div>
-    </a>
-    <a class="stack-app" href="https://title22.app" target="_blank">
-      <div class="stack-app-icon">📋</div>
-      <div class="stack-app-name">Title22</div>
-      <div class="stack-app-desc">RCFE compliance</div>
-    </a>
-    <a class="stack-app" href="https://thejudgy.com" target="_blank">
-      <div class="stack-app-icon">⚖️</div>
-      <div class="stack-app-name">TheJudgy</div>
-      <div class="stack-app-desc">AI advice & verdicts</div>
-    </a>
-    <a class="stack-app" href="https://iguide-7ln.pages.dev" target="_blank">
-      <div class="stack-app-icon">⚡</div>
-      <div class="stack-app-name">iGuide</div>
-      <div class="stack-app-desc">AI maker guide</div>
-    </a>
-    <a class="stack-app" href="https://postpilots.xyz" target="_blank">
-      <div class="stack-app-icon">✏️</div>
-      <div class="stack-app-name">PostPilots</div>
-      <div class="stack-app-desc">AI caption generator</div>
-    </a>
-    <a class="stack-app" href="https://ownsite.app" target="_blank">
-      <div class="stack-app-icon">🌐</div>
-      <div class="stack-app-name">OwnSite</div>
-      <div class="stack-app-desc">AI website builder</div>
-    </a>
+    <a class="stack-app" href="https://rentyapp.net" target="_blank"><div class="stack-app-icon">🏠</div><div class="stack-app-name">RentyApp</div><div class="stack-app-desc">Property management</div></a>
+    <a class="stack-app" href="https://title22.app" target="_blank"><div class="stack-app-icon">📋</div><div class="stack-app-name">Title22</div><div class="stack-app-desc">RCFE compliance</div></a>
+    <a class="stack-app" href="https://thejudgy.com" target="_blank"><div class="stack-app-icon">⚖️</div><div class="stack-app-name">TheJudgy</div><div class="stack-app-desc">AI advice & verdicts</div></a>
+    <a class="stack-app" href="https://iguide-7ln.pages.dev" target="_blank"><div class="stack-app-icon">⚡</div><div class="stack-app-name">iGuide</div><div class="stack-app-desc">AI maker guide</div></a>
+    <a class="stack-app" href="https://postpilots.xyz" target="_blank"><div class="stack-app-icon">✏️</div><div class="stack-app-name">PostPilots</div><div class="stack-app-desc">AI caption generator</div></a>
+    <a class="stack-app" href="https://ownsite.app" target="_blank"><div class="stack-app-icon">🌐</div><div class="stack-app-name">OwnSite</div><div class="stack-app-desc">AI website builder</div></a>
   </div>
   <div class="stack-footer">All built on Cloudflare + Supabase + Anthropic + Stripe.<br>No platform fees. You own everything.</div>
 </div>`;
@@ -476,20 +492,15 @@ async function signInGoogle() {
   const loading = document.getElementById('auth-loading');
   const err = document.getElementById('auth-err');
   err.style.display = 'none';
-  btn.disabled = true;
-  btn.style.opacity = '0.6';
+  btn.disabled = true; btn.style.opacity = '0.6';
   loading.style.display = 'block';
   try {
-    const { error } = await sb.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: 'https://ownsite.app' }
-    });
+    const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: 'https://ownsite.app' } });
     if (error) throw error;
   } catch (e) {
     err.textContent = e.message || 'Could not connect to Google. Try again.';
     err.style.display = 'block';
-    btn.disabled = false;
-    btn.style.opacity = '1';
+    btn.disabled = false; btn.style.opacity = '1';
     loading.style.display = 'none';
   }
 }
@@ -523,6 +534,105 @@ function updateUsageBar() {
   if (el && currentUser) el.textContent = currentUser.user_metadata?.full_name?.split(' ')[0] || currentUser.email?.split('@')[0] || 'Account';
 }
 
+function updateAccountPage() {
+  if (!currentUser) return;
+  const email = document.getElementById('ac-email');
+  if (email) email.textContent = currentUser.email || '—';
+  const badge = document.getElementById('ac-plan-badge');
+  const planName = document.getElementById('ac-plan-name');
+  const planDesc = document.getElementById('ac-plan-desc');
+  const upgradeBtn = document.getElementById('ac-upgrade-btn');
+  const portalRow = document.getElementById('ac-portal-row');
+  const buildsUsedEl = document.getElementById('ac-builds-used');
+  if (buildsUsedEl) buildsUsedEl.textContent = buildsUsed;
+  if (userPlan === 'pro') {
+    if (badge) { badge.textContent = 'Pro'; badge.className = 'ac-badge ac-badge-pro'; }
+    if (planName) planName.textContent = 'OwnSite BuildPro';
+    if (planDesc) planDesc.textContent = 'Unlimited builds · $12/month';
+    if (upgradeBtn) upgradeBtn.style.display = 'none';
+    if (portalRow) portalRow.style.display = 'flex';
+  } else {
+    if (badge) { badge.textContent = 'Free'; badge.className = 'ac-badge ac-badge-free'; }
+    if (planName) planName.textContent = 'Free Plan';
+    if (planDesc) planDesc.textContent = '1 free build · upgrade for unlimited';
+    if (upgradeBtn) upgradeBtn.style.display = 'block';
+    if (portalRow) portalRow.style.display = 'none';
+  }
+  loadBuilds();
+}
+
+// ── SAVED BUILDS ─────────────────────────────────────────────
+async function saveBuild(title, description, html) {
+  if (!currentUser) return;
+  try {
+    await sb.from('builds').insert({
+      user_id: currentUser.id,
+      title: title || 'Untitled Site',
+      description: description || '',
+      html: html,
+    });
+  } catch(e) { console.error('Save build error:', e); }
+}
+
+async function loadBuilds() {
+  const grid = document.getElementById('ac-builds-grid');
+  if (!grid || !currentUser) return;
+  grid.innerHTML = `<div class="build-empty"><div class="build-empty-icon">⏳</div>Loading your builds...</div>`;
+  try {
+    const { data, error } = await sb.from('builds')
+      .select('id,title,description,created_at,updated_at')
+      .eq('user_id', currentUser.id)
+      .order('updated_at', { ascending: false })
+      .limit(20);
+    if (error) throw error;
+    if (!data || data.length === 0) {
+      grid.innerHTML = `<div class="build-empty"><div class="build-empty-icon">🔨</div>No builds yet.<br>Ask Barry-X to build something — it'll appear here automatically.</div>`;
+      return;
+    }
+    grid.innerHTML = data.map(b => {
+      const date = new Date(b.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      return `<div class="build-item" onclick="openBuild('${b.id}')">
+        <div class="build-item-icon">🌐</div>
+        <div class="build-item-info">
+          <div class="build-item-title">${b.title || 'Untitled Site'}</div>
+          <div class="build-item-date">Last edited ${date}</div>
+        </div>
+        <div class="build-item-actions">
+          <button class="ac-btn ac-btn-ghost" onclick="event.stopPropagation();openBuild('${b.id}')">Edit</button>
+          <button class="ac-btn ac-btn-danger" onclick="event.stopPropagation();deleteBuild('${b.id}')">✕</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    grid.innerHTML = `<div class="build-empty"><div class="build-empty-icon">⚠️</div>Could not load builds. Try again.</div>`;
+  }
+}
+
+async function openBuild(id) {
+  try {
+    const { data } = await sb.from('builds').select('*').eq('id', id).single();
+    if (!data) return;
+    document.getElementById('ca').value = data.html;
+    fixCode = data.html;
+    document.getElementById('ab').style.display = 'block';
+    chatHistory = [];
+    allMsgs = [];
+    const blob = new Blob([data.html], { type: 'text/html' });
+    document.getElementById('pf').src = URL.createObjectURL(blob);
+    addMsg('ai', `Loaded "${data.title || 'your site'}". Click Preview tab to see it.\nTell me what to change and I'll update it.\n\nYou're welcome.`);
+    show('build');
+  } catch(e) { alert('Could not load build. Try again.'); }
+}
+
+async function deleteBuild(id) {
+  if (!confirm('Delete this build? This cannot be undone.')) return;
+  try {
+    await sb.from('builds').delete().eq('id', id);
+    loadBuilds();
+  } catch(e) { alert('Could not delete. Try again.'); }
+}
+
+// ── LAUNCH APP ────────────────────────────────────────────────
 function launchApp() {
   showScreen('app-screen');
   allMsgs = [];
@@ -545,7 +655,7 @@ function launchApp() {
 
 // ── TABS ──
 function show(t) {
-  ['build','editor','preview','fix'].forEach(id => {
+  ['build','editor','preview','fix','account'].forEach(id => {
     const p = document.getElementById(id+'-pane'); if (p) p.style.display = 'none';
     const b = document.getElementById('t-'+id); if (b) b.classList.remove('on');
   });
@@ -558,30 +668,25 @@ function show(t) {
       document.getElementById('pf').src = URL.createObjectURL(blob);
     }
   }
+  if (t === 'account') { updateAccountPage(); }
   const b = document.getElementById('t-'+t); if (b) b.classList.add('on');
   if (t === 'build') { setTimeout(() => { const m = document.getElementById('msgs'); if (m) m.scrollTop = m.scrollHeight; }, 50); }
 }
 
 // ── MESSAGES ──
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
 function addMsg(r, t, c, rawHtml) {
   allMsgs.push({role:r, text:t, code:c, rawHtml:rawHtml});
   renderMsgs();
 }
-
 function renderMsgs() {
   const el = document.getElementById('msgs');
   el.innerHTML = allMsgs.map(m => {
     const u = m.role === 'user';
     let inner;
-    if (m.rawHtml) {
-      inner = m.rawHtml;
-    } else if (m.code) {
-      inner = `<div class="cb"><button class="cpb" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('pre').textContent)">copy</button><pre>${esc(m.code)}</pre></div>`;
-    } else {
-      inner = `<div class="bub">${esc(m.text)}</div>`;
-    }
+    if (m.rawHtml) { inner = m.rawHtml; }
+    else if (m.code) { inner = `<div class="cb"><button class="cpb" onclick="navigator.clipboard.writeText(this.parentElement.querySelector('pre').textContent)">copy</button><pre>${esc(m.code)}</pre></div>`; }
+    else { inner = `<div class="bub">${esc(m.text)}</div>`; }
     return `<div class="msg ${u?'u':''}"><div class="av ${u?'u':'ai'}">${u?'You':'BX'}</div><div style="max-width:92%;display:flex;flex-direction:column;gap:5px">${inner}</div></div>`;
   }).join('');
   el.scrollTop = el.scrollHeight;
@@ -606,9 +711,7 @@ function setBusy(on) {
   const s = document.getElementById('sb');
   s.disabled = on;
   if (on) {
-    msgs.style.display = 'none';
-    preview.style.display = 'flex';
-    buildStep = 0;
+    msgs.style.display = 'none'; preview.style.display = 'flex'; buildStep = 0;
     const status = document.getElementById('build-status');
     const progress = document.getElementById('build-progress');
     if (status) status.textContent = BUILD_STEPS[0].msg;
@@ -620,8 +723,7 @@ function setBusy(on) {
       if (progress) progress.style.width = BUILD_STEPS[buildStep].pct + '%';
     }, 2400);
   } else {
-    msgs.style.display = 'flex';
-    preview.style.display = 'none';
+    msgs.style.display = 'flex'; preview.style.display = 'none';
     if (buildTimer) clearInterval(buildTimer);
   }
 }
@@ -635,13 +737,9 @@ async function send() {
   inp.value = '';
   addMsg('user', txt);
 
-  // Detect edit request — send current HTML to Barry
   const currentHtml = document.getElementById('ca').value;
   const isEdit = currentHtml && ['change','update','fix','make','edit','modify','add','remove','replace','darker','lighter','bigger','smaller','color','font','move','delete','center','align','bold','italic','background','button','text','heading','section','footer','header','nav','price','image','logo'].some(k => txt.toLowerCase().includes(k));
-
-  const messageToSend = isEdit
-    ? txt + '\n\nHere is the current website HTML to edit:\n' + currentHtml
-    : txt;
+  const messageToSend = isEdit ? txt + '\n\nHere is the current website HTML to edit:\n' + currentHtml : txt;
 
   chatHistory.push({ role: 'user', content: messageToSend });
   setBusy(true);
@@ -649,36 +747,24 @@ async function send() {
   try {
     const { data: { session } } = await sb.auth.getSession();
     const token = session?.access_token;
-    if (!token) {
-      setBusy(false);
-      addMsg('ai', 'Session expired. Please sign out and sign back in.');
-      return;
-    }
+    if (!token) { setBusy(false); addMsg('ai', 'Session expired. Please sign out and sign back in.'); return; }
 
     const res = await fetch(`${WORKER_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: messageToSend,
-        history: chatHistory.slice(-6),
-        token,
-      })
+      body: JSON.stringify({ message: messageToSend, history: chatHistory.slice(-6), token })
     });
 
     const data = await res.json();
 
     if (data.error === 'upgrade_required') {
       addMsg('ai', "You've used your free build. Upgrade for unlimited. The work was worth it.");
-      showUpgrade();
-      setBusy(false);
-      return;
+      showUpgrade(); setBusy(false); return;
     }
     if (data.error) throw new Error(data.error);
 
     if (data.type === 'build') {
       if (data.reply) addMsg('ai', data.reply);
-
-      // Apply to editor
       document.getElementById('ca').value = data.html;
       fixCode = data.html;
       document.getElementById('ab').style.display = 'block';
@@ -686,17 +772,20 @@ async function send() {
       updateUsageBar();
       chatHistory.push({ role: 'assistant', content: (data.reply || '') + '\n[Built/updated website]' });
 
-      // Load preview silently in background
+      // Load preview silently
       const blob = new Blob([data.html], { type: 'text/html' });
       document.getElementById('pf').src = URL.createObjectURL(blob);
 
-      // Completion message
+      // Auto-save to Supabase
+      const titleGuess = txt.length > 60 ? txt.substring(0, 57) + '...' : txt;
+      await saveBuild(titleGuess, txt, data.html);
+
       addMsg('ai', isEdit
-        ? 'Updated. Click Preview tab to see changes. Tell me what else to change.'
-        : "Done. Click Preview tab to see it live.\nEditor to tweak the code.\nDownload to save it.\nDeploy free at Cloudflare Pages.\n\nYou're welcome."
+        ? 'Updated and saved to your account. Click Preview tab to see changes. Tell me what else to change.'
+        : "Done and saved to your account. Click Preview tab to see it live.\nEditor to tweak the code. Download to save it.\nDeploy free at Cloudflare Pages.\n\nYou're welcome."
       );
 
-      // RunP8 stack recommendation after every build
+      // RunP8 stack recommendation
       addMsg('ai', null, null, stackRecommendationHTML());
 
     } else {
@@ -714,7 +803,6 @@ async function send() {
 
 function qs(t) { document.getElementById('mi').value = t; send(); }
 
-// ── HELPERS ──
 function applyFix() {
   if (!fixCode) return;
   document.getElementById('ca').value = fixCode;
@@ -751,32 +839,15 @@ function goUpgrade() { window.open(STRIPE_LINK, '_blank'); closeUpgrade(); }
 // ── INIT ──
 async function init() {
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-      currentUser = session.user;
-      await loadUserData();
-      launchApp();
-    }
-    if (event === 'SIGNED_OUT') {
-      currentUser = null;
-      showScreen('landing');
-    }
-    if (event === 'TOKEN_REFRESHED' && session) {
-      currentUser = session.user;
-    }
+    if (event === 'SIGNED_IN' && session) { currentUser = session.user; await loadUserData(); launchApp(); }
+    if (event === 'SIGNED_OUT') { currentUser = null; showScreen('landing'); }
+    if (event === 'TOKEN_REFRESHED' && session) { currentUser = session.user; }
   });
-
   try {
     const { data: { session } } = await sb.auth.getSession();
-    if (session?.user) {
-      currentUser = session.user;
-      await loadUserData();
-      launchApp();
-    } else {
-      showScreen('landing');
-    }
-  } catch(e) {
-    showScreen('landing');
-  }
+    if (session?.user) { currentUser = session.user; await loadUserData(); launchApp(); }
+    else { showScreen('landing'); }
+  } catch(e) { showScreen('landing'); }
 }
 
 init();
