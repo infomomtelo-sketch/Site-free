@@ -16,122 +16,6 @@
 <meta name="twitter:image" content="https://ownsite.app/og-image.jpg">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- ═══════════════════════════════════════════════════════
-     OWNSITE SKY+OCEAN PACK — the logged-in background
-     Pure CSS, no images. Infinite horizon: blue sky, drifting
-     clouds, sun glow, shimmering open ocean.
-     1) CSS  → paste before </style>
-     2) HTML + JS → paste before </body>
-     Pair with the motion pack: 
-       landing/sign-out → bxMotion(true);  bxOcean(false);
-       after login      → bxMotion(false); bxOcean(true);
-════════════════════════════════════════════════════════ -->
-
-
-<!-- ── 1) CSS — paste before </style> ─────────────────── -->
-<style>
-.bx-ocean { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; display: none; }
-
-/* Sky: deep zenith blue fading to pale horizon */
-.bx-sky {
-  position: absolute; inset: 0 0 38% 0;
-  background: linear-gradient(to bottom,
-    #0b3d91 0%, #1e63c8 40%, #6fb3e8 78%, #cfe8f7 100%);
-}
-
-/* Sun glow sitting on the horizon */
-.bx-sun {
-  position: absolute; left: 50%; bottom: 36%;
-  width: 60vmin; height: 60vmin; transform: translate(-50%, 50%);
-  background: radial-gradient(circle,
-    rgba(255,255,240,.9) 0%, rgba(255,240,200,.35) 30%, transparent 65%);
-  animation: bxSunPulse 9s ease-in-out infinite;
-}
-@keyframes bxSunPulse { 50% { opacity: .75; transform: translate(-50%, 50%) scale(1.06); } }
-
-/* Clouds: soft blurred blobs drifting across, three depths */
-.bx-cloud {
-  position: absolute; border-radius: 50%;
-  background: rgba(255,255,255,.75); filter: blur(18px);
-  animation: bxCloudDrift linear infinite;
-}
-.bx-cloud.c1 { width: 260px; height: 60px; top: 12%; animation-duration: 95s; }
-.bx-cloud.c2 { width: 180px; height: 44px; top: 24%; animation-duration: 70s; animation-delay: -30s; opacity: .8; }
-.bx-cloud.c3 { width: 340px; height: 70px; top: 6%;  animation-duration: 130s; animation-delay: -70s; opacity: .6; }
-@keyframes bxCloudDrift {
-  from { transform: translateX(-30vw); }
-  to   { transform: translateX(130vw); }
-}
-
-/* Ocean: deep blue with moving shimmer bands */
-.bx-sea {
-  position: absolute; inset: 62% 0 0 0;
-  background: linear-gradient(to bottom,
-    #7ec3e8 0%, #2a7fc9 12%, #0e5aa7 45%, #093b74 100%);
-}
-.bx-sea::before {
-  content: ''; position: absolute; inset: 0;
-  background: repeating-linear-gradient(180deg,
-    rgba(255,255,255,.10) 0 2px, transparent 2px 9px);
-  animation: bxWaves 7s linear infinite;
-  mask-image: linear-gradient(to bottom, black 0%, transparent 85%);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 85%);
-}
-@keyframes bxWaves { to { transform: translateY(9px); } }
-
-/* Sun path glittering on the water */
-.bx-sea::after {
-  content: ''; position: absolute; top: 0; left: 50%;
-  width: 22vmin; height: 100%; transform: translateX(-50%);
-  background: linear-gradient(to bottom,
-    rgba(255,250,220,.55), rgba(255,250,220,.12) 60%, transparent);
-  filter: blur(6px);
-  animation: bxGlitter 5s ease-in-out infinite;
-}
-@keyframes bxGlitter { 50% { opacity: .55; width: 26vmin; } }
-
-/* Crisp horizon line */
-.bx-horizon {
-  position: absolute; left: 0; right: 0; top: 62%; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent);
-}
-
-/* Frosted panels so the app UI floats above the scene.
-   Add class bx-glass to your main cards/panels when ocean is on. */
-.bx-glass {
-  background: rgba(10, 22, 48, .62) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,.14);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bx-sun, .bx-cloud, .bx-sea::before, .bx-sea::after { animation: none !important; }
-}
-</style>
-
-
-<!-- ── 2) HTML + JS — paste before </body> ────────────── -->
-<div class="bx-ocean" id="bxOcean" aria-hidden="true">
-  <div class="bx-sky"></div>
-  <div class="bx-sun"></div>
-  <div class="bx-cloud c1"></div>
-  <div class="bx-cloud c2"></div>
-  <div class="bx-cloud c3"></div>
-  <div class="bx-sea"></div>
-  <div class="bx-horizon"></div>
-</div>
-
-<script>
-// Toggle from your auth flow:
-//   after login  → bxOcean(true);  bxMotion(false);
-//   after logout → bxOcean(false); bxMotion(true);
-function bxOcean(on) {
-  const el = document.getElementById('bxOcean');
-  if (el) el.style.display = on ? 'block' : 'none';
-  document.body.classList.toggle('bx-ocean-on', !!on);
-}
-</script>
 <style>
 :root {
 --bg: #0a0a0f; --bg2: #111118; --bg3: #1a1a24;
@@ -328,6 +212,75 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 @media (max-width: 480px) { .auth-card { padding: 28px 22px; } .land-title { font-size: 2.2rem; } }
+  <style>
+/* ── Ocean video layer (logged-in background) ── */
+.bx-ocean {
+  position: fixed; inset: 0; z-index: -1; overflow: hidden;
+  display: none; opacity: 0; transition: opacity 1.2s ease;
+}
+.bx-ocean.bx-show { opacity: 1; }
+.bx-sea-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
+/* Dark tint gradient keeps UI readable over bright water */
+.bx-tint {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(5,10,30,.40), rgba(5,10,30,.15) 40%, rgba(5,10,30,.50));
+}
+
+/* ── Aurora orbs (logged-out landing) — fade-enabled ── */
+.bx-orbs {
+  position: fixed; inset: 0; z-index: -1; overflow: hidden;
+  pointer-events: none; display: none;
+  opacity: 0; transition: opacity 1.2s ease;
+}
+.bx-orbs.bx-show { opacity: 1; }
+.bx-orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px); opacity: .45;
+  animation: bxDrift 22s ease-in-out infinite alternate;
+}
+.bx-orb.o1 { width: 480px; height: 480px; background: #4f46e5; top: -160px; left: -120px; }
+.bx-orb.o2 { width: 400px; height: 400px; background: #7c3aed; top: 30%; right: -140px; animation-duration: 28s; animation-delay: -6s; }
+.bx-orb.o3 { width: 340px; height: 340px; background: #2563eb; bottom: -120px; left: 30%; animation-duration: 34s; animation-delay: -14s; }
+@keyframes bxDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(60px, -40px) scale(1.15); }
+  100% { transform: translate(-40px, 50px) scale(.95); }
+}
+
+/* ── Frosted glass panels — add class bx-glass to main cards ── */
+.bx-glass {
+  background: rgba(10, 22, 48, .62) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.14);
+}
+
+/* ── Shimmer sweep for the Upgrade button (class bx-shimmer) ── */
+.bx-shimmer { position: relative; overflow: hidden; }
+.bx-shimmer::after {
+  content: ''; position: absolute; top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,.35), transparent);
+  animation: bxSweep 3.2s ease-in-out infinite;
+}
+@keyframes bxSweep { 0% { left: -60%; } 55%, 100% { left: 130%; } }
+
+/* Mobile: skip video download, show poster image only */
+@media (max-width: 640px) {
+  .bx-sea-video { display: none; }
+  .bx-ocean {
+    background: url('https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1080&q=70') center/cover;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bx-orb, .bx-shimmer::after { animation: none !important; }
+  .bx-sea-video { display: none; }
+}
 </style>
 </head>
 <body>
@@ -988,5 +941,76 @@ init();
   <div class="sep"></div>
   <a href="https://rentyapp.net" target="_blank" rel="noopener"><span class="ico">🏠</span><span class="lbl">RentyApp</span></a>
 </div>
+  <div class="bx-orbs" id="bxOrbs" aria-hidden="true">
+  <div class="bx-orb o1"></div>
+  <div class="bx-orb o2"></div>
+  <div class="bx-orb o3"></div>
+</div>
+
+<div class="bx-ocean" id="bxOcean" aria-hidden="true">
+  <video class="bx-sea-video" id="bxSeaVideo" autoplay muted loop playsinline
+    poster="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1920&q=70">
+    <source id="bxSeaSource" src="/ocean-day.mp4" type="video/mp4">
+  </video>
+  <div class="bx-tint"></div>
+</div>
+
+<script>
+/* ── Background scene controller ── */
+function bxFade(id, on) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (on) {
+    el.style.display = 'block';
+    requestAnimationFrame(() => el.classList.add('bx-show'));
+  } else {
+    el.classList.remove('bx-show');
+    setTimeout(() => { el.style.display = 'none'; }, 1200);
+  }
+}
+
+function bxMotion(on) { bxFade('bxOrbs', on); }
+
+function bxOcean(on) {
+  if (on) bxOceanMood();
+  bxFade('bxOcean', on);
+  const vid = document.getElementById('bxSeaVideo');
+  if (vid) { on ? vid.play().catch(() => {}) : vid.pause(); }
+}
+
+/* Day/dusk mood: golden-hour video evenings + early mornings */
+function bxOceanMood() {
+  const src = document.getElementById('bxSeaSource');
+  const vid = document.getElementById('bxSeaVideo');
+  if (!src || !vid) return;
+  const h = new Date().getHours();
+  const want = (h >= 17 || h < 7) ? '/ocean-dusk.mp4' : '/ocean-day.mp4';
+  if (!src.getAttribute('src').endsWith(want)) {
+    src.setAttribute('src', want);
+    vid.load();
+    vid.play().catch(() => {});
+  }
+}
+
+/* ── Stripe checkout (replaces STRIPE_LINK everywhere) ──
+   NOTE: if your Supabase client variable is not named `supabase`
+   (e.g. `sb`), change it on the line below. */
+async function upgradeToPro() {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { alert('Please log in first'); return; }
+    const res = await fetch(WORKER_URL + '/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: session.access_token })
+    });
+    const data = await res.json();
+    if (data.url) location.href = data.url;
+    else alert(data.error || 'Checkout failed');
+  } catch (e) {
+    alert('Checkout failed: ' + e.message);
+  }
+}
+</script>
 </body>
 </html>
