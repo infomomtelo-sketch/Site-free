@@ -212,7 +212,9 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 @media (max-width: 480px) { .auth-card { padding: 28px 22px; } .land-title { font-size: 2.2rem; } }
-  <style>
+
+/* ═══ BX BACKGROUND SCENES ═══ */
+
 /* ── Ocean video layer (logged-in background) ── */
 .bx-ocean {
   position: fixed; inset: 0; z-index: -1; overflow: hidden;
@@ -251,7 +253,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
   100% { transform: translate(-40px, 50px) scale(.95); }
 }
 
-/* ── Frosted glass panels — add class bx-glass to main cards ── */
+/* ── Frosted glass panels ── */
 .bx-glass {
   background: rgba(10, 22, 48, .62) !important;
   backdrop-filter: blur(14px);
@@ -259,13 +261,14 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
   border: 1px solid rgba(255,255,255,.14);
 }
 
-/* ── Shimmer sweep for the Upgrade button (class bx-shimmer) ── */
+/* ── Shimmer sweep on upgrade buttons ── */
 .bx-shimmer { position: relative; overflow: hidden; }
 .bx-shimmer::after {
   content: ''; position: absolute; top: 0; left: -60%;
   width: 40%; height: 100%;
   background: linear-gradient(105deg, transparent, rgba(255,255,255,.35), transparent);
   animation: bxSweep 3.2s ease-in-out infinite;
+  pointer-events: none;
 }
 @keyframes bxSweep { 0% { left: -60%; } 55%, 100% { left: 130%; } }
 
@@ -304,7 +307,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 
 <!-- AUTH -->
 <div id="auth-screen" class="screen hidden">
-  <div class="auth-card">
+  <div class="auth-card bx-glass">
     <div class="auth-logo">Own<span style="color:var(--accent2)">.</span>Site</div>
     <div class="auth-sub">Sign in with Google to start building.<br>Free to use — no card required.</div>
     <div class="auth-err" id="auth-err"></div>
@@ -326,7 +329,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 <!-- APP -->
 <div id="app-screen" class="screen hidden" style="padding:0">
   <div id="app-inner" style="display:flex;flex-direction:column;height:100vh;">
-    <div id="bar">
+    <div id="bar" class="bx-glass">
       <div class="blogo">Own<span class="blogo-dot">.</span>Site</div>
       <button class="tab on" id="t-build" onclick="show('build')">Build</button>
       <button class="tab" id="t-editor" onclick="show('editor')">Editor</button>
@@ -371,7 +374,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
           <div class="build-bar"><div class="build-bar-fill" id="build-progress"></div></div>
         </div>
         <div id="ir">
-          <div class="irw">
+          <div class="irw bx-glass">
             <textarea id="mi" rows="2" placeholder="Tell Barry-X what you need. Be specific. He hates vague."></textarea>
             <button id="sb" onclick="send()">➤</button>
           </div>
@@ -434,7 +437,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
         <div class="acw">
           <div class="ac-section">
             <div class="ac-section-title">Profile</div>
-            <div class="ac-card">
+            <div class="ac-card bx-glass">
               <div class="ac-row">
                 <span class="ac-row-label">Email</span>
                 <span class="ac-row-value" id="ac-email">—</span>
@@ -452,13 +455,13 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 
           <div class="ac-section">
             <div class="ac-section-title">Billing</div>
-            <div class="ac-card">
+            <div class="ac-card bx-glass">
               <div class="ac-row">
                 <div>
                   <div class="ac-row-value" id="ac-plan-name">Free Plan</div>
                   <div style="font-size:12px;color:var(--text2);margin-top:3px" id="ac-plan-desc">1 free build · upgrade for unlimited</div>
                 </div>
-                <button class="ac-btn ac-btn-primary" id="ac-upgrade-btn" onclick="showUpgrade()">Upgrade $12/mo</button>
+                <button class="ac-btn ac-btn-primary bx-shimmer" id="ac-upgrade-btn" onclick="showUpgrade()">Upgrade $12/mo</button>
               </div>
               <div class="ac-row" id="ac-portal-row" style="display:none">
                 <span class="ac-row-label">Manage subscription</span>
@@ -476,7 +479,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 
           <div class="ac-section">
             <div class="ac-section-title">Account</div>
-            <div class="ac-card">
+            <div class="ac-card bx-glass">
               <div class="ac-row">
                 <span class="ac-row-label">Sign out of OwnSite</span>
                 <button class="ac-btn ac-btn-danger" onclick="signOut()">Sign out</button>
@@ -492,7 +495,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 
 <!-- UPGRADE MODAL -->
 <div id="upgrade-modal">
-  <div class="ucard">
+  <div class="ucard bx-glass">
     <div class="ucard-title">Upgrade to Pro</div>
     <div class="ucard-sub">You've used your free build. Barry-X has more to say. Upgrade for unlimited builds.</div>
     <div class="plan-box">
@@ -506,16 +509,30 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
         <div class="plan-feat"><span class="fc">+</span>Cancel anytime</div>
       </div>
     </div>
-    <button class="upgrade-btn" onclick="goUpgrade()">Upgrade — $12/month</button>
+    <button class="upgrade-btn bx-shimmer" onclick="goUpgrade()">Upgrade — $12/month</button>
     <button class="upgrade-close" onclick="closeUpgrade()">Maybe later</button>
   </div>
+</div>
+
+<!-- BX BACKGROUND SCENES -->
+<div class="bx-orbs" id="bxOrbs" aria-hidden="true">
+  <div class="bx-orb o1"></div>
+  <div class="bx-orb o2"></div>
+  <div class="bx-orb o3"></div>
+</div>
+
+<div class="bx-ocean" id="bxOcean" aria-hidden="true">
+  <video class="bx-sea-video" id="bxSeaVideo" autoplay muted loop playsinline
+    poster="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1920&q=70">
+    <source id="bxSeaSource" src="/ocean-day.mp4" type="video/mp4">
+  </video>
+  <div class="bx-tint"></div>
 </div>
 
 <script>
 const WORKER_URL  = 'https://ownsite-barry-x.infomomtelo.workers.dev';
 const SUPA_URL    = 'https://nwlhsshvqmbhemhxcran.supabase.co';
 const SUPA_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bGhzc2h2cW1iaGVtaHhjcmFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTEzOTIsImV4cCI6MjA5NTU2NzM5Mn0.2yASMx57IUNjEW8bMs8FwXnIz4cLsE1ftqD35QAOqE8';
-const STRIPE_LINK   = 'https://buy.stripe.com/00wfZggyK00C03hdo2g360k';
 const STRIPE_PORTAL = 'https://billing.stripe.com/p/login/3cItZgbeq6p03ft1Fkg3600';
 
 const { createClient } = supabase;
@@ -524,6 +541,60 @@ const sb = createClient(SUPA_URL, SUPA_ANON, {
 });
 
 let currentUser = null, userPlan = 'free', buildsUsed = 0, fixCode = null, busy = false, allMsgs = [], chatHistory = [];
+
+// ── BX BACKGROUND SCENE CONTROLLER ──────────────────────────
+function bxFade(id, on) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (on) {
+    el.style.display = 'block';
+    requestAnimationFrame(() => el.classList.add('bx-show'));
+  } else {
+    el.classList.remove('bx-show');
+    setTimeout(() => { el.style.display = 'none'; }, 1200);
+  }
+}
+
+function bxMotion(on) { bxFade('bxOrbs', on); }
+
+function bxOcean(on) {
+  if (on) bxOceanMood();
+  bxFade('bxOcean', on);
+  const vid = document.getElementById('bxSeaVideo');
+  if (vid) { on ? vid.play().catch(() => {}) : vid.pause(); }
+}
+
+/* Day/dusk mood: golden-hour video evenings + early mornings */
+function bxOceanMood() {
+  const src = document.getElementById('bxSeaSource');
+  const vid = document.getElementById('bxSeaVideo');
+  if (!src || !vid) return;
+  const h = new Date().getHours();
+  const want = (h >= 17 || h < 7) ? '/ocean-dusk.mp4' : '/ocean-day.mp4';
+  if (!src.getAttribute('src').endsWith(want)) {
+    src.setAttribute('src', want);
+    vid.load();
+    vid.play().catch(() => {});
+  }
+}
+
+// ── STRIPE CHECKOUT (replaces old Payment Link) ─────────────
+async function upgradeToPro() {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { alert('Please log in first'); return; }
+    const res = await fetch(WORKER_URL + '/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: session.access_token })
+    });
+    const data = await res.json();
+    if (data.url) location.href = data.url;
+    else alert(data.error || 'Checkout failed');
+  } catch (e) {
+    alert('Checkout failed: ' + e.message);
+  }
+}
 
 // ── STACK RECOMMENDATION ─────────────────────────────────────
 function stackRecommendationHTML() {
@@ -579,6 +650,7 @@ async function signOut() {
   if (!confirm('Sign out?')) return;
   await sb.auth.signOut();
   currentUser = null;
+  bxOcean(false); bxMotion(true);
   showScreen('landing');
 }
 
@@ -705,6 +777,7 @@ async function deleteBuild(id) {
 // ── LAUNCH APP ────────────────────────────────────────────────
 function launchApp() {
   showScreen('app-screen');
+  bxOcean(true); bxMotion(false);
   allMsgs = [];
   chatHistory = [];
   const params = new URLSearchParams(window.location.search);
@@ -904,20 +977,20 @@ function rebuildSite() {
 
 function showUpgrade() { document.getElementById('upgrade-modal').classList.add('show'); }
 function closeUpgrade() { document.getElementById('upgrade-modal').classList.remove('show'); }
-function goUpgrade() { window.open(STRIPE_LINK, '_blank'); closeUpgrade(); }
+function goUpgrade() { closeUpgrade(); upgradeToPro(); }
 
 // ── INIT ──
 async function init() {
   sb.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session) { currentUser = session.user; await loadUserData(); launchApp(); }
-    if (event === 'SIGNED_OUT') { currentUser = null; showScreen('landing'); }
+    if (event === 'SIGNED_OUT') { currentUser = null; bxOcean(false); bxMotion(true); showScreen('landing'); }
     if (event === 'TOKEN_REFRESHED' && session) { currentUser = session.user; }
   });
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (session?.user) { currentUser = session.user; await loadUserData(); launchApp(); }
-    else { showScreen('landing'); }
-  } catch(e) { showScreen('landing'); }
+    else { showScreen('landing'); bxMotion(true); }
+  } catch(e) { showScreen('landing'); bxMotion(true); }
 }
 
 init();
@@ -941,76 +1014,6 @@ init();
   <div class="sep"></div>
   <a href="https://rentyapp.net" target="_blank" rel="noopener"><span class="ico">🏠</span><span class="lbl">RentyApp</span></a>
 </div>
-  <div class="bx-orbs" id="bxOrbs" aria-hidden="true">
-  <div class="bx-orb o1"></div>
-  <div class="bx-orb o2"></div>
-  <div class="bx-orb o3"></div>
-</div>
 
-<div class="bx-ocean" id="bxOcean" aria-hidden="true">
-  <video class="bx-sea-video" id="bxSeaVideo" autoplay muted loop playsinline
-    poster="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1920&q=70">
-    <source id="bxSeaSource" src="/ocean-day.mp4" type="video/mp4">
-  </video>
-  <div class="bx-tint"></div>
-</div>
-
-<script>
-/* ── Background scene controller ── */
-function bxFade(id, on) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  if (on) {
-    el.style.display = 'block';
-    requestAnimationFrame(() => el.classList.add('bx-show'));
-  } else {
-    el.classList.remove('bx-show');
-    setTimeout(() => { el.style.display = 'none'; }, 1200);
-  }
-}
-
-function bxMotion(on) { bxFade('bxOrbs', on); }
-
-function bxOcean(on) {
-  if (on) bxOceanMood();
-  bxFade('bxOcean', on);
-  const vid = document.getElementById('bxSeaVideo');
-  if (vid) { on ? vid.play().catch(() => {}) : vid.pause(); }
-}
-
-/* Day/dusk mood: golden-hour video evenings + early mornings */
-function bxOceanMood() {
-  const src = document.getElementById('bxSeaSource');
-  const vid = document.getElementById('bxSeaVideo');
-  if (!src || !vid) return;
-  const h = new Date().getHours();
-  const want = (h >= 17 || h < 7) ? '/ocean-dusk.mp4' : '/ocean-day.mp4';
-  if (!src.getAttribute('src').endsWith(want)) {
-    src.setAttribute('src', want);
-    vid.load();
-    vid.play().catch(() => {});
-  }
-}
-
-/* ── Stripe checkout (replaces STRIPE_LINK everywhere) ──
-   NOTE: if your Supabase client variable is not named `supabase`
-   (e.g. `sb`), change it on the line below. */
-async function upgradeToPro() {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) { alert('Please log in first'); return; }
-    const res = await fetch(WORKER_URL + '/create-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: session.access_token })
-    });
-    const data = await res.json();
-    if (data.url) location.href = data.url;
-    else alert(data.error || 'Checkout failed');
-  } catch (e) {
-    alert('Checkout failed: ' + e.message);
-  }
-}
-</script>
 </body>
 </html>
