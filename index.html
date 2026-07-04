@@ -658,8 +658,8 @@ async function signOut() {
 async function loadUserData() {
   if (!currentUser) return;
   try {
-    const { data } = await sb.from('profiles').select('plan,builds_used').eq('id', currentUser.id).single();
-    if (data) { userPlan = data.plan || 'free'; buildsUsed = data.builds_used || 0; }
+    const { data } = await sb.from('profiles').select('ownsite_pro,builds_used').eq('id', currentUser.id).single();
+    if (data) { userPlan = data.ownsite_pro ? 'pro' : 'free'; buildsUsed = data.builds_used || 0; }
   } catch(e) {}
   updateUsageBar();
 }
