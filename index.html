@@ -540,7 +540,7 @@ const sb = createClient(SUPA_URL, SUPA_ANON, {
   auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
 });
 
-let currentUser = null, userPlan = 'free', buildsUsed = 0, fixCode = null, busy = false, allMsgs = [], chatHistory = [];
+let currentUser = null, userPlan = 'free', buildsUsed = 0, fixCode = null, busy = false, allMsgs = [], chatHistory = [], currentBuildId = null;
 
 // ── BX BACKGROUND SCENE CONTROLLER ──────────────────────────
 function bxFade(id, on) {
@@ -706,13 +706,26 @@ function updateAccountPage() {
 // ── SAVED BUILDS ─────────────────────────────────────────────
 async function saveBuild(title, description, html) {
   if (!currentUser) return;
+  const memory = { chat: chatHistory.slice(-20), msgs: allMsgs.slice(-40) };
   try {
-    await sb.from('builds').insert({
-      user_id: currentUser.id,
-      title: title || 'Untitled Site',
-      description: description || '',
-      html: html,
-    });
+    if (currentBuildId) {
+      // Editing an existing build — update in place, keep the conversation attached
+      await sb.from('builds').update({
+        html: html,
+        chat_history: memory,
+        updated_at: new Date().toISOString(),
+      }).eq('id', currentBuildId);
+    } else {
+      // Brand new build — create it and remember its id for future edits
+      const { data } = await sb.from('builds').insert({
+        user_id: currentUser.id,
+        title: title || 'Untitled Site',
+        description: description || '',
+        html: html,
+        chat_history: memory,
+      }).select('id').single();
+      if (data?.id) currentBuildId = data.id;
+    }
   } catch(e) { console.error('Save build error:', e); }
 }
 
@@ -757,11 +770,21 @@ async function openBuild(id) {
     document.getElementById('ca').value = data.html;
     fixCode = data.html;
     document.getElementById('ab').style.display = 'block';
-    chatHistory = [];
-    allMsgs = [];
+    currentBuildId = data.id;
     const blob = new Blob([data.html], { type: 'text/html' });
     document.getElementById('pf').src = URL.createObjectURL(blob);
-    addMsg('ai', `Loaded "${data.title || 'your site'}". Click Preview tab to see it.\nTell me what to change and I'll update it.\n\nYou're welcome.`);
+
+    // Restore Barry's memory of this build, if saved
+    const saved = data.chat_history;
+    chatHistory = (saved && Array.isArray(saved.chat)) ? saved.chat : [];
+    if (saved && Array.isArray(saved.msgs) && saved.msgs.length) {
+      allMsgs = saved.msgs;
+      renderMsgs();
+      addMsg('ai', `Back to "${data.title || 'your site'}". I remember everything. Obviously.\nTell me what to change.`);
+    } else {
+      allMsgs = [];
+      addMsg('ai', `Loaded "${data.title || 'your site'}". Click Preview tab to see it.\nTell me what to change and I'll update it.\n\nYou're welcome.`);
+    }
     show('build');
   } catch(e) { alert('Could not load build. Try again.'); }
 }
@@ -780,6 +803,7 @@ function launchApp() {
   bxOcean(true); bxMotion(false);
   allMsgs = [];
   chatHistory = [];
+  currentBuildId = null;
   const params = new URLSearchParams(window.location.search);
   if (params.get('source') === 'barry') {
     try {
@@ -895,7 +919,7 @@ async function send() {
     const res = await fetch(`${WORKER_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: messageToSend, history: chatHistory.slice(-6), token })
+      body: JSON.stringify({ message: messageToSend, history: chatHistory.slice(-12), token })
     });
 
     const data = await res.json();
@@ -913,14 +937,17 @@ async function send() {
       document.getElementById('ab').style.display = 'block';
       buildsUsed = data.buildsUsed || buildsUsed + 1;
       updateUsageBar();
-      chatHistory.push({ role: 'assistant', content: (data.reply || '') + '\n[Built/updated website]' });
+      const titleGuess = txt.length > 60 ? txt.substring(0, 57) + '...' : txt;
+      chatHistory.push({ role: 'assistant', content: (data.reply || '') + '\n[Built/updated website: ' + titleGuess + ']' });
 
       // Load preview silently
       const blob = new Blob([data.html], { type: 'text/html' });
       document.getElementById('pf').src = URL.createObjectURL(blob);
 
-      // Auto-save to Supabase
-      const titleGuess = txt.length > 60 ? txt.substring(0, 57) + '...' : txt;
+      // A fresh build (not an edit) starts its own saved build
+      if (!isEdit) currentBuildId = null;
+
+      // Auto-save to Supabase (updates in place when editing)
       await saveBuild(titleGuess, txt, data.html);
 
       addMsg('ai', isEdit
