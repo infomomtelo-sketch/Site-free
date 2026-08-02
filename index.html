@@ -1,13 +1,10 @@
-Let’s do it. We are scraping away the dark gradients and rebuilding Buildownsite from absolute scratch [Explicit Memory Claims]. We will give it a clean, professional, hyper-minimalist pure white layout that focuses 100% on power, complete with instant action buttons for File Uploading, Code Downloading, Voice Input (Mic), and Photo attachments.
-Here is your complete, production-ready, single-file index.html application.
-## The Pure White, Ultra-Powerful index.html
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Buildownsite — Own Your Web Creation Forever</title>
+  <!-- Load the modern native Supabase Browser client library library directly -->
   <script src="https://jsdelivr.net"></script>
   <style>
     :root {
@@ -24,6 +21,18 @@ Here is your complete, production-ready, single-file index.html application.
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--bg); color: var(--text); font-family: var(--font); -webkit-font-smoothing: antialiased; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
+    /* Structural Screen Layout Elements */
+    .screen { height: 100vh; display: flex; flex-direction: column; }
+    .hidden { display: none !important; }
+
+    /* Auth Screen Box Styles */
+    #auth-screen { display: flex; align-items: center; justify-content: center; height: 100vh; background: #ffffff; padding: 24px; }
+    .auth-card { border: 1px solid var(--border); padding: 40px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; }
+    .auth-title { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .auth-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+    .btn-google { background: #000000; color: #ffffff; width: 100%; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer; margin-top: 16px; transition: background 0.15s; }
+    .btn-google:hover { background: #222222; }
+
     /* Top Control Header Bar */
     header {
       display: flex;
@@ -37,6 +46,7 @@ Here is your complete, production-ready, single-file index.html application.
     .brand { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
     .brand span { color: var(--text-muted); font-weight: 400; }
     .actions-right { display: flex; gap: 8px; align-items: center; }
+    .user-pill { font-size: 12.5px; border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; color: var(--text-muted); background: var(--bg-surface); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
     /* Main App Split Container */
     main { display: flex; flex: 1; overflow: hidden; }
@@ -131,220 +141,435 @@ Here is your complete, production-ready, single-file index.html application.
     .status-bar { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; min-height: 20px; }
     .spinner { width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--text); border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- Header Section -->
-  <header>
-    <div class="brand">Buildownsite <span>/ Barry-X Engine</span></div>
-    <div class="actions-right">
-      <button class="btn btn-secondary" id="btn-export-code">📥 Download HTML</button>
+  <!-- STEP 1: IDENTITY ACCESS GATEWAY (SHOWS BY DEFAULT) -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-title">Buildownsite</div>
+      <div class="auth-desc">Own your deployment source code forever. No lock-in parameters, no monthly builder fees [Explicit Memory Claims, Query-relevant Context].</div>
+      <button class="btn-google" id="btn-google-sign-in">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Sign in with Google
+      </button>
     </div>
-  </header>
+  </div>
 
-  <!-- Main Split Layout Workspace -->
-  <main>
-    <!-- Left Workspace Dashboard Panel -->
-    <section class="control-panel">
-      <h1 class="panel-title">Escape Platform Hostage Situations</h1> [Explicit Memory Claims]
-      <p class="panel-desc">Describe your application blueprint. Own the entire standard code package instantly with zero lock-in parameters [Explicit Memory Claims, Query-relevant Context].</p>
-      
-      <!-- Input Prompt Block Container -->
-      <div class="prompt-box-container">
-        <textarea id="main-prompt-input" placeholder="Describe any website layout, asset dashboard, or clean operational form canvas layout..."></textarea>
+  <!-- STEP 2: PRIMARY REBUILT EXPERT WORKSPACE CONTAINER -->
+  <div id="app-screen" class="hidden screen">
+    <header>
+      <div class="brand">Buildownsite <span>/ Barry-X Engine</span></div>
+      <div class="actions-right">
+        <div class="user-pill" id="user-email-display">Authenticating...</div>
+        <button class="btn btn-secondary" id="btn-export-code">📥 Download HTML</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="control-panel">
+        <h1 class="panel-title">Escape Platform Hostage Situations</h1> [Explicit Memory Claims]
+        <p class="panel-desc">Describe your application blueprint. Own the entire standard code package instantly with zero lock-in parameters [Explicit Memory Claims, Query-relevant Context].</p>
         
-        <!-- Interactive Asset Tracking Tray -->
-        <div class="attachments-preview" id="attachments-tray"></div>
+        <div class="prompt-box-container">
+          <textarea id="main-prompt-input" placeholder="Describe any website layout, asset dashboard, or clean operational form canvas layout..."></textarea>
+          <div class="attachments-preview" id="attachments-tray"></div>
 
-        <!-- Dynamic Action Bar -->
-        <div class="toolbar">
-          <div class="tool-group">
-            <!-- Hidden inputs to manage background actions native to browser -->
-            <input type="file" id="file-uploader" class="hidden" accept=".html,.css,.js,.txt">
-            <input type="file" id="photo-uploader" class="hidden" accept="image/*">
-            
-            <button class="icon-btn" id="btn-trigger-upload" title="Upload Code File">📄</button>
-            <button class="icon-btn" id="btn-trigger-photo" title="Attach Blueprint Photo">📷</button>
-            <button class="icon-btn" id="btn-trigger-mic" title="Voice Input Command">🎙️</button>
+          <div class="toolbar">
+            <div class="tool-group">
+              <input type="file" id="file-uploader" class="hidden" accept=".html,.css,.js,.txt">
+              <input type="file" id="photo-uploader" class="hidden" accept="image/*">
+              
+              <button class="icon-btn" id="btn-trigger-upload" title="Upload Code File">📄</button>
+              <button class="icon-btn" id="btn-trigger-photo" title="Attach Blueprint Photo">📷</button>
+              <button class="icon-btn" id="btn-trigger-mic" title="Voice Input Command">🎙️</button>
+            </div>
+            <button class="btn" id="btn-build-now">Build Website</button>
           </div>
-          <button class="btn" id="btn-build-now">Build Website</button>
         </div>
-      </div>
 
-      <!-- Execution Status Tracking Feed -->
-      <div class="status-bar">
-        <div class="spinner" id="build-spinner"></div>
-        <span id="status-text">Ready to compile clean source structures.</span>
-      </div>
-    </section>
+        <div class="status-bar">
+          <div class="spinner" id="build-spinner"></div>
+          <span id="status-text">Ready to compile clean source structures.</span>
+        </div>
+      </section>
 
-    <!-- Right-Hand Realtime Live Preview Sandbox View -->
-    <section class="preview-panel">
-      <div class="preview-wrapper">
-        <iframe id="live-render-canvas" srcdoc="<html style='height:100%; display:flex; align-items:center; justify-content:center; font-family:sans-serif; color:#71717a;'><p>Your live web workspace will load here seamlessly.</p></html>"></iframe>
-      </div>
-    </section>
-  </main>
+      <section class="preview-panel">
+        <div class="preview-wrapper">
+          <iframe id="live-render-canvas" srcdoc="<html style='height:100%; display:flex; align-items:center; justify-content:center; font-family:sans-serif; color:#71717a;'><p>Your live web workspace will load here seamlessly.</p></html>"></iframe>
+        </div>
+      </section>
+    </main>
+  </div>
 
-  <!-- Complete Functional Javascript Routine Package -->
+  <!-- STEP 3: INTEGRATED DATA ORCHESTRATION SCRIPT ENGINE -->
   <script>
-    // Elements Mapping Matrix
-    const promptInput = document.getElementById('main-prompt-input');
-    const buildBtn = document.getElementById('btn-build-now');
-    const exportBtn = document.getElementById('btn-export-code');
-    const statusText = document.getElementById('status-text');
-    const spinner = document.getElementById('build-spinner');
-    const renderCanvas = document.getElementById('live-render-canvas');
-    const attachmentsTray = document.getElementById('attachments-tray');
+    // --- CONNECT PRODUCTION STRINGS DIRECTLY ---
+    const SUPABASE_URL = "https://nwlhsshvqmbhemhxcran.supabase.co"; 
 
-    // Uploader Targets 
-    const fileUploader = document.getElementById('file-uploader');
-    const photoUploader = document.getElementById('photo-uploader');
-    const btnUpload = document.getElementById('btn-trigger-upload');
-    const btnPhoto = document.getElementById('btn-trigger-photo');
-    const btnMic = document.getElementById('btn-trigger-mic');
 
-    let localAttachments = { codeFile: null, photoFile: null };
-    let recognition = null;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Buildownsite — Own Your Web Creation Forever</title>
+  <!-- Load the modern native Supabase Browser client library library directly -->
+  <script src="https://jsdelivr.net"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-surface: #f9f9fb;
+      --border: #e4e4e7;
+      --text: #09090b;
+      --text-muted: #71717a;
+      --accent: #18181b;
+      --accent-hover: #27272a;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
 
-    // --- TOOLBAR FEATURE 1: FILE UPLOADER ---
-    btnUpload.addEventListener('click', () => fileUploader.click());
-    fileUploader.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        localAttachments.codeFile = file.name;
-        updateAttachmentsUI();
-        statusText.innerText = `Uploaded code reference: ${file.name}`;
-      }
-    });
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); -webkit-font-smoothing: antialiased; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-    // --- TOOLBAR FEATURE 2: PHOTO UPLOADER ---
-    btnPhoto.addEventListener('click', () => photoUploader.click());
-    photoUploader.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        localAttachments.photoFile = file.name;
-        updateAttachmentsUI();
-        statusText.innerText = `Attached workspace image layout: ${file.name}`;
-      }
-    });
+    /* Structural Screen Layout Elements */
+    .screen { height: 100vh; display: flex; flex-direction: column; }
+    .hidden { display: none !important; }
 
-    // --- TOOLBAR FEATURE 3: MIC / SPEECH TO TEXT ---
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = 'en-US';
+    /* Auth Screen Box Styles */
+    #auth-screen { display: flex; align-items: center; justify-content: center; height: 100vh; background: #ffffff; padding: 24px; }
+    .auth-card { border: 1px solid var(--border); padding: 40px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; }
+    .auth-title { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .auth-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.5; }
+    .btn-google { background: #000000; color: #ffffff; width: 100%; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; cursor: pointer; margin-top: 16px; transition: background 0.15s; }
+    .btn-google:hover { background: #222222; }
 
-      recognition.onstart = () => {
-        btnMic.classList.add('active');
-        statusText.innerText = "Listening to voice prompt command...";
-      };
-      recognition.onerror = () => {
+    /* Top Control Header Bar */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      z-index: 10;
+    }
+    .brand { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+    .brand span { color: var(--text-muted); font-weight: 400; }
+    .actions-right { display: flex; gap: 8px; align-items: center; }
+    .user-pill { font-size: 12.5px; border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; color: var(--text-muted); background: var(--bg-surface); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-btnMic.classList.remove('active');
-statusText.innerText = "Voice input connection dropped.";
-};
-recognition.onend = () => {
-btnMic.classList.remove('active');
-};
-recognition.onresult = (event) => {
-const speechText = event.results[0][0].transcript;
-promptInput.value += (promptInput.value ? " " : "") + speechText;
-statusText.innerText = "Voice parsed successfully.";
-};
+    /* Main App Split Container */
+    main { display: flex; flex: 1; overflow: hidden; }
+
+    /* Left Input Panel (Controls & Prompting) */
+    .control-panel {
+      width: 420px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      padding: 24px;
+      gap: 20px;
+    }
+    .panel-title { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
+    .panel-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* Rich Prompt Box Structure */
+    .prompt-box-container {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      gap: 12px;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      border: none;
+      background: transparent;
+      resize: none;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      line-height: 1.5;
+    }
+    textarea::placeholder { color: var(--text-muted); }
+
+    /* Bottom Toolbar Items inside Prompt Box */
+    .toolbar { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px; }
+    .tool-group { display: flex; gap: 6px; }
+
+    /* Button Variations */
+    .icon-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      background: var(--bg);
+      transition: all 0.15s ease;
+    }
+    .icon-btn:hover { background: var(--bg-surface); border-color: var(--text-muted); }
+    .icon-btn.active { background: #fee2e2; border-color: #ef4444; }
+
+    .btn {
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: background 0.15s ease;
+    }
+    .btn:hover { background: var(--accent-hover); }
+    .btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+    .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--bg-surface); }
+
+    /* Attached Asset Previews */
+    .attachments-preview { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--text-muted); }
+    .attachment-tag { background: var(--border); color: var(--text); padding: 4px 8px; border-radius: 6px; display: flex; align-items: center; gap: 6px; }
+    .remove-attachment { cursor: pointer; color: #ef4444; font-weight: bold; }
+
+    /* Right Preview Window */
+    .preview-panel { flex: 1; background: #f4f4f5; padding: 16px; display: flex; flex-direction: column; }
+    .preview-wrapper { flex: 1; background: #ffffff; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+    iframe { width: 100%; height: 100%; border: none; background: #ffffff; }
+
+    /* Typing Status Indicator */
+    .status-bar { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; min-height: 20px; }
+    .spinner { width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--text); border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- STEP 1: IDENTITY ACCESS GATEWAY (SHOWS BY DEFAULT) -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-title">Buildownsite</div>
+      <div class="auth-desc">Own your deployment source code forever. No lock-in parameters, no monthly builder fees [Explicit Memory Claims, Query-relevant Context].</div>
+      <button class="btn-google" id="btn-google-sign-in">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Sign in with Google
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2: PRIMARY REBUILT EXPERT WORKSPACE CONTAINER -->
+  <div id="app-screen" class="hidden screen">
+    <header>
+      <div class="brand">Buildownsite <span>/ Barry-X Engine</span></div>
+      <div class="actions-right">
+        <div class="user-pill" id="user-email-display">Authenticating...</div>
+        <button class="btn btn-secondary" id="btn-export-code">📥 Download HTML</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="control-panel">
+        <h1 class="panel-title">Escape Platform Hostage Situations</h1> [Explicit Memory Claims]
+        <p class="panel-desc">Describe your application blueprint. Own the entire standard code package instantly with zero lock-in parameters [Explicit Memory Claims, Query-relevant Context].</p>
+        
+        <div class="prompt-box-container">
+          <textarea id="main-prompt-input" placeholder="Describe any website layout, asset dashboard, or clean operational form canvas layout..."></textarea>
+          <div class="attachments-preview" id="attachments-tray"></div>
+
+          <div class="toolbar">
+            <div class="tool-group">
+              <input type="file" id="file-uploader" class="hidden" accept=".html,.css,.js,.txt">
+              <input type="file" id="photo-uploader" class="hidden" accept="image/*">
+              
+              <button class="icon-btn" id="btn-trigger-upload" title="Upload Code File">📄</button>
+              <button class="icon-btn" id="btn-trigger-photo" title="Attach Blueprint Photo">📷</button>
+              <button class="icon-btn" id="btn-trigger-mic" title="Voice Input Command">🎙️</button>
+            </div>
+            <button class="btn" id="btn-build-now">Build Website</button>
+          </div>
+        </div>
+
+        <div class="status-bar">
+          <div class="spinner" id="build-spinner"></div>
+          <span id="status-text">Ready to compile clean source structures.</span>
+        </div>
+      </section>
+
+      <section class="preview-panel">
+        <div class="preview-wrapper">
+          <iframe id="live-render-canvas" srcdoc="<html style='height:100%; display:flex; align-items:center; justify-content:center; font-family:sans-serif; color:#71717a;'><p>Your live web workspace will load here seamlessly.</p></html>"></iframe>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- STEP 3: INTEGRATED DATA ORCHESTRATION SCRIPT ENGINE -->
+  <script>
+    // --- CONNECT PRODUCTION STRINGS DIRECTLY ---
+    const SUPABASE_URL = "https://nwlhsshvqmbhemhxcran.supabase.co"; 
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bGhzc2h2cW1iaGVtaHhjcmFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTEzOTIsImV4cCI6MjA5NTU2NzM5Mn0.2yASMx57IUNjEW8bMs8FwXnIz4cLsE1ftqD35QAOqE8";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Global Tracking Repositories
+let currentUserSession = null;
+let workspaceAssets = { codeText: null, codeFile: null, photoData: null, photoFile: null, photoType: null };
+let voiceRecognition = null;
+// Node Registries
+const authScreen = document.getElementById('auth-screen');
+const appScreen = document.getElementById('app-screen');
+const googleLoginBtn = document.getElementById('btn-google-sign-in');
+const userEmailDisplay = document.getElementById('user-email-display');
+const promptInput = document.getElementById('main-prompt-input');
+const buildBtn = document.getElementById('btn-build-now');
+const exportBtn = document.getElementById('btn-export-code');
+const statusText = document.getElementById('status-text');
+const spinner = document.getElementById('build-spinner');
+const renderCanvas = document.getElementById('live-render-canvas');
+const attachmentsTray = document.getElementById('attachments-tray');
+const fileUploader = document.getElementById('file-uploader');
+const photoUploader = document.getElementById('photo-uploader');
+const btnUpload = document.getElementById('btn-trigger-upload');
+const btnPhoto = document.getElementById('btn-trigger-photo');
+const btnMic = document.getElementById('btn-trigger-mic');
+// --- SECURE OAUTH ROUTINE DISPATCHER ---
+googleLoginBtn.addEventListener('click', async () => {
+await supabase.auth.signInWithOAuth({
+provider: 'google',
+options: { redirectTo: window.location.origin }
+});
+});
+supabase.auth.onAuthStateChange((event, session) => {
+if (session) {
+currentUserSession = session.user;
+authScreen.classList.add('hidden');
+appScreen.classList.remove('hidden');
+userEmailDisplay.innerText = currentUserSession.email;
+statusText.innerText = "Security token verified. Engine active.";
 } else {
-btnMic.style.display = 'none'; // Hide if browser variant does not support recording APIs natively
-}
-btnMic.addEventListener('click', () => {
-if (btnMic.classList.contains('active')) {
-recognition.stop();
-} else {
-recognition.start();
+appScreen.classList.add('hidden');
+authScreen.classList.remove('hidden');
 }
 });
+// --- WORKSPACE MULTI-MODAL FILE TRACKERS ---
+btnUpload.addEventListener('click', () => fileUploader.click());
+fileUploader.addEventListener('change', (e) => {
+const file = e.target.files[0];
+if (!file) return;
+const textReader = new FileReader();
+textReader.onload = (event) => {
+workspaceAssets.codeFile = file.name;
+workspaceAssets.codeText = event.target.result;
+updateAttachmentsUI();
+statusText.innerText = Uploaded code reference: ${file.name};
+};
+textReader.readAsText(file);
+});
+btnPhoto.addEventListener('click', () => photoUploader.click());
+photoUploader.addEventListener('change', (e) => {
+const file = e.target.files[0];
+if (!file) return;
+workspaceAssets.photoType = file.type;
+workspaceAssets.photoFile = file.name;
+const imageReader = new FileReader();
+imageReader.onload = (event) => {
+workspaceAssets.photoData = event.target.result;
+updateAttachmentsUI();
+statusText.innerText = Attached workspace image layout: ${file.name};
+};
+imageReader.readAsDataURL(file);
+});
+// --- AUDIO TRANSCRIPTION CAPABILITY ---
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+const SpeechApp = window.SpeechRecognition || window.webkitSpeechRecognition;
+voiceRecognition = new SpeechApp();
+voiceRecognition.lang = 'en-US';
+voiceRecognition.onstart = () => btnMic.classList.add('active');
+voiceRecognition.onend = () => btnMic.classList.remove('active');
+voiceRecognition.onresult = (ev) => {
+promptInput.value += (promptInput.value ? " " : "") + ev.results[0][0].transcript;
+statusText.innerText = "Voice parsed successfully.";
+};
+btnMic.addEventListener('click', () => {
+if (btnMic.classList.contains('active')) voiceRecognition.stop();
+else voiceRecognition.start();
+});
+} else {
+btnMic.style.display = 'none';
+}
 function updateAttachmentsUI() {
 attachmentsTray.innerHTML = '';
-if (localAttachments.codeFile) {
-attachmentsTray.innerHTML += <div class='attachment-tag'>📄 ${localAttachments.codeFile} <span class='remove-attachment' onclick='removeAsset("codeFile")'>×</span></div>;
-}
-if (localAttachments.photoFile) {
-attachmentsTray.innerHTML += <div class='attachment-tag'>📷 ${localAttachments.photoFile} <span class='remove-attachment' onclick='removeAsset("photoFile")'>×</span></div>;
-}
+if (workspaceAssets.codeFile) attachmentsTray.innerHTML += <div class='attachment-tag'>📄 ${workspaceAssets.codeFile} <span class='remove-attachment' onclick='removeAsset("codeFile")'>×</span></div>;
+if (workspaceAssets.photoFile) attachmentsTray.innerHTML += <div class='attachment-tag'>📷 ${workspaceAssets.photoFile} <span class='remove-attachment' onclick='removeAsset("photoFile")'>×</span></div>;
 }
 window.removeAsset = (type) => {
-localAttachments[type] = null;
+workspaceAssets[type] = null;
+if (type === 'codeFile') workspaceAssets.codeText = null;
+if (type === 'photoFile') workspaceAssets.photoData = null;
 updateAttachmentsUI();
-statusText.innerText = "Reference removed successfully.";
+statusText.innerText = "Reference removed.";
 };
-// --- CORE ENGINE PIPELINE: INTERFACES WITH CLOUDFLARE EDGE ---
+// --- COMPILATION TRIGGER & AUTO HISTORIC LOGGING LOOP ---
 buildBtn.addEventListener('click', async () => {
 const promptValue = promptInput.value.trim();
-if (!promptValue) return alert("Please clarify what layout or workflow module to build first!");
+if (!promptValue) return alert("Please specify what structural app layout to build!");
 buildBtn.disabled = true;
 spinner.style.display = 'block';
-statusText.innerText = "Barry-X engine is compiling your un-locked layout asset..."; [Explicit Memory Claims, Query-relevant Context]
+statusText.innerText = "Barry-X engine is building your port-free code structure..."; [Explicit Memory Claims, Query-relevant Context]
 try {
+// Log query details cleanly into your historical tracking repository table layout
+if (currentUserSession) {
+await supabase.from('user_prompt_history').insert({
+user_id: currentUserSession.id,
+user_email: currentUserSession.email,
+prompt_query: promptValue,
+created_at: new Date().toISOString()
+});
+}
 const response = await fetch('/api/generate-site', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-prompt: promptValue,
-attachments: localAttachments
-})
+body: JSON.stringify({ prompt: promptValue, attachments: workspaceAssets })
 });
 const data = await response.json();
-if (data.error) {
-statusText.innerText = "Compilation failed.";
-alert(Edge Error: ${data.error});
-return;
-}
-// Wipe backticks if model returns raw text blocks
+if (data.error) throw new Error(data.error);
 let cleanSource = data.text;
-if (cleanSource.includes("html")) cleanSource = cleanSource.split("html")[1].split("```")[0];
-// Render code string straight into Sandbox preview element frame smoothly [Query-relevant Context]
-renderCanvas.srcdoc = cleanSource;
+if (cleanSource.includes("html")) cleanSource = cleanSource.split("html")[1].split("")[0]; if (cleanSource.includes("") && !cleanSource.includes("html")) cleanSource = cleanSource.split("")[1].split("```")[0];
+renderCanvas.srcdoc = cleanSource.trim();
 statusText.innerText = "Build successfully outputted live on screen.";
 } catch (err) {
-statusText.innerText = "Failed to reach edge compilation network.";
+statusText.innerText = "Error compiling code module configuration assets.";
 console.error(err);
-} else {
+} finally {
 buildBtn.disabled = false;
 spinner.style.display = 'none';
 }
 });
-// --- TOOLBAR FEATURE 4: THE OWN FOREVER ESCAPE HATCH DOWNLOAD BUTTON ---
+// --- PURE CODE EXTRACTION DOWNLOAD ROUTINE ---
 exportBtn.addEventListener('click', () => {
 const activeCode = renderCanvas.srcdoc;
 if (!activeCode || activeCode.includes("Your live web workspace will load here")) {
-return alert("Generate an operational codebase project view first before downloading output!");
+return alert("Please generate an operational workspace project view first before exporting!");
 }
 const blobStream = new Blob([activeCode], { type: 'text/html' });
 const downloadAnchor = document.createElement('a');
 downloadAnchor.href = URL.createObjectURL(blobStream);
-downloadAnchor.download = 'index.html'; // Pure exportable file ready to launch on Cloudflare Pages [Query-relevant Context]
+downloadAnchor.download = 'index.html';
 document.body.appendChild(downloadAnchor);
 downloadAnchor.click();
 document.body.removeChild(downloadAnchor);
-statusText.innerText = "Source downloaded successfully. Yours forever.";
+statusText.innerText = "Source downloaded. Yours forever.";
 });
 
 
 
-### What This Rebuilt Version Gives You:
-1. **Pure White UI**: Removed all busy elements. It looks hyper-professional, high-contrast, clean, and incredibly powerful.
-2. **Uploading**: Built-in triggers for raw text code file uploading (`📄`) and photo template uploads (`📷`).
-3. **Voice Control (Mic)**: The native Web Speech API `🎙️` hooks directly into the browser to capture voice prompts without any dependencies.
-4. **Instant Download**: The **Download HTML** button extracts whatever is running live in your sandbox iframe and dumps it cleanly as a local file, breaking free of lock-in situations [Explicit Memory Claims, Query-relevant Context].
-
-If you are ready to configure the backend connection or deploy this directly, let me know:
-* Should we set up the matching **Cloudflare Workers API file routing** to handle these uploaded attachment parameters [Query-relevant Context]?
-* Do you want to connect a **Supabase table rule** to save user prompts under their login profile automatically [Explicit Memory Claims, Query-relevant Context]?
-
-<layout>
-transparencySheet()
-</layout>
-
+    
